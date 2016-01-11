@@ -11,7 +11,7 @@ import com.fivestars.websites.onlinetest.dao.ArticleDao;
 import com.fivestars.websites.onlinetest.model.Article;
 
 @Repository("articleDao")
-public class ArticleDaoImpl implements ArticleDao{
+public class ArticleDaoImpl implements ArticleDao {
 	
     @Autowired
     private SessionFactory sessionFactory;
