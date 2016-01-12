@@ -17,7 +17,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script type="text/javascript">
 	        function reg()
 	        {
-	                var url="<%=path %>/qiantai/userinfo/userReg.jsp";
+	                var url="<%=path %>/views/user/userReg.jsp";
 	                var n="";
 	                var w="480px";
 	                var h="500px";
