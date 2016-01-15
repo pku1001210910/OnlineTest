@@ -23,7 +23,7 @@ public class UserAnswer implements java.io.Serializable {
 	private Integer answerId;
 	private String userName;
 	private Integer quizId;
-	private int subjectId;
+	private Integer subjectId;
 	private String answer;
 	private Date answerDate;
 	private Double score;
@@ -31,7 +31,7 @@ public class UserAnswer implements java.io.Serializable {
 	public UserAnswer() {
 	}
 
-	public UserAnswer(int subjectId) {
+	public UserAnswer(Integer subjectId) {
 		this.subjectId = subjectId;
 	}
 
@@ -79,7 +79,7 @@ public class UserAnswer implements java.io.Serializable {
 		return this.subjectId;
 	}
 
-	public void setSubjectId(int subjectId) {
+	public void setSubjectId(Integer subjectId) {
 		this.subjectId = subjectId;
 	}
 

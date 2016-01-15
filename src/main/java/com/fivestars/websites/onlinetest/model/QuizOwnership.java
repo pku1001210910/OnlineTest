@@ -22,19 +22,19 @@ public class QuizOwnership implements java.io.Serializable {
 	
 	private Integer ownershipId;
 	private String username;
-	private int quizId;
+	private Integer quizId;
 	private Byte expired;
 	private Date buyDate;
 
 	public QuizOwnership() {
 	}
 
-	public QuizOwnership(String username, int quizId) {
+	public QuizOwnership(String username, Integer quizId) {
 		this.username = username;
 		this.quizId = quizId;
 	}
 
-	public QuizOwnership(String username, int quizId, Byte expired, Date buyDate) {
+	public QuizOwnership(String username, Integer quizId, Byte expired, Date buyDate) {
 		this.username = username;
 		this.quizId = quizId;
 		this.expired = expired;
@@ -63,11 +63,11 @@ public class QuizOwnership implements java.io.Serializable {
 	}
 
 	@Column(name = "quizId", nullable = false)
-	public int getQuizId() {
+	public Integer getQuizId() {
 		return this.quizId;
 	}
 
-	public void setQuizId(int quizId) {
+	public void setQuizId(Integer quizId) {
 		this.quizId = quizId;
 	}
 

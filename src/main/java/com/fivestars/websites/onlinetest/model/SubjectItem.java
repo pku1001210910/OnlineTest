@@ -52,7 +52,7 @@ public class SubjectItem implements java.io.Serializable {
 		this.itemId = itemId;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "subjectId", nullable = false)
 	public QuizSubject getQuizSubject() {
 		return this.quizSubject;
