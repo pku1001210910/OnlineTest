@@ -1,14 +1,16 @@
 package com.fivestars.websites.onlinetest.model;
 // Generated Jan 15, 2016 12:20:03 AM by Hibernate Tools 4.3.1.Final
 
+import static javax.persistence.GenerationType.IDENTITY;
+
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -33,13 +35,13 @@ public class Quiz implements java.io.Serializable {
 	private Date submitDate;
 	private Byte repeatable;
 	private Integer status;
-	private Set<QuizSubject> quizSubjects = new HashSet<QuizSubject>(0);
+	private List<QuizSubject> quizSubjects = new ArrayList<>();
 
 	public Quiz() {
 	}
 
 	public Quiz(String title, String description, Integer category, Byte needCharge, Double price, Date submitDate,
-			Byte repeatable, Integer status, Set<QuizSubject> quizSubjects) {
+			Byte repeatable, Integer status, List<QuizSubject> quizSubjects) {
 		this.title = title;
 		this.description = description;
 		this.category = category;
@@ -137,11 +139,11 @@ public class Quiz implements java.io.Serializable {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "quiz")
-	public Set<QuizSubject> getQuizSubjects() {
+	public List<QuizSubject> getQuizSubjects() {
 		return this.quizSubjects;
 	}
 
-	public void setQuizSubjects(Set<QuizSubject> quizSubjects) {
+	public void setQuizSubjects(List<QuizSubject> quizSubjects) {
 		this.quizSubjects = quizSubjects;
 	}
 

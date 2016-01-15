@@ -15,7 +15,7 @@ public class QuizCategory implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	private int categoryId;
+	private Integer categoryId;
 	private String categoryName;
 	private String description;
 	private Integer parentId;
@@ -23,11 +23,11 @@ public class QuizCategory implements java.io.Serializable {
 	public QuizCategory() {
 	}
 
-	public QuizCategory(int categoryId) {
+	public QuizCategory(Integer categoryId) {
 		this.categoryId = categoryId;
 	}
 
-	public QuizCategory(int categoryId, String categoryName, String description, Integer parentId) {
+	public QuizCategory(Integer categoryId, String categoryName, String description, Integer parentId) {
 		this.categoryId = categoryId;
 		this.categoryName = categoryName;
 		this.description = description;
@@ -37,11 +37,11 @@ public class QuizCategory implements java.io.Serializable {
 	@Id
 
 	@Column(name = "categoryId", unique = true, nullable = false)
-	public int getCategoryId() {
+	public Integer getCategoryId() {
 		return this.categoryId;
 	}
 
-	public void setCategoryId(int categoryId) {
+	public void setCategoryId(Integer categoryId) {
 		this.categoryId = categoryId;
 	}
 

@@ -1,13 +1,15 @@
 package com.fivestars.websites.onlinetest.model;
 // Generated Jan 15, 2016 12:20:03 AM by Hibernate Tools 4.3.1.Final
 
-import java.util.HashSet;
-import java.util.Set;
+import static javax.persistence.GenerationType.IDENTITY;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -25,22 +27,22 @@ public class QuizSubject implements java.io.Serializable {
 	
 	private Integer subjectId;
 	private Quiz quiz;
-	private int type;
+	private Integer type;
 	private Integer resourceId;
 	private Integer order;
 	private String question;
-	private Set<SubjectItem> subjectItems = new HashSet<SubjectItem>(0);
+	private List<SubjectItem> subjectItems = new ArrayList<>();
 
 	public QuizSubject() {
 	}
 
-	public QuizSubject(Quiz quiz, int type) {
+	public QuizSubject(Quiz quiz, Integer type) {
 		this.quiz = quiz;
 		this.type = type;
 	}
 
-	public QuizSubject(Quiz quiz, int type, Integer resourceId, Integer order, String question,
-			Set<SubjectItem> subjectItems) {
+	public QuizSubject(Quiz quiz, Integer type, Integer resourceId, Integer order, String question,
+			List<SubjectItem> subjectItems) {
 		this.quiz = quiz;
 		this.type = type;
 		this.resourceId = resourceId;
@@ -61,7 +63,7 @@ public class QuizSubject implements java.io.Serializable {
 		this.subjectId = subjectId;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "quizId", nullable = false)
 	public Quiz getQuiz() {
 		return this.quiz;
@@ -72,11 +74,11 @@ public class QuizSubject implements java.io.Serializable {
 	}
 
 	@Column(name = "type", nullable = false)
-	public int getType() {
+	public Integer getType() {
 		return this.type;
 	}
 
-	public void setType(int type) {
+	public void setType(Integer type) {
 		this.type = type;
 	}
 
@@ -108,11 +110,11 @@ public class QuizSubject implements java.io.Serializable {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "quizSubject")
-	public Set<SubjectItem> getSubjectItems() {
+	public List<SubjectItem> getSubjectItems() {
 		return this.subjectItems;
 	}
 
-	public void setSubjectItems(Set<SubjectItem> subjectItems) {
+	public void setSubjectItems(List<SubjectItem> subjectItems) {
 		this.subjectItems = subjectItems;
 	}
 

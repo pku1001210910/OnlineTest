@@ -18,7 +18,7 @@ public class Feedback implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private Integer feedbackId;
-	private int quizId;
+	private Integer quizId;
 	private String content;
 	private Double scoreFrom;
 	private Double scoreTo;
@@ -30,7 +30,7 @@ public class Feedback implements java.io.Serializable {
 		this.quizId = quizId;
 	}
 
-	public Feedback(int quizId, String content, Double scoreFrom, Double scoreTo) {
+	public Feedback(Integer quizId, String content, Double scoreFrom, Double scoreTo) {
 		this.quizId = quizId;
 		this.content = content;
 		this.scoreFrom = scoreFrom;
@@ -50,11 +50,11 @@ public class Feedback implements java.io.Serializable {
 	}
 
 	@Column(name = "quizId", nullable = false)
-	public int getQuizId() {
+	public Integer getQuizId() {
 		return this.quizId;
 	}
 
-	public void setQuizId(int quizId) {
+	public void setQuizId(Integer quizId) {
 		this.quizId = quizId;
 	}
 

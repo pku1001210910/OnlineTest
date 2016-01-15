@@ -22,7 +22,7 @@ public class UserQuiz implements java.io.Serializable {
 	
 	private Integer recordId;
 	private String userName;
-	private int quizId;
+	private Integer quizId;
 	private Double score;
 	private Integer feedbackId;
 	private Date quizDate;
@@ -36,7 +36,7 @@ public class UserQuiz implements java.io.Serializable {
 		this.quizId = quizId;
 	}
 
-	public UserQuiz(String userName, int quizId, Double score, Integer feedbackId, Date quizDate, String evaluator) {
+	public UserQuiz(String userName, Integer quizId, Double score, Integer feedbackId, Date quizDate, String evaluator) {
 		this.userName = userName;
 		this.quizId = quizId;
 		this.score = score;
@@ -67,11 +67,11 @@ public class UserQuiz implements java.io.Serializable {
 	}
 
 	@Column(name = "quizId", nullable = false)
-	public int getQuizId() {
+	public Integer getQuizId() {
 		return this.quizId;
 	}
 
-	public void setQuizId(int quizId) {
+	public void setQuizId(Integer quizId) {
 		this.quizId = quizId;
 	}
 
