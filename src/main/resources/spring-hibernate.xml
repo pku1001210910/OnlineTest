@@ -73,20 +73,20 @@ http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
         </property>
 
         <!-- 自动扫描注解方式配置的hibernate类文件 -->
+        <!--
         <property name="packagesToScan">
             <list>
                 <value>com.fivestars.websites.onlinetest.model</value>
             </list>
         </property>
+        -->
 
         <!-- 自动扫描hbm方式配置的hibernate文件和.hbm文件 -->
-        <!-- 
         <property name="mappingDirectoryLocations">
             <list>
-                <value>classpath:co/fivestars/websites/onlinetest/model/hbm</value>
+                <value>classpath:com/fivestars/websites/onlinetest/model/hbm</value>
             </list>
         </property>
-         -->
     </bean>
 
     <!-- 配置tx管理器 -->
