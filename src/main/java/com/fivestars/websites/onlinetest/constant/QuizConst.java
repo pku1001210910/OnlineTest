@@ -11,4 +11,12 @@ public class QuizConst {
 	// quiz status
 	public static final int STATUS_TEMPORARY_SAVE = 0;
 	public static final int STATUS_SUBMITTED = 1;
+	
+	// quiz need charge
+	public static final byte NOT_NEED_CHARGE = 0;
+	public static final byte NEED_CHARGE = 1;
+	
+	// quiz repeatable
+	public static final byte REPEATABLE_FALSE = 0;
+	public static final byte REPEATABLE_TRUE = 1;
 }
