@@ -29,4 +29,7 @@
 
     <package name="basePackage" extends="struts-default">
     </package>
+    
+    <package name="admin" extends="struts-default" namespace="/admin">
+    </package>
 </struts>

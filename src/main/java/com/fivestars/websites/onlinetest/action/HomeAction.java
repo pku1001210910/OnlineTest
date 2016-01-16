@@ -9,7 +9,7 @@ import com.opensymphony.xwork2.ActionSupport;
 
 @ParentPackage("basePackage")
 @Namespace("/")
-@Result(name="success", location="/views/index.jsp")
+@Result(name="success", location="/WEB-INF/views/index.jsp")
 public class HomeAction {
 
 	@Action("home")
