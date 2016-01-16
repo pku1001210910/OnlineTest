@@ -41,6 +41,15 @@ public class QuizServiceTest {
 		List<Quiz> quizList = quizService.loadAllQuiz();
 		assertThat(quizList.size(), equalTo(1));
 		
+		Quiz quizInDB = quizService.loadQuizById(quizId);
+		assertThat(quizInDB.getTitle(), equalTo(quiz.getTitle()));
+		
+		String newTitle = "新的心理测试题";
+		quiz.setTitle(newTitle);
+		quizService.updateQuiz(quiz);
+		quizInDB = quizService.loadQuizById(quizId);
+		assertThat(quizInDB.getTitle(), equalTo(newTitle));
+		
 		quizService.deleteQuiz(quizId);
 		assertThat(quizService.loadAllQuiz().size(), equalTo(0));
 	}
