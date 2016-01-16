@@ -9,17 +9,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-<meta name="description" content="">
-<meta name="author" content="">
-<link rel="icon" href="../../favicon.ico">
 
 <title>在线测试系统后台</title>
 
 <!-- core CSS -->
 <link href="<%=path%>/css/bootstrap.min.css" rel="stylesheet">
 <link href="<%=path%>/css/admin/login.css" rel="stylesheet">
-<link href="<%=path %>/css/main.css" rel="stylesheet">
+<link href="<%=path%>/css/main.css" rel="stylesheet">
 </head>
 
 <body>
@@ -30,7 +26,9 @@
 			<s:if test="hasActionErrors()">
 				<div class="bg-danger">
 					<s:iterator value="actionErrors">
-						<p> <s:property /> </p>
+						<p>
+							<s:property />
+						</p>
 					</s:iterator>
 				</div>
 			</s:if>
