@@ -21,19 +21,18 @@ public class LoginAction extends ActionSupport{
 	private String password;
 
 	@Action(value = "login", results = { @Result(name = "success", location = "/WEB-INF/views/admin/login.jsp") })
-	public String articleList() {
+	public String login() {
 		return ActionSupport.SUCCESS;
 	}
 
-	@Action(value = "auth", results = { @Result(name = "success", location = "/WEB-INF/views/admin/home.jsp"),
-									    @Result(name = "login", location = "/WEB-INF/views/admin/login.jsp") })
+	@Action(value = "auth", results = { @Result(name = "success", type = "redirectAction", location = "home"),
+									    @Result(name = "login", type = "redirectAction", location = "login") })
 	public String Authenticate() {
 		// TODO Add Authenticate logic
 		if(false) {
 			addActionError(Message.USER_OR_PASSWORD_WRONG);
 			return LOGIN;
 		}
-		
 		return SUCCESS;
 	}
 }

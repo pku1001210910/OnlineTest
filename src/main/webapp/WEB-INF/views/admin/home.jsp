@@ -36,25 +36,25 @@
     </nav>
 
 	<div class="container-fluid">
-		<div class="row">
+		<div class="row admin-menu">
 			<div class="col-sm-2 col-md-1 sidebar">
-				<ul class="nav nav-sidebar"  data-toggle="offcanvas">
-					<li class="active"><a href="#">欢迎界面</a></li>
+				<ul class="nav nav-sidebar">
+					<li class="active admin-menu-item" data-target="welcome"><a>欢迎界面</a></li>
 				</ul>
 				<ul class="nav nav-sidebar">
-					<li><a href="">用户管理</a></li>
+					<li class="admin-menu-item" data-target="users"><a>用户管理</a></li>
 				</ul>
 				<ul class="nav nav-sidebar">
-					<li><a href="">文章管理</a></li>
+					<li class="admin-menu-item" data-target="articles"><a>文章管理</a></li>
 				</ul>
 				<ul class="nav nav-sidebar">
-					<li><a href="">测试管理</a></li>
+					<li class="admin-menu-item" data-target="quizzes"><a>测试管理</a></li>
 				</ul>
 				<ul class="nav nav-sidebar">
-					<li><a href="">支付设置</a></li>
+					<li class="admin-menu-item" data-target="payment"><a>支付设置</a></li>
 				</ul>
 			</div>
-			<div class="col-sm-10 col-sm-offset-3 col-md-11 col-md-offset-2 main">
+			<div id="main-content" class="col-sm-10 col-sm-offset-3 col-md-11 col-md-offset-2 main">
 			</div>
 		</div>
 	</div>
@@ -62,5 +62,7 @@
 	<!-- JavaScript -->
 	<script src="<%=path%>/js/jquery.min.js"></script>
 	<script src="<%=path%>/js/bootstrap.min.js"></script>
+	<script src="<%=path%>/js/admin/home.js"></script>
+	<script src="<%=path%>/js/main.js"></script
 </body>
 </html>
