@@ -7,7 +7,7 @@
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
 		<property name="hibernate.show_sql">true</property>
 		<property name="hibernate.format_sql">true</property>
-		<property name="hibernate.hbm2ddl.auto">update</property>
+		<property name="hibernate.hbm2ddl.auto">none</property>
 		<property name="hibernate.jdbc.fetch_size">100</property>
 		<property name="hibernate.jdbc.batch_size">30</property>
 		<!-- Hibernate cache properties -->

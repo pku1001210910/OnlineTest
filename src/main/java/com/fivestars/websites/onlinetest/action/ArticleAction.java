@@ -26,7 +26,7 @@ public class ArticleAction {
 	private ArticleService articleService;
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@Action(value = "all", results = { @Result(name = "success", location = "/views/article/articlelist.jsp") })
+	@Action(value = "all", results = { @Result(name = "success", location = "/WEB-INF/views/article/articlelist.jsp") })
 	public String articleList() {
 		Map request = (Map) ServletActionContext.getContext().get("request");
 		List<Article> articles = articleService.findAll();
@@ -35,7 +35,7 @@ public class ArticleAction {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@Action(value = "view", results = { @Result(name = "success", location = "/views/article/article.jsp") })
+	@Action(value = "view", results = { @Result(name = "success", location = "/WEB-INF/views/article/article.jsp") })
 	public String articleView() {
 		Map request = (Map) ServletActionContext.getContext().get("request");
 		Article article = articleService.loadById(id);
