@@ -40,30 +40,7 @@
     </bean>
 
     <!-- transaction intercepter configuration -->
-    <tx:advice id="transactionAdvice" transaction-manager="transactionManager">
-        <tx:attributes>
-            <tx:method name="insert*" propagation="REQUIRED" />  
-            <tx:method name="update*" propagation="REQUIRED" />  
-            <tx:method name="edit*" propagation="REQUIRED" />  
-            <tx:method name="save*" propagation="REQUIRED" />  
-            <tx:method name="add*" propagation="REQUIRED" />  
-            <tx:method name="new*" propagation="REQUIRED" />  
-            <tx:method name="set*" propagation="REQUIRED" />  
-            <tx:method name="remove*" propagation="REQUIRED" />  
-            <tx:method name="delete*" propagation="REQUIRED" />  
-            <tx:method name="change*" propagation="REQUIRED" />
-            <tx:method name="get*" propagation="SUPPORTS" />
-            <tx:method name="count*" propagation="SUPPORTS"/>
-            <tx:method name="find*" propagation="SUPPORTS" />
-            <tx:method name="load*" propagation="SUPPORTS" />
-            <tx:method name="search*" propagation="SUPPORTS" />
-            <tx:method name="*" propagation="SUPPORTS" />
-        </tx:attributes>
-    </tx:advice>
-    <aop:config>
-        <aop:pointcut id="transactionPointcut" expression="execution(* com.fivestars.websites.onlinetest.service..*Impl.*(..))" />
-        <aop:advisor pointcut-ref="transactionPointcut" advice-ref="transactionAdvice" />
-    </aop:config>
+    <tx:annotation-driven transaction-manager="transactionManager" />
     
     <!-- auto inject service and dao -->
 	<context:component-scan
