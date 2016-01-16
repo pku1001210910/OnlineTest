@@ -33,16 +33,7 @@
 				<a class="navbar-brand white" href="#"> 北京大学心理系 </a>
 			</div>
 			<div id="navbar" class="navbar-collapse collapse">
-				<form class="navbar-form navbar-right">
-					<div class="form-group">
-						<input type="text" placeholder="用户名" class="form-control">
-					</div>
-					<div class="form-group">
-						<input type="password" placeholder="密码" class="form-control">
-					</div>
-					<button type="submit" class="btn btn-success">登陆</button>
-					<a class="white underline" href="#"> 没有账号？</a>
-				</form>
+				<jsp:include flush="true" page="user/userlogin.jsp"></jsp:include>
 			</div>
 		</div>
 	</nav>
