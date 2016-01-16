@@ -67,5 +67,5 @@
     
     <!-- auto inject service and dao -->
 	<context:component-scan
-		base-package="com.fivestars.websites.onlinetest.service,com.fivestars.websites.onlinetest.dao" />
+		base-package="com.fivestars.websites.onlinetest" />
 </beans>
