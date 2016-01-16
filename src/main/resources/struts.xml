@@ -27,7 +27,7 @@
     <!-- 对于WebLogic,Orion,OC4J此属性应该设置成true -->
     <constant name="struts.dispatcher.parametersWorkaround" value="false" />
 
-    <package name="basePackage" extends="struts-default">
+    <package name="user" extends="struts-default">
     </package>
     
     <package name="admin" extends="struts-default" namespace="/admin">

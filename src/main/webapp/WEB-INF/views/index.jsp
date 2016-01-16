@@ -18,6 +18,7 @@
     <!-- core CSS -->
     <link href="<%=path %>/css/bootstrap.min.css" rel="stylesheet">
     <link href="<%=path %>/css/index.css" rel="stylesheet">
+    <link href="<%=path %>/css/main.css" rel="stylesheet">
   </head>
 
   <body>
@@ -76,7 +77,13 @@
       <hr>
 
       <footer>
-        <p>关于我们|联系我们|版权声明|隐私保护|</p>
+        <div>
+        	<a>关于我们</a>|
+        	<a>联系我们</a>|
+        	<a>版权声明</a>|
+        	<a>隐私保护</a>|
+        	<a href="<%=path %>/admin/login.action">管理后台</a>|
+        </div>
       </footer>
     </div> <!-- /container -->
 
