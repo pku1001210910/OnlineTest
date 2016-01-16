@@ -90,7 +90,7 @@ CREATE TABLE `quiz` (
   `status` int(11) DEFAULT NULL,
   PRIMARY KEY (`quizId`),
   UNIQUE KEY `quizId_UNIQUE` (`quizId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -167,13 +167,13 @@ CREATE TABLE `quiz_subject` (
   `quizId` int(11) NOT NULL,
   `type` int(11) NOT NULL,
   `resourceId` int(11) DEFAULT NULL,
-  `order` int(11) DEFAULT NULL,
+  `subjectOrder` int(11) DEFAULT NULL,
   `question` text,
   PRIMARY KEY (`subjectId`),
   UNIQUE KEY `subjectId_UNIQUE` (`subjectId`),
   KEY `subject_quizId` (`quizId`),
   CONSTRAINT `subject_quizId` FOREIGN KEY (`quizId`) REFERENCES `quiz` (`quizId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -195,14 +195,14 @@ DROP TABLE IF EXISTS `subject_item`;
 CREATE TABLE `subject_item` (
   `itemId` int(11) NOT NULL AUTO_INCREMENT,
   `subjectId` int(11) NOT NULL,
-  `option` text,
+  `choice` text,
   `score` double DEFAULT NULL,
   `nextSubjectId` int(11) DEFAULT NULL,
   PRIMARY KEY (`itemId`),
   UNIQUE KEY `itemId_UNIQUE` (`itemId`),
   KEY `subjectId_idx` (`subjectId`),
   CONSTRAINT `subjectId` FOREIGN KEY (`subjectId`) REFERENCES `quiz_subject` (`subjectId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -312,4 +312,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-01-15  0:23:15
+-- Dump completed on 2016-01-16 21:52:58
