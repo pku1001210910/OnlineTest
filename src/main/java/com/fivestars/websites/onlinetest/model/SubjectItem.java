@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -22,7 +24,7 @@ public class SubjectItem implements java.io.Serializable {
 	
 	private Integer itemId;
 	private QuizSubject quizSubject;
-	private String option;
+	private String choice;
 	private Double score;
 	private Integer nextSubjectId;
 
@@ -35,7 +37,7 @@ public class SubjectItem implements java.io.Serializable {
 
 	public SubjectItem(QuizSubject quizSubject, String option, Double score, Integer nextSubjectId) {
 		this.quizSubject = quizSubject;
-		this.option = option;
+		this.choice = option;
 		this.score = score;
 		this.nextSubjectId = nextSubjectId;
 	}
@@ -52,7 +54,7 @@ public class SubjectItem implements java.io.Serializable {
 		this.itemId = itemId;
 	}
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
 	@JoinColumn(name = "subjectId", nullable = false)
 	public QuizSubject getQuizSubject() {
 		return this.quizSubject;
@@ -62,13 +64,13 @@ public class SubjectItem implements java.io.Serializable {
 		this.quizSubject = quizSubject;
 	}
 
-	@Column(name = "option", length = 65535)
-	public String getOption() {
-		return this.option;
+	@Column(name = "choice", length = 65535)
+	public String getChoice() {
+		return this.choice;
 	}
 
-	public void setOption(String option) {
-		this.option = option;
+	public void setChoice(String choice) {
+		this.choice = choice;
 	}
 
 	@Column(name = "score", precision = 22, scale = 0)
