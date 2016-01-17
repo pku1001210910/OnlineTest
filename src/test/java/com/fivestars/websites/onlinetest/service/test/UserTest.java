@@ -31,10 +31,10 @@ public class UserTest {
 			user.setUserName("user" + i);
 			user.setPassword("test");
 			user.setEmail("user"+i + "@163.com");
-			user.setGraduate("Hoge University" + (i % 10));
-			user.setMajor("Foo Major" + (i % 12));
-			user.setPhone("13121031242"+ i);
-			user.setBackground("SuperMan");
+			user.setGraduate("中国某某大学" + (i % 10));
+			user.setMajor("专业" + (i % 12));
+			user.setPhone("131210312"+ i % 100);
+			user.setBackground("专业水平");
 			user.setIsAdmin((i % 10) == 0 ? UserConst.IS_ADMIN : UserConst.IS_NOT_ADMIN);
 			user.setIsTeacher(UserConst.IS_NOT_TEACHER);
 			

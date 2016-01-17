@@ -14,6 +14,8 @@
 
 <!-- core CSS -->
 <link href="<%=path%>/css/bootstrap.min.css" rel="stylesheet">
+<link href="<%=path%>/css/jsgrid.min.css" rel="stylesheet">
+<link href="<%=path%>/css/jsgrid-theme.min.css" rel="stylesheet">
 <link href="<%=path%>/css/admin/home.css" rel="stylesheet">
 <link href="<%=path%>/css/main.css" rel="stylesheet">
 </head>
@@ -70,7 +72,8 @@
 	<!-- JavaScript -->
 	<script src="<%=path%>/js/jquery.min.js"></script>
 	<script src="<%=path%>/js/bootstrap.min.js"></script>
+	<script src="<%=path%>/js/jsgrid.min.js"></script>
 	<script src="<%=path%>/js/admin/home.js"></script>
-	<script src="<%=path%>/js/main.js"></script
+	<script src="<%=path%>/js/main.js"></script>
 </body>
 </html>
