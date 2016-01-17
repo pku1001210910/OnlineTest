@@ -140,7 +140,7 @@ public class Quiz implements java.io.Serializable {
 		this.status = status;
 	}
 
-	@OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, mappedBy = "quiz")
+	@OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "quiz")
 	public List<QuizSubject> getQuizSubjects() {
 		return this.quizSubjects;
 	}

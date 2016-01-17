@@ -35,16 +35,6 @@ CREATE TABLE `article` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `article`
---
-
-LOCK TABLES `article` WRITE;
-/*!40000 ALTER TABLE `article` DISABLE KEYS */;
-INSERT INTO `article` VALUES (1,'���Թ�����Թ�����Թ�����Ը��','���Թ�����Թ�����Թ�����Թ�����Թ���','2012-04-18 12:21:28',NULL,NULL),(2,'222222222222222222222222','1111111111111111111111111111111111','2012-04-18 12:21:36',NULL,NULL);
-/*!40000 ALTER TABLE `article` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `feedback`
 --
 
@@ -61,15 +51,6 @@ CREATE TABLE `feedback` (
   UNIQUE KEY `feedbackId_UNIQUE` (`feedbackId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `feedback`
---
-
-LOCK TABLES `feedback` WRITE;
-/*!40000 ALTER TABLE `feedback` DISABLE KEYS */;
-/*!40000 ALTER TABLE `feedback` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `quiz`
@@ -90,17 +71,8 @@ CREATE TABLE `quiz` (
   `status` int(11) DEFAULT NULL,
   PRIMARY KEY (`quizId`),
   UNIQUE KEY `quizId_UNIQUE` (`quizId`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `quiz`
---
-
-LOCK TABLES `quiz` WRITE;
-/*!40000 ALTER TABLE `quiz` DISABLE KEYS */;
-/*!40000 ALTER TABLE `quiz` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `quiz_category`
@@ -118,15 +90,6 @@ CREATE TABLE `quiz_category` (
   UNIQUE KEY `categoryId_UNIQUE` (`categoryId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `quiz_category`
---
-
-LOCK TABLES `quiz_category` WRITE;
-/*!40000 ALTER TABLE `quiz_category` DISABLE KEYS */;
-/*!40000 ALTER TABLE `quiz_category` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `quiz_ownership`
@@ -147,15 +110,6 @@ CREATE TABLE `quiz_ownership` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `quiz_ownership`
---
-
-LOCK TABLES `quiz_ownership` WRITE;
-/*!40000 ALTER TABLE `quiz_ownership` DISABLE KEYS */;
-/*!40000 ALTER TABLE `quiz_ownership` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `quiz_subject`
 --
 
@@ -173,17 +127,8 @@ CREATE TABLE `quiz_subject` (
   UNIQUE KEY `subjectId_UNIQUE` (`subjectId`),
   KEY `subject_quizId` (`quizId`),
   CONSTRAINT `subject_quizId` FOREIGN KEY (`quizId`) REFERENCES `quiz` (`quizId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=83 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `quiz_subject`
---
-
-LOCK TABLES `quiz_subject` WRITE;
-/*!40000 ALTER TABLE `quiz_subject` DISABLE KEYS */;
-/*!40000 ALTER TABLE `quiz_subject` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `subject_item`
@@ -198,21 +143,13 @@ CREATE TABLE `subject_item` (
   `choice` text,
   `score` double DEFAULT NULL,
   `nextSubjectId` int(11) DEFAULT NULL,
+  `itemOrder` int(11) DEFAULT NULL,
   PRIMARY KEY (`itemId`),
   UNIQUE KEY `itemId_UNIQUE` (`itemId`),
   KEY `subjectId_idx` (`subjectId`),
   CONSTRAINT `subjectId` FOREIGN KEY (`subjectId`) REFERENCES `quiz_subject` (`subjectId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=225 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `subject_item`
---
-
-LOCK TABLES `subject_item` WRITE;
-/*!40000 ALTER TABLE `subject_item` DISABLE KEYS */;
-/*!40000 ALTER TABLE `subject_item` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `user`
@@ -237,15 +174,6 @@ CREATE TABLE `user` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `user`
---
-
-LOCK TABLES `user` WRITE;
-/*!40000 ALTER TABLE `user` DISABLE KEYS */;
-/*!40000 ALTER TABLE `user` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `user_answer`
 --
 
@@ -266,15 +194,6 @@ CREATE TABLE `user_answer` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `user_answer`
---
-
-LOCK TABLES `user_answer` WRITE;
-/*!40000 ALTER TABLE `user_answer` DISABLE KEYS */;
-/*!40000 ALTER TABLE `user_answer` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `user_quiz`
 --
 
@@ -293,15 +212,6 @@ CREATE TABLE `user_quiz` (
   UNIQUE KEY `recordId_UNIQUE` (`recordId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `user_quiz`
---
-
-LOCK TABLES `user_quiz` WRITE;
-/*!40000 ALTER TABLE `user_quiz` DISABLE KEYS */;
-/*!40000 ALTER TABLE `user_quiz` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -312,4 +222,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-01-16 21:52:58
+-- Dump completed on 2016-01-17 17:29:08

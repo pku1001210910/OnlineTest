@@ -65,7 +65,7 @@ public class QuizSubject implements java.io.Serializable {
 		this.subjectId = subjectId;
 	}
 
-	@ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "quizId", nullable = false)
 	public Quiz getQuiz() {
 		return this.quiz;
