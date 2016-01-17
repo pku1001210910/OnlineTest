@@ -3,8 +3,8 @@ package com.fivestars.websites.onlinetest.model;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -33,7 +33,7 @@ public class QuizSubject implements java.io.Serializable {
 	private Integer resourceId;
 	private Integer subjectOrder;
 	private String question;
-	private List<SubjectItem> subjectItems = new ArrayList<>();
+	private Set<SubjectItem> subjectItems = new HashSet<>();
 
 	public QuizSubject() {
 	}
@@ -44,7 +44,7 @@ public class QuizSubject implements java.io.Serializable {
 	}
 
 	public QuizSubject(Quiz quiz, Integer type, Integer resourceId, Integer subjectOrder, String question,
-			List<SubjectItem> subjectItems) {
+			Set<SubjectItem> subjectItems) {
 		this.quiz = quiz;
 		this.type = type;
 		this.resourceId = resourceId;
@@ -112,11 +112,11 @@ public class QuizSubject implements java.io.Serializable {
 	}
 
 	@OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, mappedBy = "quizSubject")
-	public List<SubjectItem> getSubjectItems() {
+	public Set<SubjectItem> getSubjectItems() {
 		return this.subjectItems;
 	}
 
-	public void setSubjectItems(List<SubjectItem> subjectItems) {
+	public void setSubjectItems(Set<SubjectItem> subjectItems) {
 		this.subjectItems = subjectItems;
 	}
 

@@ -1,8 +1,7 @@
 package com.fivestars.websites.onlinetest.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fivestars.websites.onlinetest.dao.QuizDAO;
+import com.fivestars.websites.onlinetest.dao.QuizSubjectDAO;
+import com.fivestars.websites.onlinetest.dao.SubjectItemDAO;
 import com.fivestars.websites.onlinetest.model.Quiz;
 import com.fivestars.websites.onlinetest.model.QuizSubject;
 import com.fivestars.websites.onlinetest.service.QuizService;
@@ -23,6 +24,10 @@ public class QuizServiceImpl implements QuizService {
 	
 	@Autowired
 	private QuizDAO quizDao;
+	@Autowired
+	private QuizSubjectDAO subjectDao;
+	@Autowired
+	private SubjectItemDAO itemDao;
 	
 	@Override
 	public Integer createQuiz(Quiz quiz) {
@@ -56,138 +61,103 @@ public class QuizServiceImpl implements QuizService {
 	@Override
 	public void addSubjectToQuiz(Integer quizId, QuizSubject subject) {
 		Quiz quiz = quizDao.get(quizId);
-		List<QuizSubject> subjectList = quiz.getQuizSubjects();
-		subjectList.add(subject);
-		updateSubjectsInQuiz(quiz, subjectList);
-	}
-
-	@Override
-	public void insertSubjectBefore(Integer quizId, Integer subjectId, QuizSubject subject) {
-		Quiz quiz = quizDao.get(quizId);
-		List<QuizSubject> newList = new ArrayList<>();
-		for (QuizSubject subjectInDB : quiz.getQuizSubjects()) {
-			if (subjectInDB.getSubjectId().equals(subjectId)) {
-				newList.add(subject);
-			}
-			newList.add(subjectInDB);
-		}
-		if (quiz.getQuizSubjects().size() + 1 == newList.size()) {
-			updateSubjectsInQuiz(quiz, newList);
-		} else {
-			LOGGER.warn("[QuizService]Cannot find subject " + subjectId + " in quiz " + quizId);
-		}
-	}
-
-	@Override
-	public void insertSubjectAfter(Integer quizId, Integer subjectId, QuizSubject subject) {
-		Quiz quiz = quizDao.get(quizId);
-		List<QuizSubject> newList = new ArrayList<>();
-		for (QuizSubject subjectInDB : quiz.getQuizSubjects()) {
-			newList.add(subjectInDB);
-			if (subjectInDB.getSubjectId().equals(subjectId)) {
-				newList.add(subject);
+		Set<QuizSubject> subjectSet = quiz.getQuizSubjects();
+		// maintain the subject order
+		int maxOrder = -1;
+		for (QuizSubject subjectInSet : subjectSet) {
+			if (subjectInSet.getSubjectOrder() > maxOrder) {
+				maxOrder = subjectInSet.getSubjectOrder();
 			}
 		}
-		if (quiz.getQuizSubjects().size() + 1 == newList.size()) {
-			updateSubjectsInQuiz(quiz, newList);
-		} else {
-			LOGGER.warn("[QuizService]Cannot find subject " + subjectId + " in quiz " + quizId);
-		}
-	}
-
-	@Override
-	public void shiftSubjectUp(Integer quizId, Integer subjectId) {
-		Quiz quiz = quizDao.get(quizId);
-		QuizSubject toBeShiftUp = null;
-		boolean found = false;
-		Stack<QuizSubject> newStack = new Stack<>();
-		for (int i = quiz.getQuizSubjects().size() - 1; i > -1; i--) {
-			QuizSubject subjectInDB = quiz.getQuizSubjects().get(i);
-			if (subjectInDB.getSubjectId().equals(subjectId)) {
-				toBeShiftUp = subjectInDB;
-				found = true;
-				continue;
-			}
-			newStack.push(subjectInDB);
-			if (toBeShiftUp != null) {
-				newStack.push(toBeShiftUp);
-				toBeShiftUp = null;
-			}
-		}
-		if (found) {
-			List<QuizSubject> newList = new ArrayList<>();
-			while(!newStack.isEmpty()) {
-				newList.add(newStack.pop());
-			}
-			newStack = null;
-			updateSubjectsInQuiz(quiz, newList);
-		} else {
-			LOGGER.warn("[QuizService]Cannot find subject " + subjectId + " in quiz " + quizId);
-		}
-	}
-
-	@Override
-	public void shiftSubjectDown(Integer quizId, Integer subjectId) {
-		Quiz quiz = quizDao.get(quizId);
-		QuizSubject toBeShiftDown = null;
-		boolean found = false;
-		List<QuizSubject> newList = new ArrayList<>();
-		for (QuizSubject subjectInDB : quiz.getQuizSubjects()) {
-			if (subjectInDB.getSubjectId().equals(subjectId)) {
-				toBeShiftDown = subjectInDB;
-				found = true;
-				continue;
-			}
-			newList.add(subjectInDB);
-			if (toBeShiftDown != null) {
-				newList.add(toBeShiftDown);
-				toBeShiftDown = null;
-			}
-		}
-		if (found) {
-			updateSubjectsInQuiz(quiz, newList);
-		} else {
-			LOGGER.warn("[QuizService]Cannot find subject " + subjectId + " in quiz " + quizId);
-		}
+		subject.setSubjectOrder(maxOrder + 1);
+		subjectSet.add(subject);
+		quizDao.saveOrUpdate(quiz);
 	}
 
 	@Override
 	public void addSubjectsToQuiz(Integer quizId, List<QuizSubject> subjectList) {
 		Quiz quiz = quizDao.get(quizId);
-		List<QuizSubject> subjects = quiz.getQuizSubjects();
-		subjects.addAll(subjectList);
-		updateSubjectsInQuiz(quiz, subjects);
+		Set<QuizSubject> subjectSet = quiz.getQuizSubjects();
+		// maintain the subject order
+		int maxOrder = -1;
+		for (QuizSubject subjectInSet : subjectSet) {
+			if (subjectInSet.getSubjectOrder() > maxOrder) {
+				maxOrder = subjectInSet.getSubjectOrder();
+			}
+		}
+		for (QuizSubject subjectInList : subjectList) {
+			subjectInList.setSubjectOrder(++maxOrder);
+		}
+		subjectSet.addAll(subjectList);
+		quizDao.saveOrUpdate(quiz);
 	}
 
 	@Override
 	public void deleteSubjectFromQuiz(Integer quizId, Integer subjectId) {
-		Quiz quiz = quizDao.get(quizId);
-		List<QuizSubject> subjectList = quiz.getQuizSubjects();
-		QuizSubject toBeDeleted = null;
-		for (QuizSubject subject : subjectList) {
-			if (subject.getSubjectId().equals(subjectId)) {
-				toBeDeleted = subject;
-				break;
+		QuizSubject subject = subjectDao.get(subjectId);
+		if (subject == null) {
+			LOGGER.warn("[QuizService]Cannot delete subject with subjectId " + subjectId + " because it does not exist.");
+			return;
+		}
+		int deleteOrder = subject.getSubjectOrder();
+		
+		// first rearrange other subjects order in the same quiz
+		Quiz quiz = quizDao.load(quizId);
+		Set<QuizSubject> subjectSet = quiz.getQuizSubjects();
+		for (QuizSubject subjectInDB : subjectSet) {
+			if (subjectInDB.getSubjectOrder() > deleteOrder) {
+				subjectInDB.setSubjectOrder(subjectInDB.getSubjectOrder() - 1);
 			}
 		}
-		if (toBeDeleted != null) {
-			subjectList.remove(toBeDeleted);
-			updateSubjectsInQuiz(quiz, subjectList);
-		} else {
-			LOGGER.warn("[QuizService]Cannot find subject " + subjectId + " in quiz " + quizId);
-		}
+		subjectSet.remove(subject);
+		quizDao.saveOrUpdate(quiz);
+		// then delete subject, belonging subjectItems will be deleted automatically because of cascade
+		subjectDao.delete(subjectId);
 	}
 
 	@Override
-	public void updateSubjectsInQuiz(Integer quizId, List<QuizSubject> subjectList) {
-		Quiz quiz = quizDao.load(quizId);
-		updateSubjectsInQuiz(quiz, subjectList);
-	}
-	
-	private void updateSubjectsInQuiz(Quiz quiz, List<QuizSubject> subjectList) {
-		quiz.setQuizSubjects(subjectList);
+	public void insertSubjectAt(Integer quizId, QuizSubject subject, int order) {
+		Quiz quiz = quizDao.get(quizId);
+		Set<QuizSubject> subjectSet = quiz.getQuizSubjects();
+		// maintain the subject order
+		for (QuizSubject subjectInSet : subjectSet) {
+			if (subjectInSet.getSubjectOrder() >= order) {
+				subjectInSet.setSubjectOrder(subjectInSet.getSubjectOrder() + 1);
+			}
+		}
+		subject.setSubjectOrder(order);
+		subjectSet.add(subject);
 		quizDao.saveOrUpdate(quiz);
-		LOGGER.info("[QuizService]Successfully updated subject list in quiz of id " + quiz.getQuizId());
+	}
+
+	@Override
+	public void shiftSubjectUp(Integer quizId, Integer subjectId) {
+		Quiz quiz = quizDao.load(quizId);
+		QuizSubject subjectToShift = subjectDao.load(subjectId);
+		int order = subjectToShift.getSubjectOrder();
+		subjectToShift.setSubjectOrder(--order);
+		for (QuizSubject subject : quiz.getQuizSubjects()) {
+			if (subject.getSubjectOrder().equals(order)) {
+				subject.setSubjectOrder(++order);
+				break;
+			}
+		}
+		quizDao.saveOrUpdate(quiz);
+	}
+
+	@Override
+	public void shiftSubjectDown(Integer quizId, Integer subjectId) {
+		Quiz quiz = quizDao.load(quizId);
+		QuizSubject subjectToShift = subjectDao.load(subjectId);
+		int order = subjectToShift.getSubjectOrder();
+		subjectToShift.setSubjectOrder(++order);
+		for (QuizSubject subject : quiz.getQuizSubjects()) {
+			if (subject.getSubjectOrder().equals(order)) {
+				subject.setSubjectOrder(--order);
+				break;
+			}
+		}
+		quizDao.saveOrUpdate(quiz);
 	}
 
 }

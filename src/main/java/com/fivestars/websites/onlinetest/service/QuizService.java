@@ -40,27 +40,34 @@ public interface QuizService {
 	public void deleteQuiz(Integer quizId);
 	
 	/**
-	 * Add one new subject to a quiz, the position is appended to last
+	 * Add one new subject to a quiz, the order is appended to last
 	 * @param quizId
 	 * @param subject
 	 */
 	public void addSubjectToQuiz(Integer quizId, QuizSubject subject);
 	
 	/**
-	 * Insert a subject at the position before subject specified by subjectId
+	 * Add several subjects to a quiz in bulk, the positions are appended to last.
+	 * The order of new subject will be in accordance with position in list
 	 * @param quizId
-	 * @param subjectId
-	 * @param subject
+	 * @param subjectSet
 	 */
-	public void insertSubjectBefore(Integer quizId, Integer subjectId, QuizSubject subject);
+	public void addSubjectsToQuiz(Integer quizId, List<QuizSubject> subjectList);
 	
 	/**
-	 * Insert a subject at the position after subject specified by subjectId
+	 * Delete a subject from a quiz
 	 * @param quizId
 	 * @param subjectId
-	 * @param subject
 	 */
-	public void insertSubjectAfter(Integer quizId, Integer subjectId, QuizSubject subject);
+	public void deleteSubjectFromQuiz(Integer quizId, Integer subjectId);
+	
+	/**
+	 * Insert a subject at a specified position
+	 * @param quizId
+	 * @param subject
+	 * @param order
+	 */
+	public void insertSubjectAt(Integer quizId, QuizSubject subject, int order);
 	
 	/**
 	 * Shift a subject to a previous position
@@ -75,25 +82,4 @@ public interface QuizService {
 	 * @param subjectId
 	 */
 	public void shiftSubjectDown(Integer quizId, Integer subjectId);
-	
-	/**
-	 * Add several subjects to a quiz in bulk, the positions are appended to last
-	 * @param quizId
-	 * @param subjectList
-	 */
-	public void addSubjectsToQuiz(Integer quizId, List<QuizSubject> subjectList);
-	
-	/**
-	 * Delete a subject from a quiz
-	 * @param quizId
-	 * @param subjectId
-	 */
-	public void deleteSubjectFromQuiz(Integer quizId, Integer subjectId);
-	
-	/**
-	 * Update the subjects in a quiz. Old subjects will be replaced
-	 * @param quizId
-	 * @param subjectList
-	 */
-	public void updateSubjectsInQuiz(Integer quizId, List<QuizSubject> subjectList);
 }

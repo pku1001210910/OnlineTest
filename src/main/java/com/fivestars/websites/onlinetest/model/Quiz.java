@@ -3,9 +3,9 @@ package com.fivestars.websites.onlinetest.model;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -37,13 +37,13 @@ public class Quiz implements java.io.Serializable {
 	private Date submitDate;
 	private Byte repeatable;
 	private Integer status;
-	private List<QuizSubject> quizSubjects = new ArrayList<>();
+	private Set<QuizSubject> quizSubjects = new HashSet<>();
 
 	public Quiz() {
 	}
 
 	public Quiz(String title, String description, Integer category, Byte needCharge, Double price, Date submitDate,
-			Byte repeatable, Integer status, List<QuizSubject> quizSubjects) {
+			Byte repeatable, Integer status, Set<QuizSubject> quizSubjects) {
 		this.title = title;
 		this.description = description;
 		this.category = category;
@@ -141,11 +141,11 @@ public class Quiz implements java.io.Serializable {
 	}
 
 	@OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "quiz")
-	public List<QuizSubject> getQuizSubjects() {
+	public Set<QuizSubject> getQuizSubjects() {
 		return this.quizSubjects;
 	}
 
-	public void setQuizSubjects(List<QuizSubject> quizSubjects) {
+	public void setQuizSubjects(Set<QuizSubject> quizSubjects) {
 		this.quizSubjects = quizSubjects;
 	}
 
