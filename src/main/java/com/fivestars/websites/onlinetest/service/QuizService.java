@@ -74,7 +74,7 @@ public interface QuizService {
 	 * @param quizId
 	 * @param subjectId
 	 */
-	public void shifySubjectDown(Integer quizId, Integer subjectId);
+	public void shiftSubjectDown(Integer quizId, Integer subjectId);
 	
 	/**
 	 * Add several subjects to a quiz in bulk, the positions are appended to last
