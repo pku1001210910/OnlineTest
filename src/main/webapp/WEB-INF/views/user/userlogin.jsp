@@ -15,6 +15,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <meta http-equiv="description" content="This is my page">
 <script language="JavaScript" src="<%=path%>/js/public.js"
 	type="text/javascript"></script>
+	
 <script type="text/javascript">
 	        function reg()
 	        {
@@ -39,6 +40,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	           }
 	           document.userLogin.submit();
 	        }
+	       
 	</script>
 </head>
 
@@ -58,7 +60,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					class="form-control">
 			</div>
 			<button type="submit" class="btn btn-success" onclick="login()">登陆</button>
-			<a class="white underline" href="#" onclick="reg()"> 没有账号？</a>
+			<a data-target="#regModal" data-toggle="modal" class="white underline" href="#"> 没有账号？</a>
 		</form>
 	</s:if>
 	<s:else>

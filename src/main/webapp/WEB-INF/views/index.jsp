@@ -16,10 +16,13 @@
 <link href="<%=path%>/css/bootstrap.min.css" rel="stylesheet">
 <link href="<%=path%>/css/admin/home.css" rel="stylesheet">
 <link href="<%=path%>/css/main.css" rel="stylesheet">
+<link href="<%=path%>/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+<!-- user registration -->
+<link href="<%=path%>/css/reg/form-elements.css" rel="stylesheet">
+<link href="<%=path%>/css/reg/style.css" rel="stylesheet">
 </head>
-
 <body>
-
+	
 	<nav class="navbar bg-primary navbar-fixed-top">
 		<div class="container">
 			<div class="navbar-header">
@@ -75,10 +78,56 @@
 		</footer>
 	</div>
 	<!-- /container -->
-
+	
+	<!-- user registration modal -->
+	<div id="regModal"" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	            <div class="modal-body">
+	                <div class="row">
+	                    <div class="form-box">
+	                        <div class="form-top">
+	                            <div class="form-top-left">
+	                                <h3>用户注册</h3>
+	                                <p>请填写个人详细信息:</p>
+	                            </div>
+	                            <div class="form-top-right">
+	                                <i class="fa fa-lock"></i>
+	                            </div>
+	                        </div>
+	                        <div class="form-bottom">
+	                            <form role="form" action="" method="post" class="login-form">
+	                                <div class="form-group">
+	                                    <input type="text" name="form-username" placeholder="用户名" class="form-username form-control" id="form-username">
+	                                </div>
+	                                <div class="form-group">
+	                                    <input type="password" name="form-password" placeholder="密码" class="form-password form-control" id="form-password">
+	                                </div>
+	                                <div class="form-group">
+	                                    <input type="text" name="form-email" placeholder="Email" class="form-email form-control" id="email">
+	                                </div>
+	                                <div class="form-group">
+	                                    <input type="text" name="form-phone" placeholder="手机号" class="form-phone form-control" id="email">
+	                                </div>
+	                                <div class="form-group">
+	                                    <input type="text" name="form-graduate" placeholder="学校" class="form-graduate form-control" id="email">
+	                                </div>
+	                                <div class="form-group">
+	                                    <input type="text" name="form-major" placeholder="专业" class="form-major form-control" id="email">
+	                                </div>
+	                                <button type="submit" class="btn">提交</button>
+	                            </form>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
 
 	<!-- JavaScript -->
 	<script src="<%=path%>/js/jquery.min.js"></script>
 	<script src="<%=path%>/js/bootstrap.min.js"></script>
+	<script src="<%=path%>/js/reg/reg.js"></script>
 </body>
 </html>
