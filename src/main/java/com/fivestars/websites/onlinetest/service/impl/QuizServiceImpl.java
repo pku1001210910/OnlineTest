@@ -133,7 +133,11 @@ public class QuizServiceImpl implements QuizService {
 	@Override
 	public void shiftSubjectUp(Integer quizId, Integer subjectId) {
 		Quiz quiz = quizDao.load(quizId);
-		QuizSubject subjectToShift = subjectDao.load(subjectId);
+		QuizSubject subjectToShift = subjectDao.get(subjectId);
+		if (subjectToShift == null) {
+			LOGGER.warn("[QuizService]Cannot shift subject with subjectId " + subjectId + " because it does not exist.");
+			return;
+		}
 		int order = subjectToShift.getSubjectOrder();
 		subjectToShift.setSubjectOrder(--order);
 		for (QuizSubject subject : quiz.getQuizSubjects()) {
@@ -148,7 +152,11 @@ public class QuizServiceImpl implements QuizService {
 	@Override
 	public void shiftSubjectDown(Integer quizId, Integer subjectId) {
 		Quiz quiz = quizDao.load(quizId);
-		QuizSubject subjectToShift = subjectDao.load(subjectId);
+		QuizSubject subjectToShift = subjectDao.get(subjectId);
+		if (subjectToShift == null) {
+			LOGGER.warn("[QuizService]Cannot shift subject with subjectId " + subjectId + " because it does not exist.");
+			return;
+		}
 		int order = subjectToShift.getSubjectOrder();
 		subjectToShift.setSubjectOrder(++order);
 		for (QuizSubject subject : quiz.getQuizSubjects()) {
@@ -160,4 +168,14 @@ public class QuizServiceImpl implements QuizService {
 		quizDao.saveOrUpdate(quiz);
 	}
 
+	@Override
+	public void updateQuizSubject(QuizSubject subject) {
+		subjectDao.saveOrUpdate(subject);
+		LOGGER.info("[QuizService]Successfully updated subject of id " + subject.getSubjectId());
+	}
+
+	@Override
+	public QuizSubject loadQuizSubjectById(Integer subjectId) {
+		return subjectDao.get(subjectId);
+	}
 }
