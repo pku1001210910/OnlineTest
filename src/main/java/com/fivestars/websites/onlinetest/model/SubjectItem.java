@@ -7,7 +7,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -27,6 +26,7 @@ public class SubjectItem implements java.io.Serializable {
 	private String choice;
 	private Double score;
 	private Integer nextSubjectId;
+	private Integer itemOrder;
 
 	public SubjectItem() {
 	}
@@ -35,11 +35,12 @@ public class SubjectItem implements java.io.Serializable {
 		this.quizSubject = quizSubject;
 	}
 
-	public SubjectItem(QuizSubject quizSubject, String option, Double score, Integer nextSubjectId) {
+	public SubjectItem(QuizSubject quizSubject, String option, Double score, Integer nextSubjectId, Integer itemOrder) {
 		this.quizSubject = quizSubject;
 		this.choice = option;
 		this.score = score;
 		this.nextSubjectId = nextSubjectId;
+		this.setItemOrder(itemOrder);
 	}
 
 	@Id
@@ -51,10 +52,10 @@ public class SubjectItem implements java.io.Serializable {
 	}
 
 	public void setItemId(Integer itemId) {
-		this.itemId = itemId;
+		this.itemId = itemId; 
 	}
 
-	@ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "subjectId", nullable = false)
 	public QuizSubject getQuizSubject() {
 		return this.quizSubject;
@@ -91,4 +92,12 @@ public class SubjectItem implements java.io.Serializable {
 		this.nextSubjectId = nextSubjectId;
 	}
 
+	@Column(name = "itemOrder")
+	public Integer getItemOrder() {
+		return itemOrder;
+	}
+
+	public void setItemOrder(Integer itemOrder) {
+		this.itemOrder = itemOrder;
+	}
 }
