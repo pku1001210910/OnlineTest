@@ -3,8 +3,4 @@
 <%
 	String path = request.getContextPath();
 %>
-<body>
-	<!-- /container -->
-	users
-</body>
-</html>
+<h2 class="page-header">用户管理</h2>

@@ -30,14 +30,22 @@
           <a class="navbar-brand white" href="#">在线测试平台后台管理系统</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
-        	
+        	<form class="navbar-form navbar-right">
+				<div class="form-group">
+					欢迎您：
+					<s:if test="#session.admin!=null">
+						<s:property value="#session.admin.userName" />
+					</s:if>
+					<a class="white underline left-15" href="<%=path %>/admin/logout.action">安全退出</a>
+				</div>
+			</form>
         </div>
       </div>
     </nav>
 
 	<div class="container-fluid">
 		<div class="row admin-menu">
-			<div class="col-sm-2 col-md-1 sidebar">
+			<div class="col-sm-3 col-md-2 sidebar">
 				<ul class="nav nav-sidebar">
 					<li class="active admin-menu-item" data-target="welcome"><a>欢迎界面</a></li>
 				</ul>
@@ -54,7 +62,7 @@
 					<li class="admin-menu-item" data-target="payment"><a>支付设置</a></li>
 				</ul>
 			</div>
-			<div id="main-content" class="col-sm-10 col-sm-offset-3 col-md-11 col-md-offset-2 main">
+			<div id="main-content" class="col-sm-9 col-sm-offset-2 col-md-10 col-md-offset-2 main">
 			</div>
 		</div>
 	</div>

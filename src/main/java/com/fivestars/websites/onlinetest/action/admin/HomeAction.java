@@ -21,11 +21,6 @@ public class HomeAction{
 	public String welcome() {
 		return ActionSupport.SUCCESS;
 	}
-
-	@Action(value = "users", results = { @Result(name = "success", location = "/WEB-INF/views/admin/mgmt/users.jsp") })
-	public String users() {
-		return ActionSupport.SUCCESS;
-	}
 	
 	@Action(value = "articles", results = { @Result(name = "success", location = "/WEB-INF/views/admin/mgmt/articles.jsp") })
 	public String articles() {

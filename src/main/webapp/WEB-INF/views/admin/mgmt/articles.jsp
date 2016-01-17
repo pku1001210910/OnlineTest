@@ -3,8 +3,4 @@
 <%
 	String path = request.getContextPath();
 %>
-<body>
-	<!-- /container -->
-	articles
-</body>
-</html>
+<h2 class="page-header">文章管理</h2>

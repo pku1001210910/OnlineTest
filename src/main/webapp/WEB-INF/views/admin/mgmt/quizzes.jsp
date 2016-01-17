@@ -3,8 +3,4 @@
 <%
 	String path = request.getContextPath();
 %>
-<body>
-	<!-- /container -->
-	quizzes
-</body>
-</html>
+<h2 class="page-header">测试管理</h2>
