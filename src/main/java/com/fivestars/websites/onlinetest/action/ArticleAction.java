@@ -16,7 +16,7 @@ import com.opensymphony.xwork2.ActionSupport;
 
 import lombok.Data;
 
-@ParentPackage("basePackage")
+@ParentPackage("user")
 @Namespace("/article")
 @Data
 public class ArticleAction {

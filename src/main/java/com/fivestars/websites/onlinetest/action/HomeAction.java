@@ -7,7 +7,7 @@ import org.apache.struts2.convention.annotation.Result;
 
 import com.opensymphony.xwork2.ActionSupport;
 
-@ParentPackage("basePackage")
+@ParentPackage("user")
 @Namespace("/")
 @Result(name="success", location="/WEB-INF/views/index.jsp")
 public class HomeAction {

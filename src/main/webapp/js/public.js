@@ -1,66 +1,46 @@
-/*
- * 打开新窗口 f:链接地址 n:窗口的名称 w:窗口的宽度 h:窗口的高度 s:窗口是否有滚动条，1：有滚动条；0：没有滚动条
- */
+function openWin(f, n, w, h, s) {
+	// sb = s == "1" ? "1" : "0";
+	// l = (screen.width - w) / 2;
+	// t = (screen.height - h) / 2;
+	// sFeatures = "left=" + l + ",top=" + t + ",height=" + h + ",width=" + w
+	// + ",center=1,scrollbars=" + sb
+	// + ",status=0,directories=0,channelmode=0";
+	// openwin = window.open(f, n, sFeatures);
+	// if (!openwin.opener)
+	// openwin.opener = self;
+	// openwin.focus();
+	// return openwin;
+	var result = window.open(f, n, "dialogHeight:" + h + ";dialogWidth:" + w
+			+ ";" + s);
+	if (result == true) {
+		window.location.reload(true);
+	} else {
+		// window.location.reload(true);
+	}
 
-
-
-function openWin(f, n, w, h, s) 
-{
-	//sb = s == "1" ? "1" : "0";
-	//l = (screen.width - w) / 2;
-	//t = (screen.height - h) / 2;
-	//sFeatures = "left=" + l + ",top=" + t + ",height=" + h + ",width=" + w
-			//+ ",center=1,scrollbars=" + sb
-			//+ ",status=0,directories=0,channelmode=0";
-	//openwin = window.open(f, n, sFeatures);
-	//if (!openwin.opener)
-		//openwin.opener = self;
-	//openwin.focus();
-	//return openwin;
-    var result=window.open(f,n,"dialogHeight:"+h+";dialogWidth:"+w+";"+s);
-    if(result==true)
-    {
-    	window.location.reload(true);
-    }
-    else
-    {
-    	//window.location.reload(true);
-    }
-    
 }
-
-
-
-
 
 /*
  * 删除记录
  */
-function del(url, info) 
-{
-	//if (openDeleteDialog(url, info)) 
-	//{
-		//window.location.reload(true);
-	//}
-	 if (confirm(info))
-     {
-	     var result=window.open(url,"window123","dialogHeight:234px;dialogWidth:271px;resizable:no;help:no;status:no;scroll:no");
-	     if(result==true)
-	     {
-	     	 window.location.reload(true);
-	     }
-	     else
-	     {
-	     	
-	     }
-     }
-     else
-     {
-     	
-     }
+function del(url, info) {
+	// if (openDeleteDialog(url, info))
+	// {
+	// window.location.reload(true);
+	// }
+	if (confirm(info)) {
+		var result = window
+				.open(url, "window123",
+						"dialogHeight:234px;dialogWidth:271px;resizable:no;help:no;status:no;scroll:no");
+		if (result == true) {
+			window.location.reload(true);
+		} else {
+
+		}
+	} else {
+
+	}
 }
-
-
 
 /*
  * 校验checkbox
@@ -103,8 +83,6 @@ function makePages(maxPage, selectedPage, selectName) {
 		}
 	}
 }
-
-
 
 /*
  * 替换字符串
@@ -157,9 +135,6 @@ function Trim(str) {
 	return RTrim(LTrim(str));
 }
 
-
-
-
 /*
  * 
  */
@@ -192,8 +167,6 @@ function exeValidate(exePath) {
 	}
 }
 
-
-
 /*
  * 显示
  */
@@ -225,8 +198,6 @@ function checkNumber(name, TempS) {
 		}
 	}
 }
-
-
 
 /*
  * 是否有非法字符
@@ -264,8 +235,6 @@ function fucCheckNUM(NUM) {
 	return true;
 }
 
-
-
 /*
  * 
  */
@@ -300,8 +269,6 @@ function chkElements(name, errMsg, max_length, lengthMsg) {
 	return true;
 }
 
-
-
 /*
  * 校验空字符串
  */
@@ -315,11 +282,8 @@ function checkNullStr(name, msg) {
 	return true;
 }
 
-
-
-
 /*
- *  显示日期控jian
+ * 显示日期控jian
  */
 function GetDate(nText, para) {
 	var v_url = para == "1" ? "./common/data.html" : "../../common/data.html";
@@ -333,8 +297,6 @@ function GetDate(nText, para) {
 		n.value = reVal;
 	}
 }
-
-
 
 /*
  * 按比例缩小图片
@@ -368,8 +330,6 @@ function DrawImage(ImgD, iwidth, iheight) {
 	ImgD.style.visibility = "visible";
 }
 
-
-
 /*
  * 回车键转为Tab键
  */
@@ -394,15 +354,13 @@ function objectEval(text) {
 	return eval(text)[0];
 }
 
-
-
 /*
  * 打开领导查询页面 action - 查询的Action method - 调用的方法 title - 标题message name -
  * 员工选择域的name
  */
 function openLeaderQuery(action, method, title, name) {
 	openWin("../../common/selectStaff.jsp?action=" + action + "&method="
-					+ method + "&title=" + title + "&name=" + name,
+			+ method + "&title=" + title + "&name=" + name,
 			"public_leader_find_page", "400", "150");
 }
 
@@ -451,14 +409,12 @@ function chgColor2() {
 	}
 }
 
-
-
 /*
  * 添加页面载入后触发的shijian
  */
 function addLoadEvent(func) {
 	var oldonload = window.onload;
-	if (typeof(window.onload) != "function") {
+	if (typeof (window.onload) != "function") {
 		window.onload = func;
 	} else {
 		window.onload = function() {
@@ -467,8 +423,6 @@ function addLoadEvent(func) {
 		}
 	}
 }
-
-
 
 // adsName:名称,adsUrl:地址,sTime:时间(小时) add by wujie 2005.12.12
 function PopAds(adsName, adsUrl, sTime, number, w, h, s) {
