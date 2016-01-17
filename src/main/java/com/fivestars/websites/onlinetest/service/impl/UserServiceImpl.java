@@ -5,11 +5,13 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.fivestars.websites.onlinetest.dao.UserDAO;
 import com.fivestars.websites.onlinetest.model.User;
 import com.fivestars.websites.onlinetest.service.UserService;
 
+@Transactional
 @Service("userService")
 public class UserServiceImpl implements UserService {
 	@Autowired
@@ -41,7 +43,7 @@ public class UserServiceImpl implements UserService {
 			return null;
 		}
 		User existUser = userDao.load(userName);
-		// TODO ¼ÓÃÜ/½âÃÜ ÃÜÂë
+		// TODO ï¿½ï¿½ï¿½ï¿½/ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		if(existUser.getPassword().equals(pwd)) {
 			return existUser;
 		} else {
