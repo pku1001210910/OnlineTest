@@ -2,11 +2,15 @@ package com.fivestars.websites.onlinetest.model;
 // Generated Jan 15, 2016 12:20:03 AM by Hibernate Tools 4.3.1.Final
 
 import java.util.Date;
+
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -60,6 +64,8 @@ public class Article implements java.io.Serializable {
 	}
 
 	@Column(name = "content", length = 65535)
+	@Lob
+	@Basic(fetch = FetchType.LAZY)
 	public String getContent() {
 		return this.content;
 	}

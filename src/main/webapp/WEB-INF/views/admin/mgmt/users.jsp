@@ -27,6 +27,7 @@ $('#userlist').jsGrid({
 	data: userlist,
 	height: 'auto',
     width: '95%',
+    
     paging: true,
     pageIndex: 1,
     pageSize: 13,
@@ -39,13 +40,19 @@ $('#userlist').jsGrid({
     pageNavigatorNextText: '...',
     pageNavigatorPrevText: '...',
     
+    confirmDeleting: true,
+    deleteConfirm: '确定要删除?',
+    
+    noDataContent: '找不到用户',
+    
    	fields:[
    		{name:'userName', title:'用户名', align:'right'},
    		{name:'email', title:'邮箱', align:'right'},
    		{name:'phone', title:'电话', align:'right'},
    		{name:'graduate', title:'学校', align:'right'},
    		{name:'major', title:'专业',align:'right'},		
-   		{name:'background', title:'背景', align:'right'}
+   		{name:'background', title:'背景', align:'right'},
+   		{type: "control"}
    	],
 });
 

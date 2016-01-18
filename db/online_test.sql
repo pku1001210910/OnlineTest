@@ -35,6 +35,16 @@ CREATE TABLE `article` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `article`
+--
+
+LOCK TABLES `article` WRITE;
+/*!40000 ALTER TABLE `article` DISABLE KEYS */;
+INSERT INTO `article` VALUES (1,'测试公告测试公告测试公告测试告测','测试公告测试公告测试公告测试告测','2012-04-18 12:21:28',NULL,NULL),(2,'222222222222222222222222','1111111111111111111111111111111111','2012-04-18 12:21:36',NULL,NULL);
+/*!40000 ALTER TABLE `article` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `feedback`
 --
 
