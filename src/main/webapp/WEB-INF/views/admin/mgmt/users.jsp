@@ -12,11 +12,15 @@
   </button>
   <ul class="dropdown-menu">
     <li><a id="export_csv" href="#">csv</a></li>
+    <li><a id="export_excel" href="#">excel</a></li>
   </ul>
 </div>
-
 <div id='userlist'></div>
 
+
+<!-- JavaScript -->
+<script src='<%=path%>/js/alasql.min.js'></script>
+<script src='<%=path%>/js/xlsx.core.min.js'></script>
 <script>
 var userlist = <%=users%>;
 $('#userlist').jsGrid({
@@ -46,20 +50,16 @@ $('#userlist').jsGrid({
 });
 
 $('#export_csv').on('click', function() {
-	// prepare data
-	var row = ['用户名', '邮箱', '电话', '学校', '专业', '背景'];
-	var csvContent = 'data:text/csv;charset=UTF-8,' + row.join(',') + "\n";
+	var rows = [];
 	for(var i = 0; i < userlist.length; i++) {
 		var user = userlist[i];
-		row = [user.userName, user.email, user.phone, user.graduate, user.major, user.background];
-		csvContent += row.join(",") + "\n";
+		rows.push([user.userName, user.email, user.phone, user.graduate, user.major, user.background]);
 	}
 	
-	// start to download
-	var encodedUri = encodeURI(csvContent);
-	var link = document.createElement("a");
-	link.setAttribute("href", encodedUri);
-	link.setAttribute("download", "all_users.csv");
-	link.click();
+	alasql("SELECT * INTO CSV('all_users.csv') FROM ?",[rows]);
+});
+
+$('#export_excel').on('click', function() {
+	alasql("SELECT * INTO XLSX('all_users.xlsx',{headers:true}) FROM ? ",[userlist]);
 });
 </script>
