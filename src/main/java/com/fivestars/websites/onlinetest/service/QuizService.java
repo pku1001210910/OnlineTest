@@ -82,4 +82,16 @@ public interface QuizService {
 	 * @param subjectId
 	 */
 	public void shiftSubjectDown(Integer quizId, Integer subjectId);
+	
+	/**
+	 * Update a subject
+	 * @param subject
+	 */
+	public void updateQuizSubject(QuizSubject subject);
+	
+	/**
+	 * Load a subject by subjectId
+	 * @param subjectId
+	 */
+	public QuizSubject loadQuizSubjectById(Integer subjectId);
 }
