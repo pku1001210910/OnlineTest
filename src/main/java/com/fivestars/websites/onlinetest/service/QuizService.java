@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.fivestars.websites.onlinetest.model.Quiz;
 import com.fivestars.websites.onlinetest.model.QuizSubject;
+import com.fivestars.websites.onlinetest.model.SubjectItem;
 
 public interface QuizService {
 
@@ -50,7 +51,7 @@ public interface QuizService {
 	 * Add several subjects to a quiz in bulk, the positions are appended to last.
 	 * The order of new subject will be in accordance with position in list
 	 * @param quizId
-	 * @param subjectSet
+	 * @param subjectList
 	 */
 	public void addSubjectsToQuiz(Integer quizId, List<QuizSubject> subjectList);
 	
@@ -94,4 +95,66 @@ public interface QuizService {
 	 * @param subjectId
 	 */
 	public QuizSubject loadQuizSubjectById(Integer subjectId);
+	
+	/**
+	 * Load all subjects
+	 * @return
+	 */
+	public List<QuizSubject> loadAllSubjects();
+	
+	/**
+	 * Add one new item to a subject, the order is appended to last
+	 * @param subjectId
+	 * @param item
+	 */
+	public void addItemToSubject(Integer subjectId, SubjectItem item);
+	
+	/**
+	 * Add several items to a subject in bulk, the positions are appended to last.
+	 * The order of new items will be in accordance with position in list
+	 * @param quizId
+	 * @param subjectSet
+	 */
+	public void addItemsToQuiz(Integer subjectId, List<SubjectItem> items);
+	
+	/**
+	 * Delete an item from subject
+	 * @param subjectId
+	 * @param itemId
+	 */
+	public void deleteItemFromSubject(Integer subjectId, Integer itemId);
+	
+	/**
+	 * Insert an item at a specified position
+	 * @param subjectId
+	 * @param item
+	 * @param order
+	 */
+	public void insertItemAt(Integer subjectId, SubjectItem item, int order);
+	
+	/**
+	 * Shift an item to a previous position
+	 * @param quizId
+	 * @param subjectId
+	 */
+	public void shiftItemUp(Integer subjectId, Integer itemId);
+	
+	/**
+	 * Shift an item to a latter position 
+	 * @param quizId
+	 * @param subjectId
+	 */
+	public void shiftItemDown(Integer subjectId, Integer itemId);
+	
+	/**
+	 * Load a item by itemId
+	 * @param itemId
+	 */
+	public SubjectItem loadSubjectItemById(Integer itemId);
+	
+	/**
+	 * Update an item
+	 * @param item
+	 */
+	public void updateSubjectItem(SubjectItem item);
 }

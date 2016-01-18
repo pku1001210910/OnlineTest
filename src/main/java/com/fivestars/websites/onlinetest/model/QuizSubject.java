@@ -3,6 +3,7 @@ package com.fivestars.websites.onlinetest.model;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -23,7 +24,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "quiz_subject", catalog = "online_test")
-public class QuizSubject implements java.io.Serializable {
+public class QuizSubject implements Serializable, Comparable<QuizSubject> {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -111,13 +112,18 @@ public class QuizSubject implements java.io.Serializable {
 		this.question = question;
 	}
 
-	@OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, mappedBy = "quizSubject")
+	@OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "quizSubject")
 	public Set<SubjectItem> getSubjectItems() {
 		return this.subjectItems;
 	}
 
 	public void setSubjectItems(Set<SubjectItem> subjectItems) {
 		this.subjectItems = subjectItems;
+	}
+	
+	@Override
+	public int compareTo(QuizSubject o) {
+		return this.getSubjectOrder() - o.getSubjectOrder();
 	}
 
 }

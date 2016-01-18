@@ -2,6 +2,7 @@ package com.fivestars.websites.onlinetest.service.test;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
@@ -35,6 +36,38 @@ public class QuizServiceTest {
     	context = new ClassPathXmlApplicationContext("applicationContext.xml");
     	quizService = (QuizService) context.getBean("quizService");
     }
+	
+	@Test
+	public void testAddDeleteItem() {
+		Quiz quiz = prepareQuiz();
+		Integer quizId = quizService.createQuiz(quiz);
+		Quiz quizInDB = quizService.loadQuizById(quizId);
+		QuizSubject subject = quizInDB.getQuizSubjects().iterator().next();
+		assertThat(subject.getSubjectItems().size(), is(4));
+		// test add item
+		Integer subjectId = subject.getSubjectId();
+		SubjectItem item = prepareItem(subject);
+		quizService.addItemToSubject(subjectId, item);
+		QuizSubject subjectInDB = quizService.loadQuizSubjectById(subjectId);
+		assertThat(subjectInDB.getSubjectItems().size(), is(5));
+		
+		SubjectItem itemInDB = null;
+		for (SubjectItem itemInSet : subjectInDB.getSubjectItems()) {
+			if (itemInSet.getChoice().equals("碗里")) {
+				itemInDB = itemInSet;
+				break;
+			}
+		}
+		assertNotNull(itemInDB);
+		Integer itemId = itemInDB.getItemId();
+		// test delete item
+		quizService.deleteItemFromSubject(subjectId, itemId);
+		subjectInDB = quizService.loadQuizSubjectById(subjectId);
+		assertThat(subjectInDB.getSubjectItems().size(), is(4));
+		assertNull(quizService.loadSubjectItemById(itemId));
+		
+		quizService.deleteQuiz(quizId);
+	}
 	
 	@Test
 	public void testAddDeleteSubject() {
@@ -75,6 +108,39 @@ public class QuizServiceTest {
 	}
 	
 	@Test
+	public void testShiftItem() {
+		Quiz quiz = prepareQuiz();
+		Integer quizId = quizService.createQuiz(quiz);
+		Quiz quizInDB = quizService.loadQuizById(quizId);
+		QuizSubject subject = quizInDB.getQuizSubjects().iterator().next();
+		Integer subjectId = subject.getSubjectId();
+		Set<SubjectItem> itemSet = subject.getSubjectItems();
+		Integer firstItemId = null;
+		Integer secondItemId = null;
+		for (SubjectItem item : itemSet) {
+			if (item.getItemOrder().equals(1)) {
+				firstItemId = item.getItemId();
+			} else if (item.getItemOrder().equals(2)) {
+				secondItemId = item.getItemId();
+			}
+		}
+		// test shift up
+		quizService.shiftItemUp(subjectId, secondItemId);
+		SubjectItem firstItem = quizService.loadSubjectItemById(firstItemId);
+		SubjectItem secondItem = quizService.loadSubjectItemById(secondItemId);
+		assertThat(firstItem.getItemOrder(), is(2));
+		assertThat(secondItem.getItemOrder(), is(1));
+		// test shift down
+		quizService.shiftItemDown(subjectId, secondItemId);
+		firstItem = quizService.loadSubjectItemById(firstItemId);
+		secondItem = quizService.loadSubjectItemById(secondItemId);
+		assertThat(firstItem.getItemOrder(), is(1));
+		assertThat(secondItem.getItemOrder(), is(2));
+		
+		quizService.deleteQuiz(quizId);;
+	}
+	
+	@Test
 	public void testShiftSubject() {
 		Quiz quiz = prepareQuiz();
 		Integer quizId = quizService.createQuiz(quiz);
@@ -110,6 +176,26 @@ public class QuizServiceTest {
 				assertThat(subject.getSubjectOrder(), equalTo(1));
 			} else {
 				assertThat(subject.getSubjectOrder(), equalTo(0));
+			}
+		}
+		
+		quizService.deleteQuiz(quizId);
+	}
+	
+	@Test
+	public void testInsertItem() {
+		Quiz quiz = prepareQuiz();
+		Integer quizId = quizService.createQuiz(quiz);
+		Quiz quizInDB = quizService.loadQuizById(quizId);
+		QuizSubject subject = quizInDB.getQuizSubjects().iterator().next();
+		Integer subjectId = subject.getSubjectId();
+		SubjectItem newItem = prepareItem(subject);
+		quizService.insertItemAt(subjectId, newItem, 1);
+		QuizSubject subjectInDB = quizService.loadQuizSubjectById(subjectId);
+		for (SubjectItem itemInDB : subjectInDB.getSubjectItems()) {
+			if (itemInDB.getChoice().equals("碗里")) {
+				assertThat(itemInDB.getItemOrder(), is(1));
+				assertNotNull(itemInDB.getItemId());
 			}
 		}
 		
@@ -159,6 +245,16 @@ public class QuizServiceTest {
 		
 		quizService.deleteQuiz(quizId);
 		assertNull(quizService.loadQuizById(quizId));
+	}
+	
+	private SubjectItem prepareItem(QuizSubject subject) {
+		SubjectItem item = new SubjectItem();
+		item.setQuizSubject(subject);
+		item.setChoice("碗里");
+		item.setScore(new Double(50));
+		item.setNextSubjectId(null);
+		item.setItemOrder(5);
+		return item;
 	}
 	
 	private QuizSubject prepareSubject(Quiz quiz) {
