@@ -47,13 +47,14 @@ public class UserAction {
 			return "successAddUser";
 		}
 	}
-
+	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Action(value = "userLogin", results = { @Result(name = "succeed", location = "/WEB-INF/views/index.jsp") })
 	public String userLogin() {
 		User user = userService.loadByNameAndPwd(userName, userPw);
 		if (user == null) {
-			ServletActionContext.getRequest().setAttribute("error", "用户名或密码错误");
+			// TODO set request Attribute. This one would cause mvn install failure
+			// ServletActionContext.getRequest().setAttribute("error", "用户名或密码错误");
 		} else {
 			Map session = ServletActionContext.getContext().getSession();
 			session.put("user", user);

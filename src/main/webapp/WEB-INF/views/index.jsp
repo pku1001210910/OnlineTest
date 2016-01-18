@@ -104,18 +104,22 @@
 	                                    <input type="password" name="form-password" placeholder="密码" class="form-password form-control" id="form-password">
 	                                </div>
 	                                <div class="form-group">
-	                                    <input type="text" name="form-email" placeholder="Email" class="form-email form-control" id="email">
+	                                    <input type="password" name="form-password-confirm" placeholder="密码确认" class="form-password form-control" id="form-password-confirm">
 	                                </div>
 	                                <div class="form-group">
-	                                    <input type="text" name="form-phone" placeholder="手机号" class="form-phone form-control" id="email">
+	                                    <input type="text" name="form-email" placeholder="Email" class="form-email form-control" id="form-email">
 	                                </div>
 	                                <div class="form-group">
-	                                    <input type="text" name="form-graduate" placeholder="学校" class="form-graduate form-control" id="email">
+	                                    <input type="text" name="form-phone" placeholder="手机号" class="form-phone form-control" id="form-phone">
 	                                </div>
 	                                <div class="form-group">
-	                                    <input type="text" name="form-major" placeholder="专业" class="form-major form-control" id="email">
+	                                    <input type="text" name="form-graduate" placeholder="学校" class="form-graduate form-control" id="form-graduate">
+	                                </div>
+	                                <div class="form-group">
+	                                    <input type="text" name="form-major" placeholder="专业" class="form-major form-control" id="form-major">
 	                                </div>
 	                                <button type="submit" class="btn">提交</button>
+	                                <span class="error-msg-container hide"><i class="fa fa-exclamation-circle"></i><span class='error-msg-content'> 邮箱或手机号格式不正确</span></span>
 	                            </form>
 	                        </div>
 	                    </div>

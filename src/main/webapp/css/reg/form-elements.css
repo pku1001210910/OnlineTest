@@ -76,3 +76,16 @@
 .modal-content button.btn:focus { outline: 0; opacity: 0.6; background: #4aaf51; color: #fff; }
 
 .modal-content button.btn:active:focus, button.btn.active:focus { outline: 0; opacity: 0.6; background: #4aaf51; color: #fff; }
+
+.modal-content .error-msg-container {
+	color: #ff0000;
+}
+
+.modal-content .error-msg-container.hide {
+	display: none;
+}
+
+.modal-content .error-msg-container i {
+	margin-top: 15px;
+	margin-right: 5px;
+}
