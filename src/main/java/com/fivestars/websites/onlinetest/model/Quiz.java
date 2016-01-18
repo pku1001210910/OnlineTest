@@ -148,5 +148,4 @@ public class Quiz implements java.io.Serializable {
 	public void setQuizSubjects(Set<QuizSubject> quizSubjects) {
 		this.quizSubjects = quizSubjects;
 	}
-
 }

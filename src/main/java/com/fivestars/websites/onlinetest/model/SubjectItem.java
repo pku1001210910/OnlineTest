@@ -1,12 +1,14 @@
 package com.fivestars.websites.onlinetest.model;
 // Generated Jan 15, 2016 12:20:03 AM by Hibernate Tools 4.3.1.Final
 
+import static javax.persistence.GenerationType.IDENTITY;
+
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import static javax.persistence.GenerationType.IDENTITY;
-
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -17,7 +19,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "subject_item", catalog = "online_test")
-public class SubjectItem implements java.io.Serializable {
+public class SubjectItem implements Serializable, Comparable<SubjectItem> {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -99,5 +101,10 @@ public class SubjectItem implements java.io.Serializable {
 
 	public void setItemOrder(Integer itemOrder) {
 		this.itemOrder = itemOrder;
+	}
+
+	@Override
+	public int compareTo(SubjectItem o) {
+		return this.getItemOrder() - o.getItemOrder();
 	}
 }

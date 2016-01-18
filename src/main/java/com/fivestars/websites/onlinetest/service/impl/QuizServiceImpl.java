@@ -14,6 +14,7 @@ import com.fivestars.websites.onlinetest.dao.QuizSubjectDAO;
 import com.fivestars.websites.onlinetest.dao.SubjectItemDAO;
 import com.fivestars.websites.onlinetest.model.Quiz;
 import com.fivestars.websites.onlinetest.model.QuizSubject;
+import com.fivestars.websites.onlinetest.model.SubjectItem;
 import com.fivestars.websites.onlinetest.service.QuizService;
 
 @Transactional
@@ -141,7 +142,7 @@ public class QuizServiceImpl implements QuizService {
 		int order = subjectToShift.getSubjectOrder();
 		subjectToShift.setSubjectOrder(--order);
 		for (QuizSubject subject : quiz.getQuizSubjects()) {
-			if (subject.getSubjectOrder().equals(order)) {
+			if (subject.getSubjectOrder().equals(order) && !subject.getSubjectId().equals(subjectId)) {
 				subject.setSubjectOrder(++order);
 				break;
 			}
@@ -160,7 +161,7 @@ public class QuizServiceImpl implements QuizService {
 		int order = subjectToShift.getSubjectOrder();
 		subjectToShift.setSubjectOrder(++order);
 		for (QuizSubject subject : quiz.getQuizSubjects()) {
-			if (subject.getSubjectOrder().equals(order)) {
+			if (subject.getSubjectOrder().equals(order)  && !subject.getSubjectId().equals(subjectId)) {
 				subject.setSubjectOrder(--order);
 				break;
 			}
@@ -178,4 +179,131 @@ public class QuizServiceImpl implements QuizService {
 	public QuizSubject loadQuizSubjectById(Integer subjectId) {
 		return subjectDao.get(subjectId);
 	}
+
+	@Override
+	public List<QuizSubject> loadAllSubjects() {
+		return subjectDao.listAll();
+	}
+
+	@Override
+	public void addItemToSubject(Integer subjectId, SubjectItem item) {
+		QuizSubject subject = subjectDao.get(subjectId);
+		Set<SubjectItem> itemSet = subject.getSubjectItems();
+		// maintain the item order
+		int maxOrder = -1;
+		for (SubjectItem itemInSet : itemSet) {
+			if (itemInSet.getItemOrder() > maxOrder) {
+				maxOrder = itemInSet.getItemOrder();
+			}
+		}
+		item.setItemOrder(maxOrder + 1);
+		itemSet.add(item);
+		subjectDao.saveOrUpdate(subject);
+	}
+
+	@Override
+	public void addItemsToQuiz(Integer subjectId, List<SubjectItem> items) {
+		QuizSubject subject = subjectDao.get(subjectId);
+		Set<SubjectItem> itemSet = subject.getSubjectItems();
+		// maintain the item order
+		int maxOrder = -1;
+		for (SubjectItem itemInSet : itemSet) {
+			if (itemInSet.getItemOrder() > maxOrder) {
+				maxOrder = itemInSet.getItemOrder();
+			}
+		} 
+		for (SubjectItem itemInList : items) {
+			itemInList.setItemOrder(++maxOrder);
+		}
+		itemSet.addAll(items);
+		subjectDao.saveOrUpdate(subject);
+	}
+
+	@Override
+	public void deleteItemFromSubject(Integer subjectId, Integer itemId) {
+		SubjectItem item = itemDao.get(itemId);
+		if (item == null) {
+			LOGGER.warn("[QuizService]Cannot delete item with itemId " + itemId + " because it does not exist.");
+			return;
+		}
+		int deleteOrder = item.getItemOrder();
+		
+		// first rearrange other items order in the same subject
+		QuizSubject subject = subjectDao.load(subjectId);
+		Set<SubjectItem> itemSet = subject.getSubjectItems();
+		for (SubjectItem itemInDB : itemSet) {
+			if (itemInDB.getItemOrder() > deleteOrder) {
+				itemInDB.setItemOrder(itemInDB.getItemOrder() - 1);
+			}
+		}
+		itemSet.remove(item);
+		subjectDao.saveOrUpdate(subject);
+		// then delete item
+		itemDao.delete(itemId);
+	}
+
+	@Override
+	public void insertItemAt(Integer subjectId, SubjectItem item, int order) {
+		QuizSubject subject = subjectDao.get(subjectId);
+		Set<SubjectItem> itemSet = subject.getSubjectItems();
+		// maintain the item order
+		for (SubjectItem itemInSet : itemSet) {
+			if (itemInSet.getItemOrder() >= order) {
+				itemInSet.setItemOrder(itemInSet.getItemOrder() + 1);
+			}
+		}
+		item.setItemOrder(order);
+		itemSet.add(item);
+		subjectDao.saveOrUpdate(subject);
+	}
+
+	@Override
+	public void shiftItemUp(Integer subjectId, Integer itemId) {
+		QuizSubject subject = subjectDao.load(subjectId);
+		SubjectItem itemToShift = itemDao.load(itemId);
+		if (itemToShift == null) {
+			LOGGER.warn("[QuizService]Cannot shift item with itemId " + itemId + " because it does not exist.");
+			return;
+		}
+		int order = itemToShift.getItemOrder();
+		for (SubjectItem item : subject.getSubjectItems()) {
+			if (item.getItemOrder().equals(order - 1)) {
+				item.setItemOrder(order);
+				break;
+			}
+		}
+		itemToShift.setItemOrder(order - 1);
+		subjectDao.saveOrUpdate(subject);
+	}
+
+	@Override
+	public void shiftItemDown(Integer subjectId, Integer itemId) {
+		QuizSubject subject = subjectDao.load(subjectId);
+		SubjectItem itemToShift = itemDao.load(itemId);
+		if (itemToShift == null) {
+			LOGGER.warn("[QuizService]Cannot shift item with itemId " + itemId + " because it does not exist.");
+			return;
+		}
+		int order = itemToShift.getItemOrder();
+		for (SubjectItem item : subject.getSubjectItems()) {
+			if (item.getItemOrder().equals(order + 1)) {
+				item.setItemOrder(order);
+				break;
+			}
+		}
+		itemToShift.setItemOrder(order + 1);
+		subjectDao.saveOrUpdate(subject);
+	}
+
+	@Override
+	public SubjectItem loadSubjectItemById(Integer itemId) {
+		return itemDao.get(itemId);
+	}
+
+	@Override
+	public void updateSubjectItem(SubjectItem item) {
+		itemDao.saveOrUpdate(item);
+		LOGGER.info("[QuizService]Successfully updated item of id " + item.getItemId());
+	}
+	
 }
