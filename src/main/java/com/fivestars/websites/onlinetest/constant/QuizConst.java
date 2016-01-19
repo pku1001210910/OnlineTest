@@ -19,4 +19,8 @@ public class QuizConst {
 	// quiz repeatable
 	public static final byte REPEATABLE_FALSE = 0;
 	public static final byte REPEATABLE_TRUE = 1;
+	
+	// user owns quiz expired
+	public static final byte EXPIRED_FALSE = 0;
+	public static final byte EXPIRED_TRUE = 1;
 }

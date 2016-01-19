@@ -2,6 +2,7 @@ package com.fivestars.websites.onlinetest.service;
 
 import java.util.List;
 
+import com.fivestars.websites.onlinetest.model.QuizOwnership;
 import com.fivestars.websites.onlinetest.model.UserAnswer;
 import com.fivestars.websites.onlinetest.model.UserQuiz;
 
@@ -60,4 +61,24 @@ public interface UserQuizService {
 	 * @param score
 	 */
 	public void gradeUserAnswer(Integer answerId, Double score);
+	
+	/**
+	 * grant user ownership of a quiz
+	 * @param userName
+	 * @param quizId
+	 */
+	public Integer addUserQuizOwnership(QuizOwnership ownership);
+	
+	/**
+	 * delete user ownership of a quiz
+	 * @param ownershipId
+	 */
+	public void deleteUserQuizOwnership(Integer ownershipId);
+	
+	/**
+	 * Check if user owns a quiz
+	 * @param quizId
+	 * @param userName
+	 */
+	public boolean isUserOwnQuiz(Integer quizId, String userName);
 }
