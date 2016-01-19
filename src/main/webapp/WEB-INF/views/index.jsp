@@ -15,24 +15,31 @@
 
 <!-- core CSS -->
 <link href="<%=path%>/css/bootstrap.min.css" rel="stylesheet">
+<link href="<%=path%>/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 <link href="<%=path%>/css/admin/home.css" rel="stylesheet">
 <link href="<%=path%>/css/main.css" rel="stylesheet">
-<link href="<%=path%>/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+
 <!-- user registration -->
 <link href="<%=path%>/css/reg/form-elements.css" rel="stylesheet">
 <link href="<%=path%>/css/reg/style.css" rel="stylesheet">
+
+<!-- support ie8 & ie9 & ie10 -->
+<script src="<%=path%>/js/html5shiv.js" type="text/javascript"></script>
+<script src="<%=path%>/js/respond.min.js" type="text/javascript"></script>
+<script src="<%=path%>/js/ie10-viewport-bug-workaround.js" type="text/javascript"></script>
+<script src="<%=path%>/js/ie-elements.js" type="text/javascript"></script>
 </head>
 <body>
-	
 	<nav class="navbar bg-primary navbar-fixed-top">
 		<div class="container">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle collapsed"
 					data-toggle="collapse" data-target="#navbar" aria-expanded="false"
 					aria-controls="navbar">
-					<span class="sr-only">Toggle navigation</span> <span
-						class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
+					<span class="sr-only">Toggle navigation</span> 
+					<span class="icon-bar"></span> 
+					<span class="icon-bar"></span> 
+					<span class="icon-bar"></span>
 				</button>
 				<a class="navbar-brand white" href="#"> 北京大学心理系 </a>
 			</div>
