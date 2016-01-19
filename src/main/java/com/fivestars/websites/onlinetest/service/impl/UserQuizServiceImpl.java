@@ -11,8 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fivestars.websites.onlinetest.constant.QuizConst;
+import com.fivestars.websites.onlinetest.dao.QuizOwnershipDAO;
 import com.fivestars.websites.onlinetest.dao.UserAnswerDAO;
 import com.fivestars.websites.onlinetest.dao.UserQuizDAO;
+import com.fivestars.websites.onlinetest.model.QuizOwnership;
 import com.fivestars.websites.onlinetest.model.UserAnswer;
 import com.fivestars.websites.onlinetest.model.UserQuiz;
 import com.fivestars.websites.onlinetest.service.UserQuizService;
@@ -27,6 +30,8 @@ public class UserQuizServiceImpl implements UserQuizService {
 	private UserQuizDAO userQuizDao;
 	@Autowired
 	private UserAnswerDAO userAnswerDao;
+	@Autowired
+	private QuizOwnershipDAO ownershipDao;
 	
 	@Override
 	public List<UserQuiz> getUserParticipatedQuiz(String userName) {
@@ -90,6 +95,32 @@ public class UserQuizServiceImpl implements UserQuizService {
 		UserAnswer answer = userAnswerDao.get(answerId);
 		answer.setScore(score);
 		updateUserAnswer(answer);
+	}
+
+	@Override
+	public Integer addUserQuizOwnership(QuizOwnership ownership) {
+		Integer ownershipId = ownershipDao.save(ownership);
+		LOGGER.info("[UserQuizService]Successfully added user quiz ownership");
+		return ownershipId;
+	}
+
+	@Override
+	public void deleteUserQuizOwnership(Integer ownershipId) {
+		ownershipDao.delete(ownershipId);
+		LOGGER.info("[UserQuizService]Successfully deleted user quiz ownership");
+	}
+
+	@Override
+	public boolean isUserOwnQuiz(Integer quizId, String userName) {
+		Criterion quizIdEq = Restrictions.eq("quizId", quizId);
+		Criterion userNameEq = Restrictions.eq("userName", userName);
+		List<QuizOwnership> ownership = ownershipDao.listSome(new Criterion[] {quizIdEq, userNameEq});
+		if (ownership.size() == 0) {
+			return false;
+		} else {
+			QuizOwnership own = ownership.get(0);
+			return own.getExpired() == QuizConst.EXPIRED_FALSE;
+		}
 	}
 
 }

@@ -21,7 +21,7 @@ public class QuizOwnership implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private Integer ownershipId;
-	private String username;
+	private String userName;
 	private Integer quizId;
 	private Byte expired;
 	private Date buyDate;
@@ -29,13 +29,13 @@ public class QuizOwnership implements java.io.Serializable {
 	public QuizOwnership() {
 	}
 
-	public QuizOwnership(String username, Integer quizId) {
-		this.username = username;
+	public QuizOwnership(String userName, Integer quizId) {
+		this.userName = userName;
 		this.quizId = quizId;
 	}
 
-	public QuizOwnership(String username, Integer quizId, Byte expired, Date buyDate) {
-		this.username = username;
+	public QuizOwnership(String userName, Integer quizId, Byte expired, Date buyDate) {
+		this.userName = userName;
 		this.quizId = quizId;
 		this.expired = expired;
 		this.buyDate = buyDate;
@@ -54,12 +54,12 @@ public class QuizOwnership implements java.io.Serializable {
 	}
 
 	@Column(name = "username", nullable = false, length = 50)
-	public String getUsername() {
-		return this.username;
+	public String getUserName() {
+		return this.userName;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 	@Column(name = "quizId", nullable = false)

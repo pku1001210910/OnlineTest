@@ -1,9 +1,7 @@
 package com.fivestars.websites.onlinetest.service.test;
 
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.util.Date;
@@ -17,8 +15,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fivestars.websites.onlinetest.constant.QuizConst;
 import com.fivestars.websites.onlinetest.entity.AnswerAnswerEntity;
 import com.fivestars.websites.onlinetest.entity.SingleChoiceAnswerEntity;
+import com.fivestars.websites.onlinetest.model.QuizOwnership;
 import com.fivestars.websites.onlinetest.model.UserAnswer;
 import com.fivestars.websites.onlinetest.model.UserQuiz;
 import com.fivestars.websites.onlinetest.service.UserQuizService;
@@ -33,6 +33,19 @@ public class UserQuizServiceTest {
 	public static void setUpBeforeClass() throws Exception {
 		context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		userQuizService = context.getBean(UserQuizService.class);
+	}
+	
+	@Test
+	public void testUserQuizOwnership() {
+		QuizOwnership ownership = prepareQuizOwnership();
+		Integer ownershipId = userQuizService.addUserQuizOwnership(ownership);
+		assertTrue(userQuizService.isUserOwnQuiz(118, "owner"));
+		userQuizService.deleteUserQuizOwnership(ownershipId);
+		
+		ownership.setExpired(QuizConst.EXPIRED_TRUE);
+		ownershipId = userQuizService.addUserQuizOwnership(ownership);
+		assertFalse(userQuizService.isUserOwnQuiz(118, "owner"));
+		userQuizService.deleteUserQuizOwnership(ownershipId);
 	}
 	
 	@Test
@@ -71,6 +84,15 @@ public class UserQuizServiceTest {
 		userQuizService.deleteUserQuiz(recordId);
 		userQuizInDB = userQuizService.loadUserQuizById(recordId);
 		assertNull(userQuizInDB);
+	}
+	
+	private QuizOwnership prepareQuizOwnership() {
+		QuizOwnership ownership = new QuizOwnership();
+		ownership.setUserName("owner");
+		ownership.setQuizId(118);
+		ownership.setBuyDate(new Date());
+		ownership.setExpired(QuizConst.EXPIRED_FALSE);
+		return ownership;
 	}
 
 	private UserQuiz prepareUserQuiz() throws IOException {
