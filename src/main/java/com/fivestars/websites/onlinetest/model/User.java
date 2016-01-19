@@ -1,9 +1,12 @@
 package com.fivestars.websites.onlinetest.model;
 // Generated Jan 15, 2016 12:20:03 AM by Hibernate Tools 4.3.1.Final
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 
 /**
@@ -102,6 +105,8 @@ public class User implements java.io.Serializable {
 	}
 
 	@Column(name = "background", length = 65535)
+	@Lob
+	@Basic(fetch = FetchType.LAZY)
 	public String getBackground() {
 		return this.background;
 	}

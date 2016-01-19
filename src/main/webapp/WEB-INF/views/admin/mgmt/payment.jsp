@@ -3,8 +3,4 @@
 <%
 	String path = request.getContextPath();
 %>
-<body>
-	<!-- /container -->
-	payment
-</body>
-</html>
+<h2 class="page-header">支付设置</h2>

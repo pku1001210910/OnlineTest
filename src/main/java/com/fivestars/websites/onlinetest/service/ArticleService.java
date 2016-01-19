@@ -21,4 +21,6 @@ public interface ArticleService {
     public List<Article> findAll();
 
 	public Article loadById(int id);
+	
+	public List<Article> loadAllTitles();
 }

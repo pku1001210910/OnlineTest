@@ -28,4 +28,11 @@ public class ArticleServiceImpl implements ArticleService {
 	public Article loadById(int id) {
 		return articleDao.load(id);
 	}
+
+	@Override
+	public List<Article> loadAllTitles() {
+		List<Article> articles = articleDao.listAll();
+		articles.forEach(a -> a.setContent(null));
+		return articles;
+	}
 }

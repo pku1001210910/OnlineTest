@@ -12,3 +12,11 @@ body, button, input, select, textarea, h1, h2, h3, h4, h5, h6 {
 .underline {
 	text-decoration: underline;
 }
+
+.left-15 {
+	margin-left: 15px;
+}
+
+.primary-color {
+	background-color: #337ab7
+}

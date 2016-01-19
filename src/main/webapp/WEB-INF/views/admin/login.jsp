@@ -21,7 +21,7 @@
 <body>
 
 	<div class="container">
-		<form class="form-signin" action="<%=path%>/admin/auth.action">
+		<form class="form-signin" action="<%=path%>/admin/auth.action" method="post">
 			<h2 class="form-signin-heading">在线测试系统后台</h2>
 			<s:if test="hasActionErrors()">
 				<div class="bg-danger">
@@ -33,9 +33,9 @@
 				</div>
 			</s:if>
 			<label for="username" class="sr-only">用户名</label> <input
-				id="username" class="form-control" placeholder="用户名" required
+				name="username" class="form-control" placeholder="用户名" required
 				autofocus> <label for="password" class="sr-only">密码</label>
-			<input type="password" id="password" class="form-control"
+			<input type="password" name="password" class="form-control"
 				placeholder="密码" required>
 			<div class="checkbox">
 				<label> <input type="checkbox" value="remember-me">保持登陆</input>

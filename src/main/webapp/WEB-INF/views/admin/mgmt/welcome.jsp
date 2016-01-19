@@ -3,8 +3,4 @@
 <%
 	String path = request.getContextPath();
 %>
-<body>
-	<!-- /container -->
-	welcome
-</body>
-</html>
+<h2 class="page-header">欢迎界面</h2>
