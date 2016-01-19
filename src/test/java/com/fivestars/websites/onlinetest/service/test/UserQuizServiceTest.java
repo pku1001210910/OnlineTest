@@ -1,9 +1,6 @@
 package com.fivestars.websites.onlinetest.service.test;
 
-import static org.junit.Assert.fail;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
@@ -11,6 +8,7 @@ import static org.junit.Assert.assertThat;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.junit.BeforeClass;
@@ -36,6 +34,25 @@ public class UserQuizServiceTest {
 		context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		userQuizService = context.getBean(UserQuizService.class);
 	}
+	
+	@Test
+	public void testGetUserQuiz() throws IOException {
+		UserQuiz userQuiz = prepareUserQuiz();
+		String userName = "another_user_" + Math.random() * 1000000;
+		userQuiz.setUserName(userName);
+		Integer recordId = userQuizService.createUserQuiz(userQuiz);
+		assertNotNull(recordId);
+		
+		List<UserQuiz> userQuizList = userQuizService.getUserParticipatedQuiz(userName);
+		assertThat(userQuizList.size(), equalTo(1));
+		
+		UserAnswer answer1 = userQuizService.getAnswerBySubject(recordId, 173);
+		assertThat(answer1.getAnswer(), equalTo(mapper.writeValueAsString(new SingleChoiceAnswerEntity(29))));
+		UserAnswer answer2 = userQuizService.getAnswerBySubject(recordId, 174);
+		assertThat(answer2.getAnswer(), equalTo(mapper.writeValueAsString(new AnswerAnswerEntity("红酒"))));
+		
+		userQuizService.deleteUserQuiz(recordId);
+	}
 
 	@Test
 	public void testUserQuiz() throws IOException {
@@ -51,9 +68,9 @@ public class UserQuizServiceTest {
 		userQuizInDB = userQuizService.loadUserQuizById(recordId);
 		assertThat(userQuizInDB.getScore(), equalTo(new Double("100")));
 		
-//		userQuizService.deleteUserQuiz(recordId);
-//		userQuizInDB = userQuizService.loadUserQuizById(recordId);
-//		assertNull(userQuizInDB);
+		userQuizService.deleteUserQuiz(recordId);
+		userQuizInDB = userQuizService.loadUserQuizById(recordId);
+		assertNull(userQuizInDB);
 	}
 
 	private UserQuiz prepareUserQuiz() throws IOException {

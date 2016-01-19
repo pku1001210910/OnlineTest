@@ -2,7 +2,7 @@ package com.fivestars.websites.onlinetest.service;
 
 import java.util.List;
 
-import com.fivestars.websites.onlinetest.model.Quiz;
+import com.fivestars.websites.onlinetest.model.UserAnswer;
 import com.fivestars.websites.onlinetest.model.UserQuiz;
 
 public interface UserQuizService {
@@ -19,7 +19,7 @@ public interface UserQuizService {
 	 * @param userName
 	 * @return
 	 */
-	public List<Quiz> getUserParticipatedQuiz(String userName);
+	public List<UserQuiz> getUserParticipatedQuiz(String userName);
 	
 	/**
 	 * Create a user quiz record
@@ -40,5 +40,24 @@ public interface UserQuizService {
 	 */
 	public void deleteUserQuiz(Integer recordId);
 	
+	/**
+	 * Get the answer for specific subject
+	 * @param recordId
+	 * @param subjectId
+	 * @return
+	 */
+	public UserAnswer getAnswerBySubject(Integer recordId, Integer subjectId);
 
+	/**
+	 * Update the user answer
+	 * @param userAnswer
+	 */
+	public void updateUserAnswer(UserAnswer userAnswer);
+	
+	/**
+	 * Grade the score of user answer
+	 * @param answerId
+	 * @param score
+	 */
+	public void gradeUserAnswer(Integer answerId, Double score);
 }
