@@ -1,12 +1,19 @@
 package com.fivestars.websites.onlinetest.model;
 // Generated Jan 15, 2016 12:20:03 AM by Hibernate Tools 4.3.1.Final
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -27,6 +34,7 @@ public class UserQuiz implements java.io.Serializable {
 	private Integer feedbackId;
 	private Date quizDate;
 	private String evaluator;
+	private Set<UserAnswer> userAnswers = new HashSet<>();
 
 	public UserQuiz() {
 	}
@@ -110,6 +118,15 @@ public class UserQuiz implements java.io.Serializable {
 
 	public void setEvaluator(String evaluator) {
 		this.evaluator = evaluator;
+	}
+
+	@OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "userQuiz")
+	public Set<UserAnswer> getUserAnswers() {
+		return userAnswers;
+	}
+
+	public void setUserAnswers(Set<UserAnswer> userAnswers) {
+		this.userAnswers = userAnswers;
 	}
 
 }

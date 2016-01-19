@@ -35,16 +35,6 @@ CREATE TABLE `article` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `article`
---
-
-LOCK TABLES `article` WRITE;
-/*!40000 ALTER TABLE `article` DISABLE KEYS */;
-INSERT INTO `article` VALUES (1,'测试公告测试公告测试公告测试告测','测试公告测试公告测试公告测试告测','2012-04-18 12:21:28',NULL,NULL),(2,'222222222222222222222222','1111111111111111111111111111111111','2012-04-18 12:21:36',NULL,NULL);
-/*!40000 ALTER TABLE `article` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `feedback`
 --
 
@@ -81,7 +71,7 @@ CREATE TABLE `quiz` (
   `status` int(11) DEFAULT NULL,
   PRIMARY KEY (`quizId`),
   UNIQUE KEY `quizId_UNIQUE` (`quizId`)
-) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=126 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -137,7 +127,7 @@ CREATE TABLE `quiz_subject` (
   UNIQUE KEY `subjectId_UNIQUE` (`subjectId`),
   KEY `subject_quizId` (`quizId`),
   CONSTRAINT `subject_quizId` FOREIGN KEY (`quizId`) REFERENCES `quiz` (`quizId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=83 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=186 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -158,7 +148,7 @@ CREATE TABLE `subject_item` (
   UNIQUE KEY `itemId_UNIQUE` (`itemId`),
   KEY `subjectId_idx` (`subjectId`),
   CONSTRAINT `subjectId` FOREIGN KEY (`subjectId`) REFERENCES `quiz_subject` (`subjectId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=225 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -198,8 +188,11 @@ CREATE TABLE `user_answer` (
   `answer` text,
   `answerDate` datetime DEFAULT NULL,
   `score` double DEFAULT NULL,
+  `recordId` int(11) NOT NULL,
   PRIMARY KEY (`answerId`),
-  UNIQUE KEY `answerId_UNIQUE` (`answerId`)
+  UNIQUE KEY `answerId_UNIQUE` (`answerId`),
+  KEY `recordId_idx` (`recordId`),
+  CONSTRAINT `recordId` FOREIGN KEY (`recordId`) REFERENCES `user_quiz` (`recordId`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -232,4 +225,4 @@ CREATE TABLE `user_quiz` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-01-17 17:29:08
+-- Dump completed on 2016-01-19 21:41:44
