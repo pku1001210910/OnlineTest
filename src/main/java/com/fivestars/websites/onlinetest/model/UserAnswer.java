@@ -79,7 +79,7 @@ public class UserAnswer implements java.io.Serializable {
 	}
 
 	@Column(name = "subjectId", nullable = false)
-	public int getSubjectId() {
+	public Integer getSubjectId() {
 		return this.subjectId;
 	}
 
