@@ -4,9 +4,12 @@ package com.fivestars.websites.onlinetest.model;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -27,6 +30,7 @@ public class UserAnswer implements java.io.Serializable {
 	private String answer;
 	private Date answerDate;
 	private Double score;
+	private UserQuiz userQuiz;
 
 	public UserAnswer() {
 	}
@@ -109,6 +113,16 @@ public class UserAnswer implements java.io.Serializable {
 
 	public void setScore(Double score) {
 		this.score = score;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "recordId", nullable = false)
+	public UserQuiz getUserQuiz() {
+		return userQuiz;
+	}
+
+	public void setUserQuiz(UserQuiz userQuiz) {
+		this.userQuiz = userQuiz;
 	}
 
 }
