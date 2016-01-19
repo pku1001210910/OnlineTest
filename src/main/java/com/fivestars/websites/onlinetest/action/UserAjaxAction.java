@@ -24,7 +24,6 @@ public class UserAjaxAction {
 	@Action(value = "checkUserNameUnique", results = { @Result(name="success", type = "json")})
 	public String checkUserNameUnique() {
 		existUser = userService.isExist(userName);
-		existUser = true;
 		return "success";
 	}
 

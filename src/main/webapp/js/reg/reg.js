@@ -9,16 +9,14 @@ jQuery(document).ready(function() {
     /*
         Form validation
     */
+	var userNameUnique = false;
+	
     $('.login-form input[type="text"], .login-form input[type="password"], .login-form textarea').on('focus', function() {
     	$(this).removeClass('input-error');
     });
     
     // check every one unempty
     $('.login-form').on('submit', function(e) {
-    	if(isError()) {
-    		e.preventDefault();
-    		return false;
-    	}
     	$(this).find('input[type="text"], input[type="password"], textarea').each(function(){
     		if( $(this).val() == "" ) {
     			e.preventDefault();
@@ -29,23 +27,32 @@ jQuery(document).ready(function() {
     			clearErrorMsg();
     		}
     	});
-    	if(isError()) {
-    		return false;
-    	}
     	
-    	var passwordConfirm = $(this).val().trim();
+    	var passwordConfirm = $("#form-password-confirm").val().trim();
     	var password = $('#form-password').val().trim();
     	if(password != passwordConfirm) {
+    		e.preventDefault();
     		setErrorMsg($(this), '两次密码不一致');
     	} else {
     		clearErrorMsg();
     	}
+    	
+    	if(isError()) {
+    		e.preventDefault();
+    		return false;
+    	}
+    	
+    	
     	
     	
     });
     
     // is error 
     var isError = function() {
+    	if(!userNameUnique) {
+    		setErrorMsg($(self), '用户名已存在');
+    		return true;
+    	}
     	if($('.error-msg-container').hasClass('hide')) {
     		return false;
     	} else {
@@ -70,7 +77,13 @@ jQuery(document).ready(function() {
     			var obj = $.parseJSON(json);
     			if(obj.existUser) {
     				setErrorMsg($(self), '用户名已存在');
+    				userNameUnique = false;
     				return false;
+    			} else {
+    				userNameUnique = true;
+    				if(getErrorMsg() === '用户名已存在') {
+    					clearErrorMsg();
+    				}
     			}
     		},
     		error: function(json) {
@@ -100,6 +113,10 @@ jQuery(document).ready(function() {
     
     var clearErrorMsg = function() {
     	$('.error-msg-container').addClass('hide');
+    }
+    
+    var getErrorMsg = function() {
+    	return $('.error-msg-container .error-msg-content').text();
     }
     
 });

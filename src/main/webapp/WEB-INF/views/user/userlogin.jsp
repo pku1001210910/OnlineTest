@@ -49,7 +49,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<form action="<%=basePath%>user/userLogin.action"
 			class="navbar-form navbar-right" name="userLogin" method="post">
 			<div class="form-group">
-				<font color="red"><s:property value="#request.error" /></font>
+				<font color="red"><s:property value="#session.error" /></font>
 			</div>
 			<div class="form-group">
 				<input name="userName" type="text" placeholder="用户名"
@@ -68,7 +68,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<div class="form-group">
 				欢迎您：
 				<s:property value="#session.user.userName" />
-				&nbsp;&nbsp;&nbsp;&nbsp; <a href="<%=path %>/userLogout.action">安全退出</a>
+				&nbsp;&nbsp;&nbsp;&nbsp; <a class="white underline" href="<%=basePath %>user/userLogout.action">安全退出</a>
 				&nbsp;&nbsp;&nbsp;&nbsp;
 			</div>
 		</form>
