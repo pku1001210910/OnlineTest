@@ -35,4 +35,7 @@
     
     <package name="admin" extends="struts-default" namespace="/admin">
     </package>
+    
+    <package name="adminAjax" extends="json-default" namespace="/admin">
+    </package>
 </struts>

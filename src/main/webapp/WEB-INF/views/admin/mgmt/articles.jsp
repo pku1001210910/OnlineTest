@@ -131,7 +131,7 @@ $('#save-btn').on('click', function(e) {
 	$('#article-content-input').val($('#article-content').html());
 	 $.ajax({
       type: "POST",
-      url: '<%=path%>/admin/saveArticles.action',
+      url: '<%=path%>/admin/articles/save.action',
       data: $("#article-form").serialize(), // serializes the form's elements.
       success: function(data) {
     	  $('#article-close-btn').click();
