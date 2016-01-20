@@ -17,16 +17,23 @@ jQuery(document).ready(function() {
     
     // check every one unempty
     $('.login-form').on('submit', function(e) {
+    	var exitEmptyElement = false;
     	$(this).find('input[type="text"], input[type="password"], textarea').each(function(){
     		if( $(this).val() == "" ) {
     			e.preventDefault();
     			setErrorMsg($(this), '数据不能为空');
+    			exitEmptyElement = true;
     			return false;
     		}
     		else {
-    			clearErrorMsg();
+    			if(!exitEmptyElement) {
+    				clearErrorMsg();
+    			}
     		}
     	});
+    	if(exitEmptyElement) {
+    		return;
+    	}
     	
     	var passwordConfirm = $("#form-password-confirm").val().trim();
     	var password = $('#form-password').val().trim();
@@ -62,7 +69,7 @@ jQuery(document).ready(function() {
     
     // user name unique
     $('#form-username').on('blur', function() {	
-    	var userName = $(this).val().trim();
+    	var userName = $('#form-username').val().trim();
     	if(userName === '') {
     		setErrorMsg($(this), '用户名不能为空');
     		return;
@@ -95,7 +102,7 @@ jQuery(document).ready(function() {
     
     // password confirm
     $('#form-password-confirm').on('blur', function() {
-    	var passwordConfirm = $(this).val().trim();
+    	var passwordConfirm = $('#form-password-confirm').val().trim();
     	var password = $('#form-password').val().trim();
     	if(password != passwordConfirm) {
     		setErrorMsg($(this), '两次密码不一致');

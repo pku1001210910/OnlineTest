@@ -49,7 +49,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<form action="<%=basePath%>user/userLogin.action"
 			class="navbar-form navbar-right" name="userLogin" method="post">
 			<div class="form-group">
-				<font color="red"><s:property value="#session.error" /></font>
+				<font color="red"><s:property value="#request.error" /></font>
 			</div>
 			<div class="form-group">
 				<input name="userName" type="text" placeholder="用户名"
