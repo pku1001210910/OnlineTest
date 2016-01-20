@@ -8,7 +8,6 @@ import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
 
-import com.fivestars.websites.onlinetest.model.User;
 import com.opensymphony.xwork2.ActionSupport;
 
 @ParentPackage("user")
@@ -27,4 +26,5 @@ public class HomeAction {
 		}
 		return ActionSupport.SUCCESS;
 	}
+	
 }
