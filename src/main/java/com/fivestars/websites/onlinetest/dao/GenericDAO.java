@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.DetachedCriteria;
 
 public interface GenericDAO<T, PK extends java.io.Serializable> {
 	
@@ -94,6 +95,13 @@ public interface GenericDAO<T, PK extends java.io.Serializable> {
 	 * @return
 	 */
 	public List<T> listSome(Criteria criteria);
+	
+	/**
+	 * List the entities which match the detached criteria
+	 * @param criteria
+	 * @return
+	 */
+	public List<T> listSome(DetachedCriteria criteria);
 	
 	/**
 	 * List the entities which match the restrictions

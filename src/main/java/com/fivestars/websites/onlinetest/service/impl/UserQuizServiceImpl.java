@@ -1,9 +1,10 @@
 package com.fivestars.websites.onlinetest.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,17 +36,11 @@ public class UserQuizServiceImpl implements UserQuizService {
 	
 	@Override
 	public List<UserQuiz> getUserParticipatedQuiz(String userName) {
+		DetachedCriteria userCriteria = DetachedCriteria.forClass(UserQuiz.class);
 		Criterion userNameEq = Restrictions.eq("userName", userName);
-		List<UserQuiz> userQuizList =  userQuizDao.listSome(new Criterion[] {userNameEq});
-		// remove duplicate. The duplicate is generated for different UserAnswer in UserQuiz, because
-		// UserAnswer is non-lazy-load
-		List<UserQuiz> nonDuplicateList = new ArrayList<>();
-		for (UserQuiz quiz : userQuizList) {
-			if (!nonDuplicateList.contains(quiz)) {
-				nonDuplicateList.add(quiz);
-			}
-		}
-		return nonDuplicateList;
+		userCriteria.add(userNameEq);
+		userCriteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		return userQuizDao.listSome(userCriteria);
 	}
 
 	@Override

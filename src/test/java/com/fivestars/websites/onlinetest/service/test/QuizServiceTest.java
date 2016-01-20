@@ -247,6 +247,18 @@ public class QuizServiceTest {
 		assertNull(quizService.loadQuizById(quizId));
 	}
 	
+	@Test
+	public void testQuizCategory() {
+		Quiz quiz = prepareQuiz();
+		quiz.setCategory(100);
+		Integer quizId = quizService.createQuiz(quiz);
+		
+		List<Quiz> quizList = quizService.getQuizByCategory(100);
+		assertThat(quizList.size(), equalTo(1));
+		
+		quizService.deleteQuiz(quizId);
+	}
+	
 	private SubjectItem prepareItem(QuizSubject subject) {
 		SubjectItem item = new SubjectItem();
 		item.setQuizSubject(subject);
