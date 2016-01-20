@@ -20,7 +20,9 @@ import lombok.Data;
 @Namespace("/article")
 @Data
 public class ArticleAction {
-	private int id;
+	private Integer id;
+	private String title;
+	private String content;
 
 	@Autowired
 	private ArticleService articleService;

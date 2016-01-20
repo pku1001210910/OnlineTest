@@ -16,10 +16,15 @@
 <link href="<%=path%>/css/bootstrap.min.css" rel="stylesheet">
 <link href="<%=path%>/css/admin/login.css" rel="stylesheet">
 <link href="<%=path%>/css/main.css" rel="stylesheet">
+
+<!-- support ie8 & ie9 & ie10 -->
+<script src="<%=path%>/js/html5shiv.js" type="text/javascript"></script>
+<script src="<%=path%>/js/respond.min.js" type="text/javascript"></script>
+<script src="<%=path%>/js/ie10-viewport-bug-workaround.js" type="text/javascript"></script>
+<script src="<%=path%>/js/ie-elements.js" type="text/javascript"></script>
 </head>
 
 <body>
-
 	<div class="container">
 		<form class="form-signin" action="<%=path%>/admin/auth.action" method="post">
 			<h2 class="form-signin-heading">在线测试系统后台</h2>

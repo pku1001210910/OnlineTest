@@ -13,6 +13,13 @@
 <meta http-equiv="keywords" content="keyword1,keyword2,keyword3" />
 <meta http-equiv="description" content="This is my page" />
 <link href="<%=path%>/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- support ie8 & ie9 & ie10 -->
+<script src="<%=path%>/js/html5shiv.js" type="text/javascript"></script>
+<script src="<%=path%>/js/respond.min.js" type="text/javascript"></script>
+<script src="<%=path%>/js/ie10-viewport-bug-workaround.js" type="text/javascript"></script>
+<script src="<%=path%>/js/ie-elements.js" type="text/javascript"></script>
+
 <script language="javascript">
 	function closeOpen() {
 		window.returnValue = false;

@@ -15,6 +15,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <meta http-equiv="description" content="This is my page">
 <script language="JavaScript" src="<%=path%>/js/public.js"
 	type="text/javascript"></script>
+	
 <script type="text/javascript">
 	        function reg()
 	        {
@@ -39,6 +40,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	           }
 	           document.userLogin.submit();
 	        }
+	       
 	</script>
 </head>
 
@@ -47,7 +49,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<form action="<%=basePath%>user/userLogin.action"
 			class="navbar-form navbar-right" name="userLogin" method="post">
 			<div class="form-group">
-				<font color="red"><s:property value="#request.error" /></font>
+				<font color="red"><s:property value="#session.error" /></font>
 			</div>
 			<div class="form-group">
 				<input name="userName" type="text" placeholder="用户名"
@@ -58,7 +60,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					class="form-control">
 			</div>
 			<button type="submit" class="btn btn-success" onclick="login()">登陆</button>
-			<a class="white underline" href="#" onclick="reg()"> 没有账号？</a>
+			<a data-target="#regModal" data-toggle="modal" class="white underline" href="#"> 没有账号？</a>
 		</form>
 	</s:if>
 	<s:else>
@@ -66,7 +68,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<div class="form-group">
 				欢迎您：
 				<s:property value="#session.user.userName" />
-				&nbsp;&nbsp;&nbsp;&nbsp; <a href="<%=path %>/userLogout.action">安全退出</a>
+				&nbsp;&nbsp;&nbsp;&nbsp; <a class="white underline" href="<%=basePath %>user/userLogout.action">安全退出</a>
 				&nbsp;&nbsp;&nbsp;&nbsp;
 			</div>
 		</form>

@@ -3,7 +3,7 @@
 <%
 	String path = request.getContextPath();
 %>
-<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
 <meta charset="utf-8">
@@ -18,10 +18,16 @@
 <link href="<%=path%>/css/jsgrid-theme.min.css" rel="stylesheet">
 <link href="<%=path%>/css/admin/home.css" rel="stylesheet">
 <link href="<%=path%>/css/main.css" rel="stylesheet">
+
+<!-- support ie8 & ie9 & ie10 -->
+<script src="<%=path%>/js/html5shiv.js" type="text/javascript"></script>
+<script src="<%=path%>/js/respond.min.js" type="text/javascript"></script>
+<script src="<%=path%>/js/ie10-viewport-bug-workaround.js" type="text/javascript"></script>
+<script src="<%=path%>/js/ie-elements.js" type="text/javascript"></script>
+	
 </head>
 
 <body>
-
 	<nav class="navbar bg-primary navbar-fixed-top">
       <div class="container-fluid">
         <div class="navbar-header">
@@ -73,6 +79,8 @@
 	<script src="<%=path%>/js/jquery.min.js"></script>
 	<script src="<%=path%>/js/bootstrap.min.js"></script>
 	<script src="<%=path%>/js/jsgrid.min.js"></script>
+	
+	<!-- page js -->
 	<script src="<%=path%>/js/admin/home.js"></script>
 	<script src="<%=path%>/js/main.js"></script>
 </body>
