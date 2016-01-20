@@ -141,5 +141,6 @@
 	<script src="<%=path%>/js/jquery.min.js"></script>
 	<script src="<%=path%>/js/bootstrap.min.js"></script>
 	<script src="<%=path%>/js/reg/reg.js"></script>
+	<script src="<%=path%>/js/main.js"></script>
 </body>
 </html>

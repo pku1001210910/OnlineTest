@@ -13,6 +13,7 @@ $('.admin-menu .admin-menu-item').on('click', function(e) {
 
 function loadPage(target) {
 	var targetAction = './' + target + '.action';
+	$('#main-content').val('');
 	$('#main-content').load(targetAction);
 }
 
