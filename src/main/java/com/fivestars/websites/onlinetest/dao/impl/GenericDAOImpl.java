@@ -9,6 +9,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.slf4j.Logger;
@@ -156,5 +157,10 @@ public class GenericDAOImpl<T, PK extends java.io.Serializable> implements Gener
 		criteria.setFirstResult((pageNo - 1) * pageSize);
 		criteria.setMaxResults(pageSize);
 		return listSome(criteria);
+	}
+
+	@Override
+	public List<T> listSome(DetachedCriteria criteria) {
+		return (List<T>) listSome(criteria.getExecutableCriteria(getSession()));
 	}
 }

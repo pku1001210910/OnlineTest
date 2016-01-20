@@ -3,16 +3,22 @@ package com.fivestars.websites.onlinetest.service.impl;
 import java.util.List;
 import java.util.Set;
 
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fivestars.websites.onlinetest.dao.QuizCategoryDAO;
 import com.fivestars.websites.onlinetest.dao.QuizDAO;
 import com.fivestars.websites.onlinetest.dao.QuizSubjectDAO;
 import com.fivestars.websites.onlinetest.dao.SubjectItemDAO;
 import com.fivestars.websites.onlinetest.model.Quiz;
+import com.fivestars.websites.onlinetest.model.QuizCategory;
 import com.fivestars.websites.onlinetest.model.QuizSubject;
 import com.fivestars.websites.onlinetest.model.SubjectItem;
 import com.fivestars.websites.onlinetest.service.QuizService;
@@ -29,6 +35,8 @@ public class QuizServiceImpl implements QuizService {
 	private QuizSubjectDAO subjectDao;
 	@Autowired
 	private SubjectItemDAO itemDao;
+	@Autowired
+	private QuizCategoryDAO categoryDao;
 	
 	@Override
 	public Integer createQuiz(Quiz quiz) {
@@ -304,6 +312,33 @@ public class QuizServiceImpl implements QuizService {
 	public void updateSubjectItem(SubjectItem item) {
 		itemDao.saveOrUpdate(item);
 		LOGGER.info("[QuizService]Successfully updated item of id " + item.getItemId());
+	}
+
+	@Override
+	public List<QuizCategory> getAllQuizCategories() {
+		return categoryDao.listAll();
+	}
+
+	@Override
+	public List<Quiz> getQuizByCategory(Integer categoryId) {
+		DetachedCriteria categoryCriteria = DetachedCriteria.forClass(Quiz.class);
+		Criterion categoryEq = Restrictions.eq("category", categoryId);
+		categoryCriteria.add(categoryEq);
+		categoryCriteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		return quizDao.listSome(categoryCriteria);
+	}
+
+	@Override
+	public Integer createQuizCategory(QuizCategory category) {
+		Integer categoryId = categoryDao.save(category);
+		LOGGER.info("[QuizService]Successfully created quiz category of id " + categoryId);
+		return null;
+	}
+
+	@Override
+	public void deleteQuizCategory(Integer categoryId) {
+		categoryDao.delete(categoryId);
+		LOGGER.info("[QuizService]Successfully deleted quiz category of id " + categoryId);
 	}
 	
 }

@@ -3,6 +3,7 @@ package com.fivestars.websites.onlinetest.service;
 import java.util.List;
 
 import com.fivestars.websites.onlinetest.model.Quiz;
+import com.fivestars.websites.onlinetest.model.QuizCategory;
 import com.fivestars.websites.onlinetest.model.QuizSubject;
 import com.fivestars.websites.onlinetest.model.SubjectItem;
 
@@ -157,4 +158,30 @@ public interface QuizService {
 	 * @param item
 	 */
 	public void updateSubjectItem(SubjectItem item);
+	
+	/**
+	 * Create a quiz category
+	 * @param category
+	 * @return
+	 */
+	public Integer createQuizCategory(QuizCategory category);
+	
+	/**
+	 * Delete a quiz category
+	 * @param categoryId
+	 */
+	public void deleteQuizCategory(Integer categoryId);
+	
+	/**
+	 * Get all quiz categories
+	 * @return
+	 */
+	public List<QuizCategory> getAllQuizCategories();
+	
+	/**
+	 * Get quiz by category
+	 * @param categoryId
+	 * @return
+	 */
+	public List<Quiz> getQuizByCategory(Integer categoryId);
 }
