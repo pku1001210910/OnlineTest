@@ -59,17 +59,24 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<input type="password" name="userPw" placeholder="密码"
 					class="form-control">
 			</div>
-			<button type="submit" class="btn btn-success" onclick="login()">登陆</button>
-			<a data-target="#regModal" data-toggle="modal" class="white underline" href="#"> 没有账号？</a>
+			<div class="form-group">
+				<button type="submit" class="btn btn-success" onclick="login()">登陆</button>
+			</div>
+			<div class="form-group">
+				<a data-target="#regModal" data-toggle="modal" class="white underline" href="#"> 没有账号？</a>
+			</div>
 		</form>
 	</s:if>
 	<s:else>
-		<form class="navbar-form navbar-right">
+		<form class="navbar-form navbar-right user-info">
 			<div class="form-group">
 				欢迎您：
 				<s:property value="#session.user.userName" />
-				&nbsp;&nbsp;&nbsp;&nbsp; <a class="white underline" href="<%=basePath %>user/userLogout.action">安全退出</a>
+				&nbsp;&nbsp;&nbsp;&nbsp; 
 				&nbsp;&nbsp;&nbsp;&nbsp;
+			</div>
+			<div class="form-group">
+				<a class="white underline" href="<%=basePath %>user/userLogout.action">安全退出</a>
 			</div>
 		</form>
 	</s:else>

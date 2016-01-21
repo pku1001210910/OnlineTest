@@ -82,13 +82,13 @@ DROP TABLE IF EXISTS `quiz_category`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `quiz_category` (
-  `categoryId` int(11) NOT NULL,
+  `categoryId` int(11) NOT NULL AUTO_INCREMENT,
   `categoryName` varchar(50) DEFAULT NULL,
   `description` text,
   `parentId` int(11) DEFAULT NULL,
   PRIMARY KEY (`categoryId`),
   UNIQUE KEY `categoryId_UNIQUE` (`categoryId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=190 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
