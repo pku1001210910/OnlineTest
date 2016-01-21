@@ -340,5 +340,10 @@ public class QuizServiceImpl implements QuizService {
 		categoryDao.delete(categoryId);
 		LOGGER.info("[QuizService]Successfully deleted quiz category of id " + categoryId);
 	}
+
+	@Override
+	public QuizCategory getQuizCategoryById(Integer categoryId) {
+		return categoryDao.get(categoryId);
+	}
 	
 }

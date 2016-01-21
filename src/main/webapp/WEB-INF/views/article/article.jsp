@@ -23,7 +23,7 @@
 </head>
 
 <body>
-	<jsp:include flush="true" page="/views/layout/header.jsp"></jsp:include>
+	<jsp:include flush="true" page="/WEB-INF/views/layout/header.jsp"></jsp:include>
 	<div class="page_row">
 		<div class="page_main_msg left">
 			<div class="left_row">
@@ -53,12 +53,12 @@
 		</div>
 
 		<div class="page_other_msg right">
-			<jsp:include flush="true" page="/views/sidebar.jsp"></jsp:include>
+			<jsp:include flush="true" page="/WEB-INF/views/sidebar.jsp"></jsp:include>
 		</div>
 	</div>
 
 	<div class="foot">
-		<jsp:include flush="true" page="/views/layout/footer.jsp"></jsp:include>
+		<jsp:include flush="true" page="/WEB-INF/views/layout/footer.jsp"></jsp:include>
 	</div>
 </body>
 </html>

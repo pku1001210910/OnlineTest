@@ -2,44 +2,16 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <%
 	String path = request.getContextPath();
-	Object articles = request.getAttribute("articles");
+	Object quizzes = request.getAttribute("quizzes");
 %>
 <h2 class='page-header'>测试管理</h2>
 <div class="btn-group">
-  <button class="btn btn-default btn-xs " type="button">添加测试 </button>
+  <button class="btn btn-default btn-xs" type="button">添加测试 </button>
 </div>
 
 <div id='articles'></div>
-	
+
 <script>
-var articleList = <%=articles%>;
-$('#articles').jsGrid({
-	data: articleList,
-	height: 'auto',
-    width: '95%',
-    
-    paging: true,
-    pageIndex: 1,
-    pageSize: 13,
-    pageButtonCount: 15,
-    pagerFormat: '页码: {first} {prev} {pages} {next} {last} 共 {pageCount} 页',
-    pagePrevText: '<<',
-    pageNextText: '>>',
-    pageFirstText: '首页',
-    pageLastText: '尾页',
-    pageNavigatorNextText: '...',
-    pageNavigatorPrevText: '...',
-    
-    confirmDeleting: true,
-    deleteConfirm: '确定要删除?',
-    		
-    noDataContent: '目前没有试卷数据，你可以点击左上角按钮添加新试卷',
-    
-   	fields:[
-   		{name:'quizIdId', title:'编号', width:'10%', align:'center'},
-   		{name:'title', title:'标题',  width:'65%', align:'left'},
-   		{name:'date', title:'修改日期', width:'15%', align:'left', type:'date'},
-   		{type: "control", width:'10%'}
-   	],
-});
+	var quizList = <%=quizzes%>;
 </script>
+<script src="<%=path%>/js/admin/mgmt/quizzes.js"></script>

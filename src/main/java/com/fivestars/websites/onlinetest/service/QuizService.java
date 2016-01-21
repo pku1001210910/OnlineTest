@@ -179,6 +179,13 @@ public interface QuizService {
 	public List<QuizCategory> getAllQuizCategories();
 	
 	/**
+	 * Get category by quiz category id
+	 * @param categoryId
+	 * @return
+	 */
+	public QuizCategory getQuizCategoryById(Integer categoryId);
+	
+	/**
 	 * Get quiz by category
 	 * @param categoryId
 	 * @return
