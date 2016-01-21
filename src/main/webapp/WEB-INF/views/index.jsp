@@ -71,7 +71,7 @@
 				<h2>测试模块</h2>
 				<p>请在这里填写测试模块的背景、作用</p>
 				<p>
-					<a class="btn btn-default" href="#" role="button">参加测试 &raquo;</a>
+					<a class="btn btn-default" href="<%=basePath %>quiz/startQuiz.action" role="button">参加测试 &raquo;</a>
 				</p>
 			</div>
 		</div>

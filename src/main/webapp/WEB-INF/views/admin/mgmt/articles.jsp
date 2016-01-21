@@ -74,7 +74,7 @@
 		</form>
       </div>
       <div class='modal-footer'>
-        <button type='button' class='btn btn-primary btn-sm' id='save-btn'>保存</button>
+        <button type='button' class='btn btn-primary btn-sm' data-action='add' id='save-btn'>保存</button>
         <button type='button' class='btn btn-default btn-sm' data-dismiss='modal'>关闭</button>
       </div>
     </div>
@@ -86,47 +86,81 @@
 <script src='<%=path%>/js/prettify.js'></script>
 <script src='<%=path%>/js/bootstrap-wysiwyg.js'></script>
 <script>
-var articleList = <%=articles%>;
-$('#articles').jsGrid({
-	data: articleList,
-	height: 'auto',
-    width: '95%',
-    
-    paging: true,
-    pageIndex: 1,
-    pageSize: 13,
-    pageButtonCount: 15,
-    pagerFormat: '页码: {first} {prev} {pages} {next} {last} 共 {pageCount} 页',
-    pagePrevText: '<<',
-    pageNextText: '>>',
-    pageFirstText: '首页',
-    pageLastText: '尾页',
-    pageNavigatorNextText: '...',
-    pageNavigatorPrevText: '...',
-    
-    confirmDeleting: true,
-    deleteConfirm: '确定要删除?',
-    		
-    noDataContent: '目前没有文章，你可以点击左上角按钮添加新文章',
-    
-   	fields:[
-   		{name:'articleId', title:'编号', width:'10%', align:'center'},
-   		{name:'title', title:'标题',  width:'65%', align:'left'},
-   		{name:'createDate', title:'修改日期', width:'15%', align:'left', type:'date'},
-   		{type: 'control', width:'10%'}
-   	],
-});
+function loadAll(articleList) {
+	$('#articles').jsGrid({
+		data: articleList,
+		height: 'auto',
+	    width: '95%',
+	    
+	    paging: true,
+	    pageIndex: 1,
+	    pageSize: 13,
+	    pageButtonCount: 15,
+	    pagerFormat: '页码: {first} {prev} {pages} {next} {last} 共 {pageCount} 页',
+	    pagePrevText: '<<',
+	    pageNextText: '>>',
+	    pageFirstText: '首页',
+	    pageLastText: '尾页',
+	    pageNavigatorNextText: '...',
+	    pageNavigatorPrevText: '...',
+	    
+	    rowDoubleClick: editArticle,
+	    
+	    confirmDeleting: true,
+	    deleteConfirm: '确定要删除?',
+	    		
+	    noDataContent: '目前没有文章，你可以点击左上角按钮添加新文章',
+	    
+	   	fields:[
+	   		{name:'articleId', title:'编号', width:'10%', align:'center'},
+	   		{name:'title', title:'标题',  width:'65%', align:'left'},
+	   		{name:'createDate', title:'修改日期', width:'15%', align:'left', type:'date'},
+	   		{type: 'control', width:'10%'}
+	   	],
+	});
+}
+loadAll(<%=articles%>);
 
+// edit article
+var articleItem = {};
+function editArticle(event) {
+	articleItem = event.item;
+	var articleId = articleItem.articleId;
+	console.log('edit article: ' + articleId);
+	$.ajax({
+      type: "POST",
+      url: '<%=path%>/admin/articles/load.action',
+      data: 'id=' + articleId,
+      success: function(data) {
+    	var article = JSON.parse(data.json);
+    	$('#article-dialog-label').text('修改文章');
+    	$('#article-title').val(article.title);
+   		$('#article-dialog').modal({
+   		    backdrop: 'static',
+   		    keyboard: false
+   		});
+   		$('#article-content').wysiwyg();
+   		$('#article-content').html(article.content);
+   		$('#save-btn').data('action', 'edit');
+      }
+    });
+};
+
+// add article
 $('#add-article').on('click', function() {
+	$('#article-dialog-label').val('添加文章');
 	$('#article-title').val('');
-	$('#article-content').val('');
 	$('#article-dialog').modal({
 	    backdrop: 'static',
 	    keyboard: false
 	});
 	$('#article-content').wysiwyg();
+	$('#article-content').html('');
+	$('#save-btn').data('action', 'add');
+	articleItem = {}
 });
 
+// save article
 $('#save-btn').on('click', function(e) {
 	$('#article-content-input').val($('#article-content').html());
 	 $.ajax({
@@ -134,6 +168,14 @@ $('#save-btn').on('click', function(e) {
       url: '<%=path%>/admin/articles/save.action',
       data: $("#article-form").serialize(), // serializes the form's elements.
       success: function(data) {
+    	  var isNew = $('#save-btn').data('action') === 'add';
+    	  
+    	  // insert item in list
+    	  var article = JSON.parse(data.json);
+    	  $.extend(articleItem, article);
+    	  $("#articles").jsGrid(isNew ? 'insertItem' : 'updateItem', articleItem);
+    	  
+    	  // close
     	  $('#article-close-btn').click();
       }
     });

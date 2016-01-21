@@ -33,7 +33,7 @@ public class UserAction {
 	@Autowired
 	private UserService userService;
 
-	@Action(value = "userReg", results = { @Result(name = "succeed", type="redirectAction", params= {"namespace", "/"}, location = "home") })
+	@Action(value = "userReg", results = { @Result(name = "success", type="redirectAction", params= {"namespace", "/"}, location = "home") })
 	public String userReg() {
 		message = "";
 		boolean existUser = userService.isExist(userName);
@@ -41,7 +41,7 @@ public class UserAction {
 		
 		if (existUser) {
 			Map session = ServletActionContext.getContext().getSession();
-			session.put("error", "ÓÃ»§ÃûÒÑ´æÔÚ");
+			session.put("error", "ç”¨æˆ·åå·²å­˜åœ¨");
 		} else {
 			User user = new User();
 			user.setUserName(userName);
@@ -56,23 +56,23 @@ public class UserAction {
 			session.put("user", user);
 			
 		}
-		return "succeed";
+		return ActionSupport.SUCCESS;
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@Action(value = "userLogin", results = { @Result(name = "succeed", type="redirectAction", params= {"namespace", "/"}, location = "home") })
+	@Action(value = "userLogin", results = { @Result(name = "success", type="redirectAction", params= {"namespace", "/"}, location = "home") })
 	public String userLogin() {
 		User user = userService.loadByNameAndPwd(userName, userPw);
 		if (user == null) {
 			// TODO set request Attribute. This one would cause mvn install failure
-			// ServletActionContext.getRequest().setAttribute("error", "ÓÃ»§Ãû»òÃÜÂë´íÎó");
+			// ServletActionContext.getRequest().setAttribute("error", "ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
 			Map session = ServletActionContext.getContext().getSession();
-			session.put("error", "ÓÃ»§Ãû»òÃÜÂë´íÎó");
+			session.put("error", "ç”¨æˆ·åæˆ–å¯†ç é”™è¯¯");
 		} else {
 			Map session = ServletActionContext.getContext().getSession();
 			session.put("user", user);
 		}
-		return "succeed";
+		return ActionSupport.SUCCESS;
 	}
 
 	
