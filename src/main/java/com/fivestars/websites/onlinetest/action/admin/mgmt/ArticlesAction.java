@@ -1,6 +1,7 @@
 package com.fivestars.websites.onlinetest.action.admin.mgmt;
 
 
+import java.io.IOException;
 import java.util.Date;
 
 import org.apache.struts2.convention.annotation.Action;
@@ -29,24 +30,25 @@ public class ArticlesAction{
 	
 	@Autowired
 	private ArticleService articleService;
-
+	
 	@Action(value = "save", results = { @Result(name="success", type = "json")})
 	public String saveArticle() throws JsonProcessingException {
 		Article article = id != null ? articleService.loadById(id) : new Article();
 		article.setTitle(title);
 		article.setContent(content);
 		article.setCreateDate(new Date(System.currentTimeMillis()));
-		articleService.save(article);
+		articleService.saveOrUpdate(article);
 		
-		json = new ObjectMapper().writeValueAsString(article);
+		Article ret = new Article(article);
+		json = new ObjectMapper().writeValueAsString(ret);
 		return ActionSupport.SUCCESS;
 	}
 	
 	@Action(value = "load", results = { @Result(name="success", type = "json")})
-	public String loadArticle() throws JsonProcessingException {
+	public String loadArticle() throws IOException {
+		ObjectMapper objectMapper = new ObjectMapper();
 		Article article = new Article(articleService.loadById(id));
-		
-		json = new ObjectMapper().writeValueAsString(article);
+		json = objectMapper.writeValueAsString(article);
 		return ActionSupport.SUCCESS;
 	}
 	

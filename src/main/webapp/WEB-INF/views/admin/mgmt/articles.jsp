@@ -70,6 +70,7 @@
          	<div class="form-group">
             	<div class="form-control" id="article-content"></div>
             	<input hidden name='content' id='article-content-input'/>
+            	<input hidden name='id' id='article-id'/>
           	</div>
 		</form>
       </div>
@@ -178,7 +179,8 @@ $('#add-article').on('click', function() {
 // save article
 $('#save-btn').on('click', function(e) {
 	$('#article-content-input').val($('#article-content').html());
-	 $.ajax({
+	$('#article-id').val(articleItem.articleId);
+	$.ajax({
       type: "POST",
       url: '<%=path%>/admin/articles/save.action',
       data: $("#article-form").serialize(), // serializes the form's elements.

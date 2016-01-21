@@ -14,6 +14,8 @@ public interface ArticleService {
      */
     public Serializable save(Article article); 
     
+    public void saveOrUpdate(Article article); 
+    
     /**
      * load all
      * @return

@@ -2,63 +2,89 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <%
 	String path = request.getContextPath();
+	String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
-<meta http-equiv="pragma" content="no-cache" />
-<meta http-equiv="cache-control" content="no-cache" />
-<meta http-equiv="expires" content="0" />
-<meta http-equiv="keywords" content="keyword1,keyword2,keyword3" />
-<meta http-equiv="description" content="This is my page" />
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<link href="<%=path%>/css/layout.css" type="text/css" rel="stylesheet" />
+<title>在线测试系统</title>
 
-<script language="JavaScript" src="<%=path%>/js/public.js"
-	type="text/javascript"></script>
-<script type="text/javascript">
-	
-</script>
+<!-- core CSS -->
+<link href="<%=path%>/css/bootstrap.min.css" rel="stylesheet">
+<link href="<%=path%>/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+<link href="<%=path%>/css/admin/home.css" rel="stylesheet">
+<link href="<%=path%>/css/main.css" rel="stylesheet">
+
+<!-- support ie8 & ie9 & ie10 -->
+<script src="<%=path%>/js/html5shiv.js" type="text/javascript"></script>
+<script src="<%=path%>/js/respond.min.js" type="text/javascript"></script>
+<script src="<%=path%>/js/ie10-viewport-bug-workaround.js" type="text/javascript"></script>
+<script src="<%=path%>/js/ie-elements.js" type="text/javascript"></script>
 </head>
-
 <body>
-	<jsp:include flush="true" page="/views/layout/header.jsp"></jsp:include>
-	<div class="page_row">
-		<div class="page_main_msg left">
-			<div class="left_row">
-				<div class="list pic_news">
-					<div class="list_bar">&nbsp;导航</div>
-					<div class="ctitle ctitle1">
-						<s:property value="#request.article.title" />
-					</div>
-					<div class="ctitleinfo">
-						<s:property value="#request.article.date" />
-					</div>
-					<div class="pbox">
-						<s:property value="#request.article.content" escape="false" />
-					</div>
-					<div class="page_no">
-						<div class="pg-3">
-							<%--分页--%>
-						</div>
-					</div>
-					<div class="arti_ref">
-						<%--【上一篇】: <a href="#" title="">应需而生 长安铃木全新天语SX4突破升级</a>
-				                &nbsp;&nbsp;
-				                 【下一篇】: <span>没有了</span>--%>
-					</div>
-				</div>
-			</div>
-		</div>
+	<div class="blog-masthead">
+      <div class="container">
+        <nav class="blog-nav">
+          <a class="blog-nav-item active" href="#">返回主页</a>
+        </nav>
+      </div>
+    </div>
 
-		<div class="page_other_msg right">
-			<jsp:include flush="true" page="/views/sidebar.jsp"></jsp:include>
+	<!-- Main jumbotron for a primary marketing message or call to action -->
+	<div class="jumbotron">
+		<div class="container">
+			<h1>在线测试系统</h1>
+			<p>本系统为心理在线测试平台，可以阅读管理员上传的文章和参加测试。</p>
 		</div>
 	</div>
 
-	<div class="foot">
-		<jsp:include flush="true" page="/views/layout/footer.jsp"></jsp:include>
+	<div class="container">
+	  <div class="blog-header">
+        <h1 class="blog-title">The Bootstrap Blog</h1>
+        <p class="lead blog-description">The official example template of creating a blog with Bootstrap.</p>
+      </div>
+
+      <div class="row">
+
+      <div class="col-sm-8 blog-main">
+          <div class="blog-post">
+            <h2 class="blog-post-title">Sample blog post</h2>
+            <p class="blog-post-meta">January 1, 2014 by <a href="#">Mark</a></p>
+            <p>This blog post shows a few different types of content that's supported and styled with Bootstrap. Basic typography, images, and code are all supported.</p>
+          </div><!-- /.blog-post -->
+
+          <nav>
+            <ul class="pager">
+              <li><a href="#">Previous</a></li>
+              <li><a href="#">Next</a></li>
+            </ul>
+          </nav>
+        </div>
+
+        <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+          <div class="sidebar-module sidebar-module-inset">
+            <h4>About</h4>
+            <p>Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</p>
+          </div>
+          <div class="sidebar-module">
+            <h4>Archives</h4>
+            <ol class="list-unstyled">
+              <li><a href="#">March 2014</a></li>
+            </ol>
+          </div>
+        </div>
+      </div>
 	</div>
+	<!-- /container -->
+
+	<!-- JavaScript -->
+	<script src="<%=path%>/js/jquery.min.js"></script>
+	<script src="<%=path%>/js/bootstrap.min.js"></script>
+	<script src="<%=path%>/js/reg/reg.js"></script>
+	<script src="<%=path%>/js/main.js"></script>
 </body>
 </html>

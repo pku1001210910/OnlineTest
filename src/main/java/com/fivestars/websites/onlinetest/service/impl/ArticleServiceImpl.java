@@ -1,6 +1,7 @@
 package com.fivestars.websites.onlinetest.service.impl;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,10 @@ public class ArticleServiceImpl implements ArticleService {
 	public Serializable save(Article article) {
 		return articleDao.save(article);
 	}
+	
+	public void saveOrUpdate(Article article) {
+		articleDao.saveOrUpdate(article);
+	}
 
 	@Override
 	public List<Article> findAll() {
@@ -34,7 +39,13 @@ public class ArticleServiceImpl implements ArticleService {
 	@Override
 	public List<Article> loadAllTitles() {
 		List<Article> articles = articleDao.listAll();
-		articles.forEach(a -> a.setContent(null));
+		
+		List<Article> rets = new ArrayList<>();
+		for(Article article : articles) {
+			Article ret = new Article(article);
+			ret.setContent(null);
+			rets.add(ret);
+		}
 		return articles;
 	}
 

@@ -39,6 +39,7 @@ public class ArticleAction {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Action(value = "view", results = { @Result(name = "success", location = "/WEB-INF/views/article/article.jsp") })
 	public String articleView() {
+		id = id == null ? 3 : id;
 		Map request = (Map) ServletActionContext.getContext().get("request");
 		Article article = articleService.loadById(id);
 		request.put("article", article);
