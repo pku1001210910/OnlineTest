@@ -5,11 +5,13 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.fivestars.websites.onlinetest.dao.ArticleDAO;
 import com.fivestars.websites.onlinetest.model.Article;
 import com.fivestars.websites.onlinetest.service.ArticleService;
 
+@Transactional
 @Service("articleService")
 public class ArticleServiceImpl implements ArticleService {
 	@Autowired
@@ -34,5 +36,10 @@ public class ArticleServiceImpl implements ArticleService {
 		List<Article> articles = articleDao.listAll();
 		articles.forEach(a -> a.setContent(null));
 		return articles;
+	}
+
+	@Override
+	public void delete(int id) {
+		articleDao.delete(id);
 	}
 }

@@ -51,8 +51,7 @@ $('#userlist').jsGrid({
    		{name:'phone', title:'电话', align:'right'},
    		{name:'graduate', title:'学校', align:'right'},
    		{name:'major', title:'专业',align:'right'},		
-   		{name:'background', title:'背景', align:'right'},
-   		{type: "control"}
+   		{name:'background', title:'背景', align:'right'}
    	],
 });
 

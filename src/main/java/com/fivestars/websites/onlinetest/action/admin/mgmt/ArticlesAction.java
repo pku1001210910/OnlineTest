@@ -49,4 +49,10 @@ public class ArticlesAction{
 		json = new ObjectMapper().writeValueAsString(article);
 		return ActionSupport.SUCCESS;
 	}
+	
+	@Action(value = "remove", results = { @Result(name="success", type = "json")})
+	public String removeArticle() throws JsonProcessingException {
+		articleService.delete(id);
+		return ActionSupport.SUCCESS;
+	}
 }

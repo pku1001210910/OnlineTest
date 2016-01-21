@@ -23,4 +23,6 @@ public interface ArticleService {
 	public Article loadById(int id);
 	
 	public List<Article> loadAllTitles();
+	
+	public void delete(int id);
 }
