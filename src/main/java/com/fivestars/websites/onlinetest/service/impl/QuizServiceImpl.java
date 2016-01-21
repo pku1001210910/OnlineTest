@@ -332,13 +332,20 @@ public class QuizServiceImpl implements QuizService {
 	public Integer createQuizCategory(QuizCategory category) {
 		Integer categoryId = categoryDao.save(category);
 		LOGGER.info("[QuizService]Successfully created quiz category of id " + categoryId);
-		return null;
+		return categoryId;
 	}
 
 	@Override
 	public void deleteQuizCategory(Integer categoryId) {
 		categoryDao.delete(categoryId);
 		LOGGER.info("[QuizService]Successfully deleted quiz category of id " + categoryId);
+	}
+	
+	@Override
+	public QuizCategory loadQuizCategoryById(Integer quizCategoryId) {
+		QuizCategory quizCategory = categoryDao.get(quizCategoryId);
+		LOGGER.info("[QuizService]Successfully load quizCategory of id " + quizCategoryId);
+		return quizCategory;
 	}
 	
 }

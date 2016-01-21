@@ -1,8 +1,11 @@
 package com.fivestars.websites.onlinetest.model;
 // Generated Jan 15, 2016 12:20:03 AM by Hibernate Tools 4.3.1.Final
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -33,8 +36,9 @@ public class QuizCategory implements java.io.Serializable {
 		this.description = description;
 		this.parentId = parentId;
 	}
-
+	
 	@Id
+	@GeneratedValue(strategy = IDENTITY)
 
 	@Column(name = "categoryId", unique = true, nullable = false)
 	public Integer getCategoryId() {
