@@ -353,4 +353,11 @@ public class QuizServiceImpl implements QuizService {
 		return quizCategory;
 	}
 	
+	@Override
+	public QuizCategory loadQuizCategoryById(Integer quizCategoryId) {
+		QuizCategory quizCategory = categoryDao.get(quizCategoryId);
+		LOGGER.info("[QuizService]Successfully load quizCategory of id " + quizCategoryId);
+		return quizCategory;
+	}
+	
 }
