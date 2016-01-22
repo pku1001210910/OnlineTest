@@ -1,15 +1,18 @@
 package com.fivestars.websites.onlinetest.service.impl;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.fivestars.websites.onlinetest.dao.ArticleDAO;
 import com.fivestars.websites.onlinetest.model.Article;
 import com.fivestars.websites.onlinetest.service.ArticleService;
 
+@Transactional
 @Service("articleService")
 public class ArticleServiceImpl implements ArticleService {
 	@Autowired
@@ -17,6 +20,10 @@ public class ArticleServiceImpl implements ArticleService {
 
 	public Serializable save(Article article) {
 		return articleDao.save(article);
+	}
+	
+	public void saveOrUpdate(Article article) {
+		articleDao.saveOrUpdate(article);
 	}
 
 	@Override
@@ -32,7 +39,18 @@ public class ArticleServiceImpl implements ArticleService {
 	@Override
 	public List<Article> loadAllTitles() {
 		List<Article> articles = articleDao.listAll();
-		articles.forEach(a -> a.setContent(null));
+		
+		List<Article> rets = new ArrayList<>();
+		for(Article article : articles) {
+			Article ret = new Article(article);
+			ret.setContent(null);
+			rets.add(ret);
+		}
 		return articles;
+	}
+
+	@Override
+	public void delete(int id) {
+		articleDao.delete(id);
 	}
 }

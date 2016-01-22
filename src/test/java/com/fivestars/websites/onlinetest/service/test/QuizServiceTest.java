@@ -19,6 +19,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.fivestars.websites.onlinetest.constant.QuizConst;
 import com.fivestars.websites.onlinetest.model.Quiz;
+import com.fivestars.websites.onlinetest.model.QuizCategory;
 import com.fivestars.websites.onlinetest.model.QuizSubject;
 import com.fivestars.websites.onlinetest.model.SubjectItem;
 import com.fivestars.websites.onlinetest.service.QuizService;
@@ -257,6 +258,17 @@ public class QuizServiceTest {
 		assertThat(quizList.size(), equalTo(1));
 		
 		quizService.deleteQuiz(quizId);
+	}
+	
+	@Test
+	public void testAddQuizCategory() {
+		QuizCategory category = new QuizCategory();
+		category.setCategoryName("心理学");
+		category.setDescription("基本心理学常识");
+		Integer categoryId = quizService.createQuizCategory(category);
+		QuizCategory categoryInDB = quizService.loadQuizCategoryById(categoryId);
+		assertThat(categoryInDB.getCategoryName(), equalTo("心理学"));
+		quizService.deleteQuizCategory(categoryId);
 	}
 	
 	private SubjectItem prepareItem(QuizSubject subject) {

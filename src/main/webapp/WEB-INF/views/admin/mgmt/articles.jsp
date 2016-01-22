@@ -70,6 +70,7 @@
          	<div class="form-group">
             	<div class="form-control" id="article-content"></div>
             	<input hidden name='content' id='article-content-input'/>
+            	<input hidden name='id' id='article-id'/>
           	</div>
 		</form>
       </div>
@@ -92,6 +93,8 @@ function loadAll(articleList) {
 		height: 'auto',
 	    width: '95%',
 	    
+	    sorting: true,
+	    
 	    paging: true,
 	    pageIndex: 1,
 	    pageSize: 13,
@@ -105,21 +108,34 @@ function loadAll(articleList) {
 	    pageNavigatorPrevText: '...',
 	    
 	    rowDoubleClick: editArticle,
-	    
 	    confirmDeleting: true,
 	    deleteConfirm: '确定要删除?',
+	    controller: {
+	    	 deleteItem: deleteArticle
+	    },
 	    		
 	    noDataContent: '目前没有文章，你可以点击左上角按钮添加新文章',
 	    
 	   	fields:[
 	   		{name:'articleId', title:'编号', width:'10%', align:'center'},
 	   		{name:'title', title:'标题',  width:'65%', align:'left'},
-	   		{name:'createDate', title:'修改日期', width:'15%', align:'left', type:'date'},
-	   		{type: 'control', width:'10%'}
+	   		{name:'createDate', title:'修改日期', width:'20%', align:'left', type:'date'},
+	   		{type: 'control', width:'5%', editButton: false}
 	   	],
 	});
 }
 loadAll(<%=articles%>);
+
+// delete article
+function deleteArticle(item) {
+	var articleId = item.articleId;
+	console.log(event);
+	$.ajax({
+      type: "POST",
+      url: '<%=path%>/admin/articles/remove.action',
+      data: 'id=' + articleId,
+    });
+}
 
 // edit article
 var articleItem = {};
@@ -163,7 +179,8 @@ $('#add-article').on('click', function() {
 // save article
 $('#save-btn').on('click', function(e) {
 	$('#article-content-input').val($('#article-content').html());
-	 $.ajax({
+	$('#article-id').val(articleItem.articleId);
+	$.ajax({
       type: "POST",
       url: '<%=path%>/admin/articles/save.action',
       data: $("#article-form").serialize(), // serializes the form's elements.
