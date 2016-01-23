@@ -44,16 +44,16 @@
 						<div class="form-group">
 							<label for="quiz-category">测试类别</label>
 							<div class="dropdown" id="quiz-category">
-								<button class="btn btn-default dropdown-toggle" type="button" id="quiz-category-names" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+								<button class="btn btn-default dropdown-toggle" type="button" id="quiz-category-names" data-toggle="dropdown" data-categoryId="" aria-haspopup="true" aria-expanded="true">
 									<span class="default-category">教育心理学</span>
 									<span class="caret"></span>
 								</button>
 								<ul id="quiz-category-options" class="dropdown-menu" aria-labelledby="dropdownMenu1">
 									<!-- 
-									<li><a href="#">教育心理学</a></li>
-									<li><a href="#">辅导心理学</a></li>
-									<li><a href="#">犯罪心理学</a></li>
-									<li><a href="#">学校心理学</a></li>
+									<li><a href="#" data-categoryId="">教育心理学</a></li>
+									<li><a href="#" data-categoryId="">辅导心理学</a></li>
+									<li><a href="#" data-categoryId="">犯罪心理学</a></li>
+									<li><a href="#" data-categoryId="">学校心理学</a></li>
 									 -->
 								</ul>
 							</div>
@@ -84,11 +84,10 @@
 								</h4>
 							</div>
 							<div class="subject-type-body" id="subject-type-body-panel">
-								<div class="subject-type">
-									<h5>
+								<div id="single-choice-subject-selector" data-type="singleChoice" class="subject-type">
 									<i class="glyphicon glyphicon-ok-circle quiz-icon"></i>  单选题
-									</h5>
 								</div>
+								<div class="add-subject-hint">请点击题型添加题目到编辑区域</div>
 							</div>
 						</div>
 						<div class="col-md-10 subject-item-panel">
@@ -100,6 +99,7 @@
 							<!-- dynamic subject goes here -->				
 							<div id="subject-item-body-panel">
 								<!-- single choice example -->
+								<!--  
 								<div class="subject-container clearfix" data-subjectId="">
 									<div class="subject-left col-md-1">
 										<div class="subject-number">第1题</div>
@@ -109,27 +109,30 @@
 									</div>
 									<div class="subject-right col-md-11">
 										<div class="subject-question">单选题</div>
-										<div class="radio">
-											<label>
-												<input type="radio" name="subject-items" data-itemId="">
-												选项1
-											</label>
-											<div class="item-score">该选项分值:  
-												<input type="number" name="item-score" min="0" max="100" class="item-score-value"/>
+										<div class="subject-items">
+											<div class="radio subject-item" data-itemId="">
+												<label>
+													<input type="radio" name="subject-items">
+													选项1
+												</label>
+												<div class="item-score">该选项分值:  
+													<input type="number" name="item-score" min="0" max="100" class="item-score-value"/>
+												</div>
 											</div>
-										</div>
-										<div class="radio">
-											<label>
-												<input type="radio" name="subject-items" data-itemId="">
-												选项2
-											</label>
-											<div class="item-score">该选项分值:  
-												<input type="number" name="item-score" min="0" max="100" class="item-score-value"/>
+											<div class="radio subject-item" data-itemId="">
+												<label>
+													<input type="radio" name="subject-items">
+													选项2
+												</label>
+												<div class="item-score">该选项分值:  
+													<input type="number" name="item-score" min="0" max="100" class="item-score-value"/>
+												</div>
 											</div>
+											<div><i class="add-item glyphicon glyphicon-plus-sign quiz-icon-gray"></i></div>
 										</div>
-										<div><i class="add-item glyphicon glyphicon-plus-sign quiz-icon-gray"></i></div>
 									</div>
 								</div>
+								-->
 								<!-- single choice example end -->
 							</div>
 						</div>
@@ -167,7 +170,7 @@
 			</div>
 			<div class='modal-footer'>
 				<button type='button' class='btn btn-primary btn-sm' data-action='next' id='next-btn'>创建</button>
-				<button type='button' class='btn btn-default btn-sm' data-dismiss='modal'>关闭</button>
+				<button type='button' class='btn btn-default btn-sm' data-dismiss='modal' id='close-btn'>关闭</button>
 			</div>
 		</div>
 	</div>
@@ -177,4 +180,8 @@
 	var quizList = <%=quizzes%>;
 </script>
 <script src="<%=path%>/js/admin/mgmt/quizzes.js"></script>
+<script src="<%=path%>/js/admin/mgmt/quiz/subject-manager.js"></script>
+<script src="<%=path%>/js/admin/mgmt/quiz/generic-type-subject.js"></script>
 <script src="<%=path%>/js/admin/mgmt/quiz/quiz.js"></script>
+<script src="<%=path%>/js/admin/mgmt/quiz/single-choice-subject.js"></script>
+
