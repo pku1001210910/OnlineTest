@@ -22,7 +22,8 @@ onlineTest.management.SingleChoiceSubject.EventType = {
 	ITEM_CHOICE_UPDATE: 'itemChoiceUpdate',
 	ITEM_SHIFT_UP: 'itemShiftUp',
 	ITEM_SHIFT_DOWN: 'itemShiftDown',
-	ITEM_DELETE: 'itemDelete'
+	ITEM_DELETE: 'itemDelete',
+	ITEM_ADD: 'itemAdd'
 };
 
 (function(SingleChoiceSubject) {
@@ -122,13 +123,13 @@ onlineTest.management.SingleChoiceSubject.EventType = {
 		$item.append($editorHeader);
 
 		$editorHeader.find('.shift-item-up').one('click', function() {
-			self.getDom().trigger(SingleChoiceSubject.EventType.ITEM_SHIFT_UP, $item.data('itemId'));
+			self.shiftItemUp_($item);
 		});
 		$editorHeader.find('.shift-item-down').one('click', function() {
-			self.getDom().trigger(SingleChoiceSubject.EventType.ITEM_SHIFT_DOWN, $item.data('itemId'));
+			self.shiftItemDown_($item);
 		});
 		$editorHeader.find('.remove-item').one('click', function() {
-			self.getDom().trigger(SingleChoiceSubject.EventType.ITEM_DELETE, $item.data('itemId'));
+			self.removeItem_($item);
 		});
 				
 		$editor.one('blur', function() {
@@ -147,6 +148,40 @@ onlineTest.management.SingleChoiceSubject.EventType = {
 	/**
 	 * @private
 	 */
+	SingleChoiceSubject.prototype.addItem_ = function() {
+		
+	};
+	
+	/**
+	 * @param {HTMLDocument} $item
+	 * @private
+	 */
+	SingleChoiceSubject.prototype.removeItem_ = function($item) {
+		// TODO
+		self.getDom().trigger(SingleChoiceSubject.EventType.ITEM_DELETE, $item.data('itemId'));
+	};
+	
+	/**
+	 * @param {HTMLDocument} $item
+	 * @private
+	 */
+	SingleChoiceSubject.prototype.shiftItemUp_ = function($item) {
+		// TODO
+		self.getDom().trigger(SingleChoiceSubject.EventType.ITEM_SHIFT_UP, $item.data('itemId'));
+	};
+	
+	/**
+	 * @param {HTMLDocument} $item
+	 * @private
+	 */
+	SingleChoiceSubject.prototype.shiftItemDown_ = function($item) {
+		// TODO
+		self.getDom().trigger(SingleChoiceSubject.EventType.ITEM_SHIFT_DOWN, $item.data('itemId'));
+	};
+	
+	/**
+	 * @private
+	 */
 	SingleChoiceSubject.prototype.bindEvent_ = function() {
 		var self = this;
 		this.getDom().on('click', '.subject-question', function(event) {
@@ -154,6 +189,9 @@ onlineTest.management.SingleChoiceSubject.EventType = {
 		});
 		this.getDom().on('click', 'input[type="radio"]', function(event) {
 			self.createItemChoiceEditor_(event);
+		});
+		this.getDom().on('click', '.add-item', function() {
+			
 		});
 	};
 	
