@@ -180,6 +180,9 @@
 <div id="delete-subject-confirm" title="删除题目确认" style="display:none">
 	<p>确定要删除题目吗？</p>
 </div>
+<div id="request-error" title="发生错误" style="display:none">
+	<p>请重新操作？</p>
+</div>
 <script>
 	var quizList = <%=quizzes%>;
 </script>
