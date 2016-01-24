@@ -21,7 +21,7 @@
 			<div class="list_bar">用户登录</div>
 			<div class="list_content">
 				<div id="div">
-					<jsp:include flush="true" page="/views/user/userlogin.jsp"></jsp:include>
+					<jsp:include flush="true" page="/WEB-INF/views/user/userlogin.jsp"></jsp:include>
 				</div>
 			</div>
 		</div>

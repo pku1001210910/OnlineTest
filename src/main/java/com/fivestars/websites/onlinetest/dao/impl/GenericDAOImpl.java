@@ -54,7 +54,9 @@ public class GenericDAOImpl<T, PK extends java.io.Serializable> implements Gener
 	}
 	
 	protected Criteria createCriteria() {
-		return getSession().createCriteria(entityClass);
+		Criteria criteria = getSession().createCriteria(entityClass);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		return criteria;
 	}
 	
 	protected Criteria createCriteria(Criterion... criterions) {
