@@ -13,8 +13,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <meta http-equiv="expires" content="0">
 <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 <meta http-equiv="description" content="This is my page">
-<script language="JavaScript" src="<%=path%>/js/public.js"
-	type="text/javascript"></script>
 	
 <script type="text/javascript">
 	        function reg()
@@ -71,12 +69,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<form class="navbar-form navbar-right user-info">
 			<div class="form-group">
 				欢迎您：
-				<s:property value="#session.user.userName" />
-				&nbsp;&nbsp;&nbsp;&nbsp; 
-				&nbsp;&nbsp;&nbsp;&nbsp;
+				<s:if test="#session.user!=null">
+					<s:property value="#session.user.userName" />
+				</s:if>
 			</div>
 			<div class="form-group">
-				<a class="white underline" href="<%=basePath %>user/userLogout.action">安全退出</a>
+				<a class="white underline left-15" href="<%=basePath %>user/userLogout.action">退出</a>
+			</div>
+			<div class="form-group">
+				<span class="white separator">|</span>
+			</div>
+			<div class="form-group">
+				<a class="white underline" href="<%=basePath %>user/home.action">个人中心</a>
 			</div>
 		</form>
 	</s:else>
