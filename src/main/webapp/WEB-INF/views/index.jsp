@@ -64,7 +64,7 @@
 				<h2>文章模块</h2>
 				<p>请在这里填写文章模块的背景、作用</p>
 				<p>
-					<a class="btn btn-default" href="#" role="button">查看文章 &raquo;</a>
+					<a class="btn btn-default" href="<%=basePath %>article/view.action" role="button">查看文章 &raquo;</a>
 				</p>
 			</div>
 			<div class="col-md-6">

@@ -36,7 +36,7 @@ h6, .h6 {
  */
 
 .blog-masthead {
-  background-color: #428bca;
+  background-color: #337ab7;
   -webkit-box-shadow: inset 0 -2px 5px rgba(0,0,0,.1);
           box-shadow: inset 0 -2px 5px rgba(0,0,0,.1);
 }
@@ -72,27 +72,6 @@ h6, .h6 {
   border-bottom: 5px solid;
   border-left: 5px solid transparent;
 }
-
-
-/*
- * Blog name and description
- */
-
-.blog-header {
-  padding-top: 20px;
-  padding-bottom: 20px;
-}
-.blog-title {
-  margin-top: 30px;
-  margin-bottom: 0;
-  font-size: 60px;
-  font-weight: normal;
-}
-.blog-description {
-  font-size: 20px;
-  color: #999;
-}
-
 
 /*
  * Main column and sidebar layout
@@ -130,8 +109,8 @@ h6, .h6 {
   padding: 10px 20px;
   text-align: center;
   border-radius: 30px;
+  font-size: 15px;
 }
-
 
 /*
  * Blog posts
@@ -141,8 +120,9 @@ h6, .h6 {
   margin-bottom: 60px;
 }
 .blog-post-title {
+  padding-top: 20px;
   margin-bottom: 5px;
-  font-size: 40px;
+  font-size: 25px;
 }
 .blog-post-meta {
   margin-bottom: 20px;
