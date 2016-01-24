@@ -58,11 +58,13 @@ onlineTest.management.Quiz.Status = {
 	 */
 	Quiz.prototype.resetHeaderStatus_ = function(status, step) {
 		if (status === onlineTest.management.Quiz.Status.CREATE) {
-			$('#quiz-dialog-label').val('添加文章');
-			if (step === 1) {
-				$('#quiz-save-label').css('visibility', 'hidden');
-				$('#quiz-status-group').css('visibility', 'hidden');
-			}
+			$('#quiz-dialog-label').text('添加测试');
+			$('#quiz-save-label').css('visibility', 'hidden');
+			$('#quiz-status-group').css('visibility', 'hidden');
+		} else {
+			$('#quiz-dialog-label').text('修改测试');
+			$('#quiz-save-label').css('visibility', 'visible');
+			$('#quiz-status-group').css('visibility', 'visible');
 		}
 	};
 	
@@ -72,7 +74,21 @@ onlineTest.management.Quiz.Status = {
 	 * @private
 	 */
 	Quiz.prototype.resetFooterStatus_ = function(status, step) {
+		if (status === onlineTest.management.Quiz.Status.CREATE) {
+			$('#next-btn').text('创建');
+		} else {
+			if (step === 3) {
+				$('#next-btn').text('发布测试');
+			} else {
+				$('#next-btn').text('下一步');
+			}
+		}
 		
+		if (step === 1) {
+			$('#prev-btn').css('display', 'none');
+		} else {
+			$('#prev-btn').css('display', 'inline');
+		}
 	};
 	
 	/**
@@ -114,6 +130,35 @@ onlineTest.management.Quiz.Status = {
 		var $child = $('<a href="#"></a>').data('categoryId', categoryId).text(categoryName);
 		$child.appendTo($option);
 		$option.appendTo(parent);
+	};
+	
+	/**
+	 * @private
+	 * @return {HTMLDocument}
+	 */
+	Quiz.prototype.createFeedbackDom_ = function() {
+		var $feedback = $('<div class="feedback-item"></div>').append('<h5></h5>')
+			.append('<textarea class="form-control feedback-content" rows="5"></textarea>')
+			.append('<div class="feedback-score-scope">')
+			.append('最小分值： <input class="score-from" type="number" name="item-score-min" min="0" max="100" value="0"/>')
+			.append('&nbsp;&nbsp;&nbsp;&nbsp;最大分值： <input class="score-to" type="number" name="item-score-min" min="0" max="100" value="0"/>')
+			.append('</div><div>')
+			.append('<i class="add-feedback glyphicon glyphicon-plus-sign quiz-icon-gray"></i>')
+			.append('<i class="remove-feedback glyphicon glyphicon-trash quiz-icon-gray"></i>')
+			.append('</div>');
+		return $feedback;
+	};
+	
+	/**
+	 * @private
+	 */
+	Quiz.prototype.rearrangeFeedbackTitle_ = function() {
+		var $allFeedbacks = $('#quiz-feedback-container').find('h5');
+		var i = 1;
+		$allFeedbacks.each(function() {
+			$(this).text("第" + i + "条反馈结果");
+			i++;
+		});
 	};
 	
 	/**
@@ -189,11 +234,11 @@ onlineTest.management.Quiz.Status = {
 		});
 		
 		$('#next-btn').click(function() {
-			if (self.status === onlineTest.management.Quiz.Status.CREATE) {
+			if (self.status_ === onlineTest.management.Quiz.Status.CREATE) {
+				self.status_ = onlineTest.management.Quiz.Status.UPDATE;
 				// TODO create quiz in server side
-			} else {
-				
 			}
+			
 			if (self.step_ === 1) {
 				$('#add-quiz-step-1').css('display', 'none');
 				$('#add-quiz-step-2').css('display', 'block');
@@ -205,10 +250,28 @@ onlineTest.management.Quiz.Status = {
 				$('#add-quiz-step-3').css('display', 'block');
 				self.step_ = 3;
 			} else {
-				$('#add-quiz-step-1').css('display', 'none');
+				$('#close-btn').click();
+			}
+			self.resetHeaderStatus_(self.status_, self.step_);
+			self.resetFooterStatus_(self.status_, self.step_);
+		});
+		
+		$('#prev-btn').click(function() {
+			if (self.step_ === 1) {
+				return;
+			} else if (self.step_ === 2) {
+				$('#add-quiz-step-1').css('display', 'block');
 				$('#add-quiz-step-2').css('display', 'none');
 				$('#add-quiz-step-3').css('display', 'none');
+				self.step_ = 1;
+			} else {
+				$('#add-quiz-step-1').css('display', 'none');
+				$('#add-quiz-step-2').css('display', 'block');
+				$('#add-quiz-step-3').css('display', 'none');
+				self.step_ = 2;
 			}
+			self.resetHeaderStatus_(self.status_, self.step_);
+			self.resetFooterStatus_(self.status_, self.step_);
 		});
 		
 		// bind category change event, delegate event
@@ -244,6 +307,40 @@ onlineTest.management.Quiz.Status = {
 			var subjectType = $(this).data('type');
 			self.addSubject(subjectType);
 		});
+		
+		// bind feedback event
+		$('#quiz-feedback-container').on('blur', 'input, textarea', function(event) {
+			var $feedback = $(event.target).parents('.feedback-item');
+			var content = $feedback.find('.feedback-content').val();
+			var scoreFrom = $feedback.find('.score-from').val();
+			var scoreTo = $feedback.find('.score-to').val();
+
+			// TODO update feedback in server side
+		});
+		
+		$('#quiz-feedback-container').on('click', '.add-feedback', function(event) {
+			var $prev = $(event.target).parents('.feedback-item');
+			var $feedback = self.createFeedbackDom_();
+			$feedback.insertAfter($prev);
+			$feedback.find('textarea').focus();
+			self.rearrangeFeedbackTitle_();
+			
+			// scroll to the new subject
+			var $scrollContainer = $('#quiz-feedback-container');
+			$scrollContainer.scrollTop(
+				$feedback.offset().top - $scrollContainer.offset().top + $scrollContainer.scrollTop()
+			);
+			
+			// TODO insert feedback in server side
+		});
+		
+		$('#quiz-feedback-container').on('click', '.remove-feedback', function(event) {
+			var $feedback = $(event.target).parents('.feedback-item');
+			$feedback.remove();
+			self.rearrangeFeedbackTitle_();
+			
+			// TODO delete feedback in server side
+		});
 	};
 	
 	/**
@@ -258,10 +355,18 @@ onlineTest.management.Quiz.Status = {
 		$('#close-btn').unbind('click');
 		// unbind next button event
 		$('#next-btn').unbind('click');
+		// unbind prev button click
+		$('#prev-btn').unbind('click');
 		// unbind subject type collapse/expand event
 		$('#collapse-type').unbind('click');
 		// unbind subject type click event
 		$('.subject-type').unbind('click');
+		// unbind feedback blur event
+		$('#quiz-feedback-container').off('blur', 'input, textarea');
+		// unbind feedback add event
+		$('#quiz-feedback-container').off('click', '.add-feedback');
+		// unbind feedback delete event
+		$('#quiz-feedback-container').off('click', '.remove-feedback');
 	};
 	
 	/**
