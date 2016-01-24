@@ -127,6 +127,13 @@ onlineTest.management.Quiz.Status = {
 		subjectComponent.initialize();
 		this.bindSubjectComponentEvent_(subjectComponent);
 		
+		// scroll to the new subject
+		var $scrollContainer = $('.subject-item-panel');
+		var $newSubject = subjectComponent.getDom();
+		$scrollContainer.scrollTop(
+			$newSubject.offset().top - $scrollContainer.offset().top + $scrollContainer.scrollTop()
+		);
+		
 		// TODO add subject in server side
 	};
 	
@@ -135,36 +142,39 @@ onlineTest.management.Quiz.Status = {
 	 * @param {onlineTest.management.Subject} subjectComponent
 	 */
 	Quiz.prototype.bindSubjectComponentEvent_ = function(subjectComponent) {
+		var SubjectEventType = onlineTest.management.Subject.EventType;
+		var ItemEventType = onlineTest.management.SingleChoiceSubject.EventType;
 		// TODO operation in server side
 		var $dom = subjectComponent.getDom();
-		$dom.bind(onlineTest.management.Subject.EventType.SUBJECT_SHIFT_UP, function(event, subjectId) {
+		$dom.bind(SubjectEventType.SUBJECT_SHIFT_UP, function(event, subjectId) {
 			console.log('shift subject up');
 		});
-		$dom.bind(onlineTest.management.Subject.EventType.SUBJECT_SHIFT_DOWN, function(event, subjectId) {
+		$dom.bind(SubjectEventType.SUBJECT_SHIFT_DOWN, function(event, subjectId) {
 			console.log('shift subject down');
 		});
-		$dom.bind(onlineTest.management.Subject.EventType.SUBJECT_DELETE, function(event, subjectId) {
+		$dom.bind(SubjectEventType.SUBJECT_DELETE, function(event, subjectId) {
 			console.log('delete subject');
 		});
-		$dom.bind(onlineTest.management.SingleChoiceSubject.EventType.SUBJECT_QUESTION_UPDATE, 
-				function(event, subjectId, question) {
+		$dom.bind(ItemEventType.SUBJECT_QUESTION_UPDATE, function(event, subjectId, question) {
 			console.log('update subject question');
 		});
-		$dom.bind(onlineTest.management.SingleChoiceSubject.EventType.ITEM_CHOICE_UPDATE,
-				function(event, itemId, choice) {
+		$dom.bind(ItemEventType.ITEM_CHOICE_UPDATE, function(event, itemId, choice) {
 			console.log('update item choice');
 		});
-		$dom.bind(onlineTest.management.SingleChoiceSubject.EventType.ITEM_SHIFT_UP,
-				function(event, itemId) {
+		$dom.bind(ItemEventType.ITEM_SCORE_UPDATE, function(event, itemId, score) {
+			console.log('update item score');
+		});
+		$dom.bind(ItemEventType.ITEM_SHIFT_UP, function(event, itemId) {
 			console.log('shift item up');
 		});
-		$dom.bind(onlineTest.management.SingleChoiceSubject.EventType.ITEM_SHIFT_DOWN,
-				function(event, itemId) {
+		$dom.bind(ItemEventType.ITEM_SHIFT_DOWN, function(event, itemId) {
 			console.log('shift item down');
 		});
-		$dom.bind(onlineTest.management.SingleChoiceSubject.EventType.ITEM_DELETE,
-				function(event, itemId) {
+		$dom.bind(ItemEventType.ITEM_DELETE, function(event, itemId) {
 			console.log('delete item');
+		});
+		$dom.bind(ItemEventType.ITEM_ADD, function(event, subjectId) {
+			console.log('add item');
 		});
 	};
 	

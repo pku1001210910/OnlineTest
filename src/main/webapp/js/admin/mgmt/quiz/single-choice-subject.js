@@ -20,6 +20,7 @@ onlineTest.management.SingleChoiceSubject.prototype = new onlineTest.management.
 onlineTest.management.SingleChoiceSubject.EventType = {
 	SUBJECT_QUESTION_UPDATE: 'subjectQuestionUpdate',
 	ITEM_CHOICE_UPDATE: 'itemChoiceUpdate',
+	ITEM_SCORE_UPDATE: 'itemScoreUpdate',
 	ITEM_SHIFT_UP: 'itemShiftUp',
 	ITEM_SHIFT_DOWN: 'itemShiftDown',
 	ITEM_DELETE: 'itemDelete',
@@ -44,7 +45,7 @@ onlineTest.management.SingleChoiceSubject.EventType = {
 		for (var i = 0; i < itemCount; i++) {
 			$itemContainer.append(this.createSingeChoiceDom_());
 		}
-		$itemContainer.append('<div><i class="add-item glyphicon glyphicon-plus-sign quiz-icon-gray"></i></div>');
+		$itemContainer.append('<div class="subject-operation"><i class="add-item glyphicon glyphicon-plus-sign quiz-icon-gray"></i></div>');
 		return $itemContainer;
 	};
 	
@@ -149,7 +150,13 @@ onlineTest.management.SingleChoiceSubject.EventType = {
 	 * @private
 	 */
 	SingleChoiceSubject.prototype.addItem_ = function() {
+		var $itemContainer = this.getDom().find('.subject-items');
+		var $subjectOp = $itemContainer.find('.subject-operation');
+		var $singleChoice = this.createSingeChoiceDom_();
+		$singleChoice.insertBefore($subjectOp);
+		$singleChoice.find('input[type="radio"]').click();
 		
+		this.getDom().trigger(SingleChoiceSubject.EventType.ITEM_ADD, this.getDom().data('subjectId'));
 	};
 	
 	/**
@@ -157,8 +164,8 @@ onlineTest.management.SingleChoiceSubject.EventType = {
 	 * @private
 	 */
 	SingleChoiceSubject.prototype.removeItem_ = function($item) {
-		// TODO
-		self.getDom().trigger(SingleChoiceSubject.EventType.ITEM_DELETE, $item.data('itemId'));
+		this.getDom().trigger(SingleChoiceSubject.EventType.ITEM_DELETE, $item.data('itemId'));
+		$item.remove();
 	};
 	
 	/**
@@ -166,8 +173,13 @@ onlineTest.management.SingleChoiceSubject.EventType = {
 	 * @private
 	 */
 	SingleChoiceSubject.prototype.shiftItemUp_ = function($item) {
-		// TODO
-		self.getDom().trigger(SingleChoiceSubject.EventType.ITEM_SHIFT_UP, $item.data('itemId'));
+		var $pre = $item.prev('.subject-item');
+		if ($pre.size() === 0) {
+			return;
+		}
+		$item.insertBefore($pre);
+		$item.find('input[type="radio"]').click();
+		this.getDom().trigger(SingleChoiceSubject.EventType.ITEM_SHIFT_UP, $item.data('itemId'));
 	};
 	
 	/**
@@ -175,8 +187,24 @@ onlineTest.management.SingleChoiceSubject.EventType = {
 	 * @private
 	 */
 	SingleChoiceSubject.prototype.shiftItemDown_ = function($item) {
-		// TODO
-		self.getDom().trigger(SingleChoiceSubject.EventType.ITEM_SHIFT_DOWN, $item.data('itemId'));
+		var $next = $item.next('.subject-item');
+		if ($next.size() === 0) {
+			return;
+		}
+		$item.insertAfter($next);
+		$item.find('input[type="radio"]').click();
+		this.getDom().trigger(SingleChoiceSubject.EventType.ITEM_SHIFT_DOWN, $item.data('itemId'));
+	};
+	
+	/**
+	 * @private
+	 * @param event
+	 */
+	SingleChoiceSubject.prototype.updateItemScore_ = function(event) {
+		var $scoreInput = $(event.target);
+		var score = parseFloat($scoreInput.val());
+		var $item = $scoreInput.parents('.subject-item');
+		this.getDom().trigger(SingleChoiceSubject.EventType.ITEM_SCORE_UPDATE, $item.data('itemId'), score);
 	};
 	
 	/**
@@ -191,13 +219,18 @@ onlineTest.management.SingleChoiceSubject.EventType = {
 			self.createItemChoiceEditor_(event);
 		});
 		this.getDom().on('click', '.add-item', function() {
-			
+			self.addItem_();
+		});
+		this.getDom().on('change', '.item-score-value', function(event) {
+			self.updateItemScore_(event);
 		});
 	};
 	
 	SingleChoiceSubject.prototype.unbindEvent_ = function() {
 		this.getDom().off('click', '.subject-question');
 		this.getDom().off('click', 'label');
+		this.getDom().off('click', '.add-item');
+		this.getDom().off('change', '.item-score-value');
 	};
 	
 })(onlineTest.management.SingleChoiceSubject);
