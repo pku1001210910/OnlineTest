@@ -41,7 +41,7 @@
 					<span class="icon-bar"></span> 
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand white" href="#"> 北京大学心理系 </a>
+				<a class="navbar-brand white" href="<%=basePath%>"> 北京大学心理系 </a>
 			</div>
 			<div id="navbar" class="navbar-collapse collapse">
 				<jsp:include flush="true" page="user/userlogin.jsp"></jsp:include>
@@ -64,7 +64,7 @@
 				<h2>文章模块</h2>
 				<p>请在这里填写文章模块的背景、作用</p>
 				<p>
-					<a class="btn btn-default" href="<%=basePath %>article/view.action" role="button">查看文章 &raquo;</a>
+					<a class="btn btn-default" href="<%=basePath %>article/all.action?pageNo=1" role="button">查看文章 &raquo;</a>
 				</p>
 			</div>
 			<div class="col-md-6">

@@ -26,16 +26,32 @@ public class ArticleAction {
 	private Integer id;
 	private String title;
 	private String content;
+	private Integer pageNo;
+	private final Integer pageSize = 10;
 
 	@Autowired
 	private ArticleService articleService;
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Action(value = "all", results = { @Result(name = "success", location = "/WEB-INF/views/article/articlelist.jsp") })
-	public String articleList() {
+	public String articleList() throws JsonProcessingException {
+		List<Article> articles = new ArrayList<>();
+		if (pageNo == null) {
+			for (Article each : articleService.loadAllTitles()) {
+				articles.add(new Article(each));
+			}
+			pageNo = 1;
+		} else {
+			for (Article each : articleService.loadTitlesByPage(pageNo, pageSize)) {
+				articles.add(new Article(each));
+			}
+		}
+
 		Map request = (Map) ServletActionContext.getContext().get("request");
-		List<Article> articles = articleService.loadAllTitles();
-		request.put("articles", articles);
+		ObjectMapper objectMapper = new ObjectMapper();
+		request.put("articles", objectMapper.writeValueAsString(articles));
+		request.put("total", articleService.count() / pageSize + 1);
+		request.put("pageNo", pageNo);
 		return ActionSupport.SUCCESS;
 	}
 

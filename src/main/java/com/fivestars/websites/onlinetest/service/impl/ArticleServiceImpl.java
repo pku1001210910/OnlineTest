@@ -39,18 +39,32 @@ public class ArticleServiceImpl implements ArticleService {
 	@Override
 	public List<Article> loadAllTitles() {
 		List<Article> articles = articleDao.listAll();
-		
+		return clearContent(articles);
+	}
+
+	@Override
+	public void delete(int id) {
+		articleDao.delete(id);
+	}
+	
+	private List<Article> clearContent(List<Article> articles) {
 		List<Article> rets = new ArrayList<>();
 		for(Article article : articles) {
 			Article ret = new Article(article);
 			ret.setContent(null);
 			rets.add(ret);
 		}
-		return articles;
+		return rets;
 	}
 
 	@Override
-	public void delete(int id) {
-		articleDao.delete(id);
+	public List<Article> loadTitlesByPage(int pageNo, int pageSize) {
+		List<Article> articles = articleDao.loadByPage(pageNo, pageSize);
+		return clearContent(articles);
+	}
+
+	@Override
+	public int count() {
+		return articleDao.countAll();
 	}
 }
