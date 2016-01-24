@@ -20,6 +20,7 @@
 <link href="<%=path%>/css/jquery-ui.theme.min.css" rel="stylesheet">
 <link href="<%=path%>/css/admin/home.css" rel="stylesheet">
 <link href="<%=path%>/css/main.css" rel="stylesheet">
+<link href="<%=path%>/css/showLoading.css" rel="stylesheet">
 
 <!-- support ie8 & ie9 & ie10 -->
 <script src="<%=path%>/js/html5shiv.min.js" type="text/javascript"></script>
@@ -82,6 +83,7 @@
 	<script src="<%=path%>/js/bootstrap.min.js"></script>
 	<script src="<%=path%>/js/jsgrid.min.js"></script>
 	<script src="<%=path%>/js/jquery-ui.min.js"></script>
+	<script src="<%=path%>/js/jquery.showLoading.min.js"></script>
 	
 	<!-- page js -->
 	<script src="<%=path%>/js/admin/home.js"></script>

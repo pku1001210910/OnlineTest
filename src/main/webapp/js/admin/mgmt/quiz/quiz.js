@@ -236,7 +236,19 @@ onlineTest.management.Quiz.Status = {
 		$('#next-btn').click(function() {
 			if (self.status_ === onlineTest.management.Quiz.Status.CREATE) {
 				self.status_ = onlineTest.management.Quiz.Status.UPDATE;
-				// TODO create quiz in server side
+				// create quiz for first time
+				var title = $('#quiz-title').val();
+				var description = $('#quiz-description').val();
+				var categoryId = $('#quiz-category-names').data('categoryId');
+				var needCharge = $('#need-charge-toggle').prop('checked') ? 1 : 0;
+				var price = 0;
+				if ($('#quiz-price').val() !== "" && !isNaN($('#quiz-price').val())) {
+					price = parseFloat($('#quiz-price').val());
+				}					
+				self.io_.createQuiz(title, description, categoryId, needCharge, price, function(quizId) {
+					// set quizId to element
+					$('#quiz-dialog').data('quizId', quizId);
+				});
 			}
 			
 			if (self.step_ === 1) {
@@ -401,5 +413,62 @@ onlineTest.management.Quiz.IO = function() {
 	 */
 	IO.prototype.getAllQuizCategories = function(callback) {
 		$.getJSON('./getAllQuizCategories.action', null, callback);
+	};
+	
+	/**
+	 * @param {string} title
+	 * @param {string} description
+	 * @param {number} category
+	 * @param {number} needCharge
+	 * @param {number} price
+	 * @param {Function} callback
+	 */
+	IO.prototype.createQuiz = function(title, description, category, needCharge, price, callback) {
+		var self = this;
+		var quizMeta = {
+			'title': title,
+			'description': description,
+			'category': category,
+			'needCharge': needCharge,
+			'price': price
+		};
+		this.showLoadering_();
+		$.ajax({
+			url: './createQuiz.action',
+			type: 'post',
+			data: quizMeta,
+			dataType: 'json',
+			success:function (data) {
+				var result = JSON.parse(data['result']);
+				callback(result['quizId']);
+				self.updateSaveDateTime_();
+				self.cancelLoading_();
+			},
+			error: function(xhr) {
+				self.cancelLoading_();
+			}
+		});
+	};
+	
+	/**
+	 * @private
+	 */
+	IO.prototype.showLoadering_ = function() {
+		$('#quiz-dialog').showLoading();
+	};
+	
+	/**
+	 * @private
+	 */
+	IO.prototype.cancelLoading_ = function() {
+		$('#quiz-dialog').hideLoading();
+	};
+	
+	/**
+	 * @private
+	 */
+	IO.prototype.updateSaveDateTime_ = function() {
+		var date = new Date();
+		$('#quiz-save-label').text('系统已为您自动保存所有的更改 ' + date.toLocaleString());
 	};
 })(onlineTest.management.Quiz.IO);

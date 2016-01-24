@@ -17,7 +17,7 @@
 <div id='quizzes'></div>
 
 <!-- add quiz dialog -->
-<div class='modal fade' id='quiz-dialog'>
+<div class='modal fade' id='quiz-dialog' data-quizId="">
 	<div class='modal-dialog modal-lg'>
 		<div class='modal-content'>
 			<div class='modal-header'>
@@ -177,7 +177,7 @@
 		</div>
 	</div>
 </div>
-<div id="delete-subject-confirm" title="删除题目确认">
+<div id="delete-subject-confirm" title="删除题目确认" style="display:none">
 	<p>确定要删除题目吗？</p>
 </div>
 <script>
