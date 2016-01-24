@@ -432,7 +432,7 @@ onlineTest.management.Quiz.IO = function() {
 			'needCharge': needCharge,
 			'price': price
 		};
-		this.showLoadering_();
+		this.beforeRequest_();
 		$.ajax({
 			url: './createQuiz.action',
 			type: 'post',
@@ -441,11 +441,10 @@ onlineTest.management.Quiz.IO = function() {
 			success:function (data) {
 				var result = JSON.parse(data['result']);
 				callback(result['quizId']);
-				self.updateSaveDateTime_();
-				self.cancelLoading_();
+				self.onSuccess_();
 			},
 			error: function(xhr) {
-				self.cancelLoading_();
+				self.onError_();
 			}
 		});
 	};
@@ -453,15 +452,33 @@ onlineTest.management.Quiz.IO = function() {
 	/**
 	 * @private
 	 */
-	IO.prototype.showLoadering_ = function() {
+	IO.prototype.beforeRequest_ = function() {
 		$('#quiz-dialog').showLoading();
 	};
 	
 	/**
 	 * @private
 	 */
-	IO.prototype.cancelLoading_ = function() {
+	IO.prototype.onSuccess_ = function() {
+		this.updateSaveDateTime_();
 		$('#quiz-dialog').hideLoading();
+	};
+	
+	/**
+	 * @private
+	 */
+	IO.prototype.onError_ = function() {
+		$('#quiz-dialog').hideLoading();
+		$('#request-error').dialog({
+			resizable: false,
+			height: 160,
+			modal: true,
+			buttons: {
+				"确定": function() {
+					$(this).dialog( "close" );
+				}
+			}
+		});
 	};
 	
 	/**

@@ -154,7 +154,7 @@ onlineTest.management.Subject.prototype.deleteSubject_ = function() {
 	var subjectId = this.$dom_.data('subjectId');
 	$('#delete-subject-confirm').dialog({
 		resizable: false,
-		height:140,
+		height: 160,
 		modal: true,
 		buttons: {
 			"确定": function() {
