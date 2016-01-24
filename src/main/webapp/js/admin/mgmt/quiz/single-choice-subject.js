@@ -221,7 +221,7 @@ onlineTest.management.SingleChoiceSubject.EventType = {
 		this.getDom().on('click', '.add-item', function() {
 			self.addItem_();
 		});
-		this.getDom().on('change', '.item-score-value', function(event) {
+		this.getDom().on('blur', '.item-score-value', function(event) {
 			self.updateItemScore_(event);
 		});
 	};

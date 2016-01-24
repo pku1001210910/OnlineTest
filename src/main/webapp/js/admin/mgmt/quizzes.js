@@ -39,10 +39,6 @@ var bindEvent = function() {
 	$('#add-quiz').click(function() {
 		var quizDialog = new onlineTest.management.Quiz('create');
 	});
-	
-	$('#need-charge-toggle').click(function() {
-	
-	})
 };
 
 $(document).ready(function() {

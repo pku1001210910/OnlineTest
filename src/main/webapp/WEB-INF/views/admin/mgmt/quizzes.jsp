@@ -26,8 +26,9 @@
 				<span id="quiz-status-group">
 					<small class="quiz-status-label">状态: </small>
 					<small class="quiz-status-value" id="quiz-status">未发布</small>
-					<button type='button' class='btn btn-primary btn-sm' data-action='publish' id='publish-quiz-btn'>发布测试</button>
+ 					<!--<button type='button' class='btn btn-primary btn-sm' data-action='publish' id='publish-quiz-btn'>发布测试</button>-->
 				</span>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 			</div>
 			<div class='modal-body'>
 			<div id="add-quiz-step-1">
@@ -141,24 +142,24 @@
 				<div id="add-quiz-step-3">
 					<h4 class="quiz-navi">第三步: 设置反馈模板</h4>
 					<div id="quiz-feedback-container" class="feeedback-container">
-						<div class="feedback-item">
-							<h5>第1条默认反馈结果:</h5>
+						<div class="feedback-item" data-feedbackId="">
+							<h5>第1条反馈结果:</h5>
 							<textarea class="form-control feedback-content" rows="5"></textarea>
 							<div class="feedback-score-scope">
-							最小分值： <input type="number" name="item-score-min" min="0" max="100" />
-							&nbsp;&nbsp;&nbsp;&nbsp;最大分值： <input type="number" name="item-score-min" min="0" max="100" />
+							最小分值： <input class="score-from" type="number" name="item-score-min" min="0" max="100" value="0"/>
+							&nbsp;&nbsp;&nbsp;&nbsp;最大分值： <input class="score-to" type="number" name="item-score-min" min="0" max="100" value="0"/>
 							</div>
 							<div>
 								<i class="add-feedback glyphicon glyphicon-plus-sign quiz-icon-gray"></i>
 								<i class="remove-feedback glyphicon glyphicon-trash quiz-icon-gray"></i>
 							</div>
 						</div>
-						<div class="feedback-item">
-							<h5>第2条默认反馈结果:</h5>
+						<div class="feedback-item" data-feedbackId="">
+							<h5>第2条反馈结果:</h5>
 							<textarea class="form-control feedback-content" rows="5"></textarea>
 							<div class="feedback-score-scope">
-							最小分值： <input type="number" name="item-score-min" min="0" max="100" />
-							&nbsp;&nbsp;&nbsp;&nbsp;最大分值： <input type="number" name="item-score-min" min="0" max="100" />
+							最小分值： <input class="score-from" type="number" name="item-score-min" min="0" max="100" value="0"/>
+							&nbsp;&nbsp;&nbsp;&nbsp;最大分值： <input class="score-to" type="number" name="item-score-min" min="0" max="100" value="0"/>
 							</div>
 							<div>
 								<i class="add-feedback glyphicon glyphicon-plus-sign quiz-icon-gray"></i>
@@ -169,7 +170,8 @@
 				</div>
 			</div>
 			<div class='modal-footer'>
-				<button type='button' class='btn btn-primary btn-sm' data-action='next' id='next-btn'>创建</button>
+				<button type='button' class='btn btn-primary btn-sm' id='next-btn'>创建</button>
+				<button type='button' class='btn btn-default btn-sm' id='prev-btn'>上一步</button>
 				<button type='button' class='btn btn-default btn-sm' data-dismiss='modal' id='close-btn'>关闭</button>
 			</div>
 		</div>
