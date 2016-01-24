@@ -175,7 +175,9 @@
 		</div>
 	</div>
 </div>
-
+<div id="delete-subject-confirm" title="删除题目确认">
+	<p>确定要删除题目吗？</p>
+</div>
 <script>
 	var quizList = <%=quizzes%>;
 </script>

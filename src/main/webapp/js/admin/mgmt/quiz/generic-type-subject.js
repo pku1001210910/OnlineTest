@@ -106,19 +106,84 @@ onlineTest.management.Subject.prototype.createSubjectRightPanel_ = function() {
 /**
  * @private
  */
-onlineTest.management.Subject.prototype.bindGenericEvent_ = function() {
+onlineTest.management.Subject.prototype.rearrangeSubjectNumber_ = function() {
+	var $allSubjects = $('#subject-item-body-panel').find('.subject-number');
+	var i = 1;
+	$allSubjects.each(function() {
+		$(this).text("第" + i + "题");
+		i++;
+	});
+};
+
+/**
+ * @private
+ */
+onlineTest.management.Subject.prototype.shiftSubjectUp_ = function() {
+	var EventType = onlineTest.management.Subject.EventType;
+	var subjectId = this.$dom_.data('subjectId');
+	var $pre = this.$dom_.prev('.subject-container');
+	if ($pre.size() === 0) {
+		return;
+	}
+	this.$dom_.insertBefore($pre);
+	this.rearrangeSubjectNumber_();
+	this.$dom_.trigger(EventType.SUBJECT_SHIFT_UP, subjectId);
+};
+
+/**
+ * @private
+ */
+onlineTest.management.Subject.prototype.shiftSubjectDown_ = function() {
+	var EventType = onlineTest.management.Subject.EventType;
+	var subjectId = this.$dom_.data('subjectId');
+	var $next = this.$dom_.next('.subject-container');
+	if ($next.size() === 0) {
+		return;
+	}
+	this.$dom_.insertAfter($next);
+	this.rearrangeSubjectNumber_();
+	this.$dom_.trigger(EventType.SUBJECT_SHIFT_DOWN, subjectId);
+};
+
+/**
+ * @private
+ */
+onlineTest.management.Subject.prototype.deleteSubject_ = function() {
 	var self = this;
 	var EventType = onlineTest.management.Subject.EventType;
-	var subjectId = self.$dom_.data('subjectId');
+	var subjectId = this.$dom_.data('subjectId');
+	$('#delete-subject-confirm').dialog({
+		resizable: false,
+		height:140,
+		modal: true,
+		buttons: {
+			"确定": function() {
+				$(this).dialog( "close" );
+				self.destroy();
+				self.$dom_.trigger(EventType.SUBJECT_DELETE, subjectId);
+				self.$dom_.remove();
+				self.rearrangeSubjectNumber_();
+			},
+			"取消": function() {
+				$(this).dialog( "close" );
+			}
+		}
+	});
+};
+
+/**
+ * @private
+ */
+onlineTest.management.Subject.prototype.bindGenericEvent_ = function() {
+	var self = this;
 	this.$dom_.on('click', '.shift-subject-up', function(event) {
-		self.$dom_.trigger(EventType.SUBJECT_SHIFT_UP, subjectId);
+		self.shiftSubjectUp_();
 	});
 	this.$dom_.on('click', '.shift-subject-down', function(event) {
-		self.$dom_.trigger(EventType.SUBJECT_SHIFT_DOWN, subjectId);
+		self.shiftSubjectDown_();
 	});
 	this.$dom_.on('click', '.remove-subject', function(event) {
-		self.destroy();
-		self.$dom_.trigger(EventType.SUBJECT_DELETE, subjectId);
+		self.deleteSubject_();
 	});
 };
 

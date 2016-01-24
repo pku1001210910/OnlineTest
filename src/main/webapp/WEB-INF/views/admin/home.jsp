@@ -16,6 +16,8 @@
 <link href="<%=path%>/css/bootstrap.min.css" rel="stylesheet">
 <link href="<%=path%>/css/jsgrid.min.css" rel="stylesheet">
 <link href="<%=path%>/css/jsgrid-theme.min.css" rel="stylesheet">
+<link href="<%=path%>/css/jquery-ui.min.css" rel="stylesheet">
+<link href="<%=path%>/css/jquery-ui.theme.min.css" rel="stylesheet">
 <link href="<%=path%>/css/admin/home.css" rel="stylesheet">
 <link href="<%=path%>/css/main.css" rel="stylesheet">
 
@@ -79,6 +81,7 @@
 	<script src="<%=path%>/js/jquery.min.js"></script>
 	<script src="<%=path%>/js/bootstrap.min.js"></script>
 	<script src="<%=path%>/js/jsgrid.min.js"></script>
+	<script src="<%=path%>/js/jquery-ui.min.js"></script>
 	
 	<!-- page js -->
 	<script src="<%=path%>/js/admin/home.js"></script>

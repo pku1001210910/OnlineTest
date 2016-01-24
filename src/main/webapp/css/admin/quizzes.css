@@ -230,3 +230,7 @@
 #quiz-feedback-container .feedback-item:hover .quiz-icon-gray {
 	visibility: visible;
 }
+
+.ui-dialog {
+	z-index: 1500;
+}
