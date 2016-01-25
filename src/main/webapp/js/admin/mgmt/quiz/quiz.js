@@ -235,7 +235,6 @@ onlineTest.management.Quiz.Status = {
 		
 		$('#next-btn').click(function() {
 			if (self.status_ === onlineTest.management.Quiz.Status.CREATE) {
-				self.status_ = onlineTest.management.Quiz.Status.UPDATE;
 				// create quiz for first time
 				var title = $('#quiz-title').val();
 				var description = $('#quiz-description').val();
@@ -248,24 +247,32 @@ onlineTest.management.Quiz.Status = {
 				self.io_.createQuiz(title, description, categoryId, needCharge, price, function(quizId) {
 					// set quizId to element
 					$('#quiz-dialog').data('quizId', quizId);
+					self.status_ = onlineTest.management.Quiz.Status.UPDATE;
+					// jump to step2 in callback when create
+					$('#add-quiz-step-1').css('display', 'none');
+					$('#add-quiz-step-2').css('display', 'block');
+					$('#add-quiz-step-3').css('display', 'none');
+					self.step_ = 2;
+					self.resetHeaderStatus_(self.status_, self.step_);
+					self.resetFooterStatus_(self.status_, self.step_);
 				});
-			}
-			
-			if (self.step_ === 1) {
-				$('#add-quiz-step-1').css('display', 'none');
-				$('#add-quiz-step-2').css('display', 'block');
-				$('#add-quiz-step-3').css('display', 'none');
-				self.step_ = 2;
-			} else if (self.step_ === 2) {
-				$('#add-quiz-step-1').css('display', 'none');
-				$('#add-quiz-step-2').css('display', 'none');
-				$('#add-quiz-step-3').css('display', 'block');
-				self.step_ = 3;
 			} else {
-				$('#close-btn').click();
-			}
-			self.resetHeaderStatus_(self.status_, self.step_);
-			self.resetFooterStatus_(self.status_, self.step_);
+				if (self.step_ === 1) {
+					$('#add-quiz-step-1').css('display', 'none');
+					$('#add-quiz-step-2').css('display', 'block');
+					$('#add-quiz-step-3').css('display', 'none');
+					self.step_ = 2;
+				} else if (self.step_ === 2) {
+					$('#add-quiz-step-1').css('display', 'none');
+					$('#add-quiz-step-2').css('display', 'none');
+					$('#add-quiz-step-3').css('display', 'block');
+					self.step_ = 3;
+				} else {
+					$('#close-btn').click();
+				}
+				self.resetHeaderStatus_(self.status_, self.step_);
+				self.resetFooterStatus_(self.status_, self.step_);
+			};
 		});
 		
 		$('#prev-btn').click(function() {
