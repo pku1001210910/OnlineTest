@@ -33,7 +33,7 @@ public class QuizzesAjaxAction implements ServletRequestAware {
 	private QuizService quizService;
 	
 	private HttpServletRequest request;
-	
+		
 	// return value
 	private List<QuizCategory> allCategories;
 	private String result;
@@ -76,6 +76,32 @@ public class QuizzesAjaxAction implements ServletRequestAware {
 		Map<String, Integer> resultMap = new HashMap<>();
 		resultMap.put("quizId", quizId);
 		result = JSONObject.fromObject(resultMap).toString();
+		return ActionSupport.SUCCESS;
+	}
+	
+	@Action(value = "updateQuizMeta", results = { @Result(name="success", type="json")})
+	public String updateQuizMeta() {
+		Integer quizId = Integer.parseInt(request.getParameter("quizId"));
+		String title = request.getParameter("title");
+		String description = request.getParameter("description");
+		Byte needCharge = Byte.parseByte(request.getParameter("needCharge"));
+		Double price = Double.parseDouble(request.getParameter("price"));
+		Quiz quiz = quizService.loadQuizById(quizId);
+		quiz.setTitle(title);
+		quiz.setDescription(description);
+		quiz.setNeedCharge(needCharge);
+		quiz.setPrice(price);
+		quizService.updateQuiz(quiz);
+		return ActionSupport.SUCCESS;
+	}
+	
+	@Action(value = "updateQuizCategory", results = { @Result(name="success", type="json")})
+	public String updateQuizCategory() {
+		Integer quizId = Integer.parseInt(request.getParameter("quizId"));
+		Integer category = Integer.parseInt(request.getParameter("category"));
+		Quiz quiz = quizService.loadQuizById(quizId);
+		quiz.setCategory(category);
+		quizService.updateQuiz(quiz);
 		return ActionSupport.SUCCESS;
 	}
 }
