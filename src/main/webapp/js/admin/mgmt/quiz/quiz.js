@@ -299,6 +299,12 @@ onlineTest.management.Quiz.Status = {
 			var categoryId = $(this).data('categoryId');
 			$('#quiz-category-names').data('categoryId', categoryId);
 			$('#quiz-category-names').find('.default-category').text(categoryName);
+			
+			// update in server side
+			var quizId = $('#quiz-dialog').data('quizId');
+			if (!!quizId) {
+				self.io_.updateQuizCategory(quizId, categoryId);
+			}
 		});
 		
 		// bind needCharge change event
@@ -360,6 +366,22 @@ onlineTest.management.Quiz.Status = {
 			
 			// TODO delete feedback in server side
 		});
+		
+		$('#quiz-title, #quiz-description, #need-charge-toggle, #quiz-price').change(function(event) {
+			if (self.status_ === onlineTest.management.Quiz.Status.UPDATE) {
+				var quizId = $('#quiz-dialog').data('quizId');
+				if (!!quizId) {
+					var title = $('#quiz-title').val();
+					var description = $('#quiz-description').val();
+					var needCharge = $('#need-charge-toggle').prop('checked') ? 1 : 0;
+					var price = 0;
+					if ($('#quiz-price').val() !== "" && !isNaN($('#quiz-price').val())) {
+						price = parseFloat($('#quiz-price').val());
+					}
+					self.io_.updateQuizMeta(quizId, title, description, needCharge, price);
+				}
+			}
+		});
 	};
 	
 	/**
@@ -386,6 +408,8 @@ onlineTest.management.Quiz.Status = {
 		$('#quiz-feedback-container').off('click', '.add-feedback');
 		// unbind feedback delete event
 		$('#quiz-feedback-container').off('click', '.remove-feedback');
+		// unbind update quiz event
+		$('#quiz-title, #quiz-description, #need-charge-toggle, #quiz-price').unbind('change');
 	};
 	
 	/**
@@ -447,7 +471,72 @@ onlineTest.management.Quiz.IO = function() {
 			dataType: 'json',
 			success:function (data) {
 				var result = JSON.parse(data['result']);
-				callback(result['quizId']);
+				if ($.isFunction(callback)) {
+					callback(result['quizId']);
+				}
+				self.onSuccess_();
+			},
+			error: function(xhr) {
+				self.onError_();
+			}
+		});
+	};
+	
+	/**
+	 * Only the attributes in parameter can be updated using this method
+	 * @param {number} quizId
+	 * @param {string} title
+	 * @param {string} description
+	 * @param {number} needCharge
+	 * @param {number} price
+	 * @param {Function} callback
+	 */
+	IO.prototype.updateQuizMeta = function(quizId, title, description, needCharge, price, callback) {
+		var self = this;
+		var quizMeta = {
+			'quizId': quizId,
+			'title': title,
+			'description': description,
+			'needCharge': needCharge,
+			'price': price
+		};
+		this.beforeRequest_();
+		$.ajax({
+			url: './updateQuizMeta.action',
+			type: 'post',
+			data: quizMeta,
+			success:function () {
+				if ($.isFunction(callback)) {
+					callback();
+				}
+				self.onSuccess_();
+			},
+			error: function(xhr) {
+				self.onError_();
+			}
+		});
+	};
+	
+	/**
+	 * @param {number} quizId
+	 * @param {number} category
+	 * @param {Function} callback
+	 */
+	IO.prototype.updateQuizCategory = function(quizId, category, callback) {
+		var self = this;
+		var quizCategory = {
+			'quizId': quizId,
+			'category': category
+		};
+		this.beforeRequest_();
+		$.ajax({
+			url: './updateQuizCategory.action',
+			type: 'post',
+			data: quizCategory,
+			success:function () {
+				if ($.isFunction(callback)) {
+					callback();
+				}
 				self.onSuccess_();
 			},
 			error: function(xhr) {
