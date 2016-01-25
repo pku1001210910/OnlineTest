@@ -76,6 +76,18 @@ public interface GenericDAO<T, PK extends java.io.Serializable> {
 	public int countSome(Criteria criteria);
 	
 	/**
+	 * Get the count of entities matching criteria
+	 * @return
+	 */
+	public int countSome(DetachedCriteria criteria);
+	
+	/**
+	 * Get the count of entities matching criteria
+	 * @return
+	 */
+	public int countSome(Criterion... criterions);
+	
+	/**
 	 * List all the entities 
 	 * @return
 	 */
@@ -132,4 +144,22 @@ public interface GenericDAO<T, PK extends java.io.Serializable> {
 	 * @return
 	 */
 	public List<T> pagedQuery(Criteria criteria, int pageNo, int pageSize);
+
+	/**
+	 * Get the page of list matching criteria
+	 * @param criteria
+	 * @param pageNo
+	 * @param pageSize
+	 * @return
+	 */
+	public List<T> pagedQuery(DetachedCriteria criteria, int pageNo, int pageSize);
+
+	/**
+	 * Get the page of list matching criteria 
+	 * @param criterions
+	 * @param pageNo
+	 * @param pageSize
+	 * @return
+	 */
+	public List<T> pagedQuery(Criterion[] criterions, int pageNo, int pageSize);
 }
