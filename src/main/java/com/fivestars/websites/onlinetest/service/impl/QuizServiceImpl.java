@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.Set;
 
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,12 +15,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fivestars.websites.onlinetest.constant.CategoryConst;
+import com.fivestars.websites.onlinetest.constant.QuizConst;
 import com.fivestars.websites.onlinetest.dao.QuizCategoryDAO;
 import com.fivestars.websites.onlinetest.dao.QuizDAO;
 import com.fivestars.websites.onlinetest.dao.QuizSubjectDAO;
 import com.fivestars.websites.onlinetest.dao.SubjectItemDAO;
 import com.fivestars.websites.onlinetest.model.Quiz;
 import com.fivestars.websites.onlinetest.model.QuizCategory;
+import com.fivestars.websites.onlinetest.model.QuizOwnership;
 import com.fivestars.websites.onlinetest.model.QuizSubject;
 import com.fivestars.websites.onlinetest.model.SubjectItem;
 import com.fivestars.websites.onlinetest.service.QuizService;
@@ -48,6 +53,26 @@ public class QuizServiceImpl implements QuizService {
 	@Override
 	public List<Quiz> loadAllQuiz() {
 		return quizDao.listAll();
+	}
+	
+	@Override
+	public List<Quiz> loadAllSubmittedQuiz(Integer categoryId, String userName, int curPageNum, int pageSize) {
+		// TODO consider user name 
+		DetachedCriteria resultCriteria = DetachedCriteria.forClass(Quiz.class);
+		Criterion statusEq = Restrictions.eq("status", QuizConst.STATUS_SUBMITTED);
+		
+		resultCriteria.add(statusEq);
+		if(categoryId != CategoryConst.TYPE_ALL) {
+			Criterion categoryEq = Restrictions.eq("category", categoryId);
+			resultCriteria.add(categoryEq);
+		
+		}
+		resultCriteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		resultCriteria.setFetchMode("subjectItems", FetchMode.SELECT);
+		resultCriteria.setFetchMode("quizSubjects", FetchMode.SELECT); 
+		List<Quiz> quizList = quizDao.pagedQuery(resultCriteria, curPageNum, pageSize);
+		LOGGER.info("[QuizService]Successfully load all submitted quiz, categoryId = {}, useName = {}", categoryId, userName);
+		return quizList;
 	}
 
 	@Override
@@ -327,6 +352,18 @@ public class QuizServiceImpl implements QuizService {
 		categoryCriteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		return quizDao.listSome(categoryCriteria);
 	}
+	
+	@Override
+	public List<Quiz> getSubmittedQuizByCategory(Integer categoryId, Integer curPageNum, Integer pageSize) {
+		DetachedCriteria categoryCriteria = DetachedCriteria.forClass(Quiz.class);
+		Criterion categoryEq = Restrictions.eq("category", categoryId);
+		Criterion submittedEq = Restrictions.eq("status", QuizConst.STATUS_SUBMITTED);
+		categoryCriteria.add(categoryEq);
+		categoryCriteria.add(submittedEq);
+		categoryCriteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		return quizDao.pagedQuery(categoryCriteria, curPageNum, pageSize);
+	}
+	
 
 	@Override
 	public Integer createQuizCategory(QuizCategory category) {
@@ -352,4 +389,39 @@ public class QuizServiceImpl implements QuizService {
 		LOGGER.info("[QuizService]Successfully load quizCategory of id " + quizCategoryId);
 		return quizCategory;
 	}
+	
+	@Override
+	public Integer getAllQuizSize() {
+		Integer allQuizSize = quizDao.countAll();
+		LOGGER.info("[QuizService]Successfully load all quiz size");
+		return allQuizSize;
+	}
+	
+	@Override
+	public Integer getAllSubmittedQuizSize(Integer categoryId, String userName) {
+		// TODO consider userName
+		DetachedCriteria resultCriteria = DetachedCriteria.forClass(Quiz.class);
+		Criterion statusEq = Restrictions.eq("status", QuizConst.STATUS_SUBMITTED);
+		resultCriteria.add(statusEq);
+		if(categoryId != CategoryConst.TYPE_ALL) {
+			Criterion categoryEq = Restrictions.eq("category", categoryId);
+			resultCriteria.add(categoryEq);
+		}
+		resultCriteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		Integer allQuizSize = quizDao.countSome(resultCriteria);
+		return allQuizSize;
+	}
+
+	@Override
+	public Integer getAllSubmittedQuizSizeByCategoryId(Integer categoryId) {
+		DetachedCriteria resultCriteria = DetachedCriteria.forClass(Quiz.class);
+		Criterion statusEq = Restrictions.eq("status", QuizConst.STATUS_SUBMITTED);
+		Criterion categoryEq = Restrictions.eq("category", categoryId);
+		resultCriteria.add(statusEq);
+		resultCriteria.add(categoryEq);
+		resultCriteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		Integer allQuizSize = quizDao.countSome(resultCriteria);
+		return allQuizSize;
+	}
+	
 }

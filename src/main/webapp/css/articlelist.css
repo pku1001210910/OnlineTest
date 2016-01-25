@@ -26,7 +26,7 @@ h6, .h6 {
 
 @media (min-width: 1200px) {
   .container {
-    width: 970px;
+    width: 980px;
   }
 }
 
@@ -48,11 +48,6 @@ h6, .h6 {
   padding: 10px;
   font-weight: 500;
   color: #cdddeb;
-}
-.blog-nav-item:hover,
-.blog-nav-item:focus {
-  color: #fff;
-  text-decoration: none;
 }
 
 /* Active state gets a caret at the bottom */
@@ -80,16 +75,16 @@ h6, .h6 {
 .blog-main {
   font-size: 18px;
   line-height: 1.5;
-  padding-top: 48px;
 }
 
 /* Sidebar modules for boxing content */
 .sidebar-module {
   padding: 15px;
-  margin: 48px -15px 0px 15px;
+  margin: 0 -15px 15px;
 }
 .sidebar-module-inset {
   padding: 15px;
+  background-color: #f5f5f5;
   border-radius: 4px;
 }
 .sidebar-module-inset p:last-child,
@@ -98,36 +93,75 @@ h6, .h6 {
   margin-bottom: 0;
 }
 
+
 /* Pagination */
 .pager {
   margin-bottom: 60px;
-  text-align: left;
+  text-align: center;
 }
 .pager > li > a {
   width: 140px;
   padding: 10px 20px;
   text-align: center;
   border-radius: 30px;
-  font-size: 15px;
+  font-size: 12px;
 }
 
+#article-list {
+}
+
+.title-link {
+	color: #333;
+}
+
+.artitle-time {
+	padding-left: 7px;
+}
+
+#page_indicator {
+	position:relative;
+	top: 5px;
+	font-size: 15px;
+}
 /*
  * Blog posts
  */
 
 .blog-post {
-  margin-bottom: 60px;
-}
-.blog-post-title {
-  padding-top: 20px;
-  margin-bottom: 5px;
-  font-size: 25px;
-}
-.blog-post-meta {
+  margin-top: 20px;
   margin-bottom: 20px;
-  color: #999;
+  border-bottom: 1px solid #ccc;
+  background-color: white;
+  padding: 10px 18px 10px 18px;
 }
 
+.blog-post:hover {
+  box-shadow: 5px 5px 2px #888888;
+  cursor: pointer;
+}
+
+.blog-post-title {
+  font-size: 18px;
+}
+.blog-post-meta {
+  color: #999;
+  font-size: 15px;
+}
+
+.label-left {
+  color: #999;
+  font-size: 15px;
+  margin-right: 10px;
+}
+
+.label-right {
+  color: #999;
+  font-size: 15px;
+  margin-right: 10px;
+  position: relative;
+  top: 5px;
+  float: right;
+}
 
 /*
  * Footer

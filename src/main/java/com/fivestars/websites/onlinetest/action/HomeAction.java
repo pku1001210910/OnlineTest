@@ -16,12 +16,13 @@ import com.opensymphony.xwork2.ActionSupport;
 public class HomeAction {
 
 	@Action("home")
+	@SuppressWarnings("unchecked")
 	public String home() {
-		Map session = ServletActionContext.getContext().getSession();
+		Map<String, Object> session = ServletActionContext.getContext().getSession();
 		String error = (String) session.get("error");
 		if(error != null && !"".equals(error)) {
 			session.remove("error");
-			Map request = (Map) ServletActionContext.getContext().get("request");
+			Map<String, Object> request = (Map<String, Object>) ServletActionContext.getContext().get("request");
 			request.put("error", error);
 		}
 		return ActionSupport.SUCCESS;

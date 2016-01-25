@@ -198,5 +198,42 @@ public interface QuizService {
 	 * @return
 	 */
 	public QuizCategory loadQuizCategoryById(Integer quizeCategoryId);
+
+	/**
+	 * Get All quiz size
+	 * @return size number of all quiz
+	 */
+	Integer getAllQuizSize();
+
+	/**
+	 * Get all submitted quiz by categoryId, userName, curPageNum, pageSize
+	 * @param categoryId
+	 * @param userName
+	 * @param curPageNum
+	 * @param pageSize
+	 * @return specific list of quiz
+	 */
+	List<Quiz> loadAllSubmittedQuiz(Integer categoryId, String userName, int curPageNum, int pageSize);
+
+	/**
+	 * Get size of list for submitted quiz for specific categoryId, userName
+	 * @param CategoryId
+	 * @param userName
+	 * @return count of specific list
+	 */
+	Integer getAllSubmittedQuizSize(Integer CategoryId, String userName);
 	
+	/**
+	 * Get all submitted quiz by category id
+	 * @param categoryId
+	 * @return list of submitted quiz for specific category
+	 */
+	Integer getAllSubmittedQuizSizeByCategoryId(Integer categoryId);
+
+	/**
+	 * Get all submitted quiz by category id
+	 * @param categoryId
+	 * @return list of submitted quiz for specific category
+	 */
+	List<Quiz> getSubmittedQuizByCategory(Integer categoryId, Integer curPageNum, Integer pageSize);
 }

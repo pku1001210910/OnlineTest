@@ -14,6 +14,8 @@ public interface UserService {
      */
     public Serializable save(User user); 
     
+    public void saveOrUpdate(User user);
+    
     /**
      * load all
      * @return

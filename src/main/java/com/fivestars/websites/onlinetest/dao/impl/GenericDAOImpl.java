@@ -6,8 +6,10 @@ import java.util.Collection;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
@@ -121,7 +123,17 @@ public class GenericDAOImpl<T, PK extends java.io.Serializable> implements Gener
 	public int countSome(Criteria criteria) {
 		return Integer.valueOf(criteria.setProjection(Projections.rowCount()).uniqueResult().toString());
 	}
-
+	
+	@Override
+	public int countSome(DetachedCriteria criteria) {
+		return countSome(criteria.getExecutableCriteria(getSession()));
+	}
+	
+	@Override
+	public int countSome(Criterion... criterions) {
+		return countSome(createCriteria(criterions));
+	}
+	
 	@Override
 	public List<T> listAll() {
 		return createCriteria().list();
@@ -160,9 +172,20 @@ public class GenericDAOImpl<T, PK extends java.io.Serializable> implements Gener
 		criteria.setMaxResults(pageSize);
 		return listSome(criteria);
 	}
+	
+	@Override
+	public List<T> pagedQuery(DetachedCriteria criteria, int pageNo, int pageSize) {
+		return pagedQuery(criteria.getExecutableCriteria(getSession()), pageNo, pageSize);
+	}
+	
+	@Override
+	public List<T> pagedQuery(Criterion[] criterions, int pageNo, int pageSize) {
+		return pagedQuery(createCriteria(criterions), pageNo, pageSize);
+	}
 
 	@Override
 	public List<T> listSome(DetachedCriteria criteria) {
 		return (List<T>) listSome(criteria.getExecutableCriteria(getSession()));
 	}
+	
 }

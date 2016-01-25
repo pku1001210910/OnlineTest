@@ -27,4 +27,8 @@ public interface ArticleService {
 	public List<Article> loadAllTitles();
 	
 	public void delete(int id);
+	
+	public int count();
+
+	public List<Article> loadTitlesByPage(int pageNo, int pageSize);
 }

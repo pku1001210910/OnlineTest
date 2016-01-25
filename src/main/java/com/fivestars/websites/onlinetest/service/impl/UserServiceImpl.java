@@ -20,6 +20,10 @@ public class UserServiceImpl implements UserService {
 	public Serializable save(User user) {
 		return userDao.save(user);
 	}
+	
+	public void saveOrUpdate(User user) {
+		userDao.saveOrUpdate(user);
+	}
 
 	@Override
 	public List<User> findAll() {

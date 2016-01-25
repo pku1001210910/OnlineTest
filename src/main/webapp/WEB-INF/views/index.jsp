@@ -24,7 +24,7 @@
 <link href="<%=path%>/css/reg/style.css" rel="stylesheet">
 
 <!-- support ie8 & ie9 & ie10 -->
-<script src="<%=path%>/js/html5shiv.js" type="text/javascript"></script>
+<script src="<%=path%>/js/html5shiv.min.js" type="text/javascript"></script>
 <script src="<%=path%>/js/respond.min.js" type="text/javascript"></script>
 <script src="<%=path%>/js/ie10-viewport-bug-workaround.js" type="text/javascript"></script>
 <script src="<%=path%>/js/ie-elements.js" type="text/javascript"></script>
@@ -41,7 +41,7 @@
 					<span class="icon-bar"></span> 
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand white" href="#"> 北京大学心理系 </a>
+				<a class="navbar-brand white" href="<%=basePath%>"> 北京大学心理系 </a>
 			</div>
 			<div id="navbar" class="navbar-collapse collapse">
 				<jsp:include flush="true" page="user/userlogin.jsp"></jsp:include>
@@ -64,7 +64,7 @@
 				<h2>文章模块</h2>
 				<p>请在这里填写文章模块的背景、作用</p>
 				<p>
-					<a class="btn btn-default" href="#" role="button">查看文章 &raquo;</a>
+					<a class="btn btn-default" href="<%=basePath %>article/all.action?pageNo=1" role="button">查看文章 &raquo;</a>
 				</p>
 			</div>
 			<div class="col-md-6">
@@ -113,18 +113,6 @@
 	                                </div>
 	                                <div class="form-group">
 	                                    <input type="password" name="passwordConfirm" placeholder="密码确认" class="form-password form-control" id="form-password-confirm">
-	                                </div>
-	                                <div class="form-group">
-	                                    <input type="text" name="email" placeholder="Email" class="form-email form-control" id="form-email">
-	                                </div>
-	                                <div class="form-group">
-	                                    <input type="text" name="phone" placeholder="手机号" class="form-phone form-control" id="form-phone">
-	                                </div>
-	                                <div class="form-group">
-	                                    <input type="text" name="graduate" placeholder="学校" class="form-graduate form-control" id="form-graduate">
-	                                </div>
-	                                <div class="form-group">
-	                                    <input type="text" name="major" placeholder="专业" class="form-major form-control" id="form-major">
 	                                </div>
 	                                <button type="submit" class="btn">提交</button>
 	                                <span class="error-msg-container hide"><i class="fa fa-exclamation-circle"></i><span class='error-msg-content'> 邮箱或手机号格式不正确</span></span>

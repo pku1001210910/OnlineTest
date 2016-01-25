@@ -30,6 +30,18 @@ public class User implements java.io.Serializable {
 
 	public User() {
 	}
+	
+	public User(User user) {
+		this.userName = user.getUserName();
+		this.password = user.getPassword();
+		this.email = user.getEmail();
+		this.phone = user.getPhone();
+		this.graduate = user.getGraduate();
+		this.major = user.getMajor();
+		this.background = user.getMajor();
+		this.isAdmin = user.getIsAdmin();
+		this.isTeacher = user.getIsTeacher();
+	}
 
 	public User(String userName) {
 		this.userName = userName;

@@ -43,7 +43,7 @@ public class LoginAction extends ActionSupport {
 		}
 
 		User admin = userService.loadByNameAndPwd(username, password);
-		if (admin == null || admin.getIsAdmin() == UserConst.IS_NOT_ADMIN) {
+		if (admin == null || admin.getIsAdmin() == null || admin.getIsAdmin() == UserConst.IS_NOT_ADMIN) {
 			addActionError(Message.USER_OR_PASSWORD_WRONG);
 			return LOGIN;
 		}

@@ -116,7 +116,7 @@ public class QuizSubject implements Serializable, Comparable<QuizSubject> {
 	public Set<SubjectItem> getSubjectItems() {
 		return this.subjectItems;
 	}
-
+	
 	public void setSubjectItems(Set<SubjectItem> subjectItems) {
 		this.subjectItems = subjectItems;
 	}
