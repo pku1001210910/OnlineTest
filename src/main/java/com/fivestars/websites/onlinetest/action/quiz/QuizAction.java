@@ -1,7 +1,9 @@
 package com.fivestars.websites.onlinetest.action.quiz;
 
 import java.util.List;
+import java.util.Map;
 
+import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
@@ -11,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.fivestars.websites.onlinetest.constant.CategoryConst;
 import com.fivestars.websites.onlinetest.model.Quiz;
 import com.fivestars.websites.onlinetest.model.QuizCategory;
+import com.fivestars.websites.onlinetest.model.User;
 import com.fivestars.websites.onlinetest.service.QuizService;
+import com.fivestars.websites.onlinetest.service.UserQuizService;
 import com.opensymphony.xwork2.ActionSupport;
 
 import lombok.Data;
@@ -23,6 +27,9 @@ public class QuizAction {
 
 	@Autowired
 	private QuizService quizService;
+	
+	@Autowired
+	private UserQuizService userQuizService;
 	
 	private List<QuizCategory> categoryList;
 	private List<Quiz> quizList;
@@ -43,6 +50,10 @@ public class QuizAction {
 
 	private int categoryId = CategoryConst.TYPE_ALL;
 	private String categoryName;
+	
+	private int quizId;
+	private Quiz quiz;
+	
 
 	@Action(value = "startQuiz", results = { @Result(name = "success", location = "/WEB-INF/views/quiz/quizlist.jsp") })
 	public String startQuiz() {
@@ -57,6 +68,19 @@ public class QuizAction {
 		}
 		quizList = quizService.loadAllSubmittedQuiz(categoryId, userName, curPageNum, pageSize);
 		return ActionSupport.SUCCESS;
+	}
+	
+	@Action(value = "quizDetail", results = { @Result(name = "success", location = "/WEB-INF/views/quiz/quizdetail.jsp"), @Result(name = "input", type="redirectAction", location = "startQuiz.action") })
+	public String quizDetail() {
+		Map<String, Object> session = ServletActionContext.getContext().getSession();
+		User user = (User) session.get("user");
+		boolean quizValid = userQuizService.isUserOwnQuiz(quizId, user.getUserName());
+		quiz = quizService.loadQuizById(quizId);
+		if(!quizValid) {
+			return ActionSupport.INPUT;
+		} else {
+			return ActionSupport.SUCCESS;
+		}
 	}
 
 	private void preparePageNum(int curPageNum, int totalPage) {
@@ -208,6 +232,22 @@ public class QuizAction {
 
 	public void setCategoryName(String categoryName) {
 		this.categoryName = categoryName;
+	}
+
+	public int getQuizId() {
+		return quizId;
+	}
+
+	public void setQuizId(int quizId) {
+		this.quizId = quizId;
+	}
+
+	public Quiz getQuiz() {
+		return quiz;
+	}
+
+	public void setQuiz(Quiz quiz) {
+		this.quiz = quiz;
 	}
 
 }
