@@ -55,7 +55,7 @@ public class HomeAction{
 		return ActionSupport.SUCCESS;
 	}
 
-	@Action(value = "welcome", results = { @Result(name = "success", location = "/WEB-INF/views/admin/mgmt/welcome.jsp") })
+	@Action(value = "welcome", results = { @Result(name = "success", type = "redirectAction", location = "users")})
 	public String welcome() {
 		return ActionSupport.SUCCESS;
 	}
