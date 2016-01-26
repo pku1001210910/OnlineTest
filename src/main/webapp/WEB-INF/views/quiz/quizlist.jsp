@@ -98,7 +98,7 @@
                                     	<s:iterator id="quiz" value="quizList">
                                     		<div class="tem">
 	                                    		<div class="temtitle">
-	                                    			<a href="/lib_detail_full/569c76fba320fc9a2b63bf78" target="_blank">
+	                                    			<a href="#" onclick="checkQuizOwner(${quiz.quizId}, '${session.user == null ? -1 :  session.user.userName}')">
 	                                                    <p>${quiz.title}</p>
 	                                                </a>
 	                                                <i class="fa fa-lock"></i>
@@ -206,18 +206,6 @@
 		                                <div class="form-group">
 		                                    <input type="password" name="passwordConfirm" placeholder="密码确认" class="form-password form-control" id="form-password-confirm">
 		                                </div>
-		                                <div class="form-group">
-		                                    <input type="text" name="email" placeholder="Email" class="form-email form-control" id="form-email">
-		                                </div>
-		                                <div class="form-group">
-		                                    <input type="text" name="phone" placeholder="手机号" class="form-phone form-control" id="form-phone">
-		                                </div>
-		                                <div class="form-group">
-		                                    <input type="text" name="graduate" placeholder="学校" class="form-graduate form-control" id="form-graduate">
-		                                </div>
-		                                <div class="form-group">
-		                                    <input type="text" name="major" placeholder="专业" class="form-major form-control" id="form-major">
-		                                </div>
 		                                <button type="submit" class="btn">提交</button>
 		                                <span class="error-msg-container hide"><i class="fa fa-exclamation-circle"></i><span class='error-msg-content'> 邮箱或手机号格式不正确</span></span>
 		                            </form>
@@ -228,11 +216,29 @@
 		        </div>
 		    </div>
 		</div>
+		<div class="modal fade" id="needLoginModal">  
+		  <div class="modal-dialog">  
+		    <div class="modal-content message_align">  
+		      <div class="modal-header">  
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>  
+		        <h4 class="modal-title">提示信息</h4>  
+		      </div>  
+		      <div class="modal-body">  
+		        <p>请首先登陆或注册</p>  
+		      </div>  
+		      <div class="modal-footer">  
+		         <input type="hidden" id="url"/>  
+		         <a onclick="urlSubmit()" class="btn btn-success" data-dismiss="modal">确定</a>  
+		      </div>  
+		    </div><!-- /.modal-content -->  
+		  </div><!-- /.modal-dialog -->  
+		</div><!-- /.modal -->  
         <!-- JavaScript -->
         <script src="<%=path%>/js/jquery.min.js"></script>
         <script src="<%=path%>/js/bootstrap.min.js"></script>
         <script src="<%=path%>/js/reg/reg.js"></script>
         <script src="<%=path%>/js/main.js"></script>
+        <script src="<%=path%>/js/quizList/quizlist.js"></script>
         <script type="text/javascript">
           $(function(){
             var pagenum=document.getElementById('pagenum').innerHTML;

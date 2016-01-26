@@ -36,6 +36,10 @@
     <package name="quiz" extends="struts-default">
     </package>
     
+    <package name="quizAjax" extends="json-default">
+    </package>
+    
+    
     <package name="admin" extends="struts-default" namespace="/admin">
     </package>
     

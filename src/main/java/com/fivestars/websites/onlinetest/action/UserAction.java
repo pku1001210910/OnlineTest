@@ -15,13 +15,11 @@ import com.fivestars.websites.onlinetest.model.User;
 import com.fivestars.websites.onlinetest.service.UserService;
 import com.opensymphony.xwork2.ActionSupport;
 
-import lombok.Data;
-
 @ParentPackage("user")
 @Namespace("/user")
-@Data
 public class UserAction {
 	private String userName;
+
 	private String userPw;
 	private String passwordConfirm;
 	private String email;
@@ -35,7 +33,8 @@ public class UserAction {
 	@Autowired
 	private UserService userService;
 
-	@Action(value = "userReg", results = { @Result(name = "success", type = "redirectAction", params = { "namespace", "/user" }, location = "home") })
+	@Action(value = "userReg", results = {
+			@Result(name = "success", type = "redirectAction", params = { "namespace", "/user" }, location = "home") })
 	public String userReg() {
 		message = "";
 		boolean existUser = userService.isExist(userName);
@@ -59,7 +58,8 @@ public class UserAction {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@Action(value = "userLogin", results = { @Result(name = "success", type = "redirectAction", params = { "namespace", "/" }, location = "home") })
+	@Action(value = "userLogin", results = {
+			@Result(name = "success", type = "redirectAction", params = { "namespace", "/" }, location = "home") })
 	public String userLogin() {
 		User user = userService.loadByNameAndPwd(userName, userPw);
 		if (user == null) {
@@ -73,7 +73,8 @@ public class UserAction {
 	}
 
 	@SuppressWarnings("rawtypes")
-	@Action(value = "userLogout", results = { @Result(name = "success", type = "redirectAction", params = { "namespace", "/" }, location = "home") })
+	@Action(value = "userLogout", results = {
+			@Result(name = "success", type = "redirectAction", params = { "namespace", "/" }, location = "home") })
 	public String userLogout() {
 		Map session = ServletActionContext.getContext().getSession();
 		session.remove("user");
@@ -111,4 +112,77 @@ public class UserAction {
 		ServletActionContext.getRequest().setAttribute("json", objectMapper.writeValueAsString(new User(user)));
 		return ActionSupport.SUCCESS;
 	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getUserPw() {
+		return userPw;
+	}
+
+	public void setUserPw(String userPw) {
+		this.userPw = userPw;
+	}
+
+	public String getPasswordConfirm() {
+		return passwordConfirm;
+	}
+
+	public void setPasswordConfirm(String passwordConfirm) {
+		this.passwordConfirm = passwordConfirm;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getGraduate() {
+		return graduate;
+	}
+
+	public void setGraduate(String graduate) {
+		this.graduate = graduate;
+	}
+
+	public String getMajor() {
+		return major;
+	}
+
+	public void setMajor(String major) {
+		this.major = major;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
+	}
+
 }
