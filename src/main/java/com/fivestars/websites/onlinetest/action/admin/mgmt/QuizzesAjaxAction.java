@@ -146,4 +146,28 @@ public class QuizzesAjaxAction implements ServletRequestAware {
 		result = JSONObject.fromObject(resultMap).toString();
 		return ActionSupport.SUCCESS;
 	}
+	
+	@Action(value = "deleteSubject", results = { @Result(name="success", type="json")})
+	public String deleteSubject() {
+		Integer quizId = Integer.parseInt(request.getParameter("quizId"));
+		Integer subjectId = Integer.parseInt(request.getParameter("subjectId"));
+		quizService.deleteSubjectFromQuiz(quizId, subjectId);
+		return ActionSupport.SUCCESS;
+	}
+	
+	@Action(value = "shiftSubjectUp", results = { @Result(name="success", type="json")})
+	public String shiftSubjectUp() {
+		Integer quizId = Integer.parseInt(request.getParameter("quizId"));
+		Integer subjectId = Integer.parseInt(request.getParameter("subjectId"));
+		quizService.shiftSubjectUp(quizId, subjectId);
+		return ActionSupport.SUCCESS;
+	}
+	
+	@Action(value = "shiftSubjectDown", results = { @Result(name="success", type="json")})
+	public String shiftSubjectDown() {
+		Integer quizId = Integer.parseInt(request.getParameter("quizId"));
+		Integer subjectId = Integer.parseInt(request.getParameter("subjectId"));
+		quizService.shiftSubjectDown(quizId, subjectId);
+		return ActionSupport.SUCCESS;
+	}
 }

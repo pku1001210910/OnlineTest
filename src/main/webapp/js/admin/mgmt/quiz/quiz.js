@@ -194,18 +194,23 @@ onlineTest.management.Quiz.Status = {
 	 * @param {onlineTest.management.Subject} subjectComponent
 	 */
 	Quiz.prototype.bindSubjectComponentEvent_ = function(subjectComponent) {
+		var self = this;
+		var quizId = $('#quiz-dialog').data('quizId');
+		if (!quizId) {
+			return;
+		}
 		var SubjectEventType = onlineTest.management.Subject.EventType;
 		var ItemEventType = onlineTest.management.SingleChoiceSubject.EventType;
 		// TODO operation in server side
 		var $dom = subjectComponent.getDom();
 		$dom.bind(SubjectEventType.SUBJECT_SHIFT_UP, function(event, subjectId) {
-			console.log('shift subject up');
+			self.io_.shiftSubjectUp(quizId, subjectId);
 		});
 		$dom.bind(SubjectEventType.SUBJECT_SHIFT_DOWN, function(event, subjectId) {
-			console.log('shift subject down');
+			self.io_.shiftSubjectDown(quizId, subjectId);
 		});
 		$dom.bind(SubjectEventType.SUBJECT_DELETE, function(event, subjectId) {
-			console.log('delete subject');
+			self.io_.deleteSubject(quizId, subjectId);
 		});
 		$dom.bind(ItemEventType.SUBJECT_QUESTION_UPDATE, function(event, subjectId, question) {
 			console.log('update subject question');
@@ -576,6 +581,90 @@ onlineTest.management.Quiz.IO = function() {
 				var result = JSON.parse(data['result']);
 				if ($.isFunction(callback)) {
 					callback(result);
+				}
+				self.onSuccess_();
+			},
+			error: function(xhr) {
+				self.onError_();
+			}
+		});
+	};
+	
+	/**
+	 * @param {number} quizId
+	 * @param {number} subjectId
+	 * @param {Function} callback
+	 */
+	IO.prototype.deleteSubject = function(quizId, subjectId, callback) {
+		var self = this;
+		var subject = {
+			'quizId': quizId,
+			'subjectId': subjectId
+		};
+		this.beforeRequest_();
+		$.ajax({
+			url: './deleteSubject.action',
+			type: 'post',
+			data: subject,
+			success:function () {
+				if ($.isFunction(callback)) {
+					callback();
+				}
+				self.onSuccess_();
+			},
+			error: function(xhr) {
+				self.onError_();
+			}
+		});
+	};
+	
+	/**
+	 * @param {number} quizId
+	 * @param {number} subjectId
+	 * @param {Function} callback
+	 */
+	IO.prototype.shiftSubjectUp = function(quizId, subjectId, callback) {
+		var self = this;
+		var subject = {
+			'quizId': quizId,
+			'subjectId': subjectId,
+		};
+		this.beforeRequest_();
+		$.ajax({
+			url: './shiftSubjectUp.action',
+			type: 'post',
+			data: subject,
+			success:function () {
+				if ($.isFunction(callback)) {
+					callback();
+				}
+				self.onSuccess_();
+			},
+			error: function(xhr) {
+				self.onError_();
+			}
+		});
+	};
+	
+	/**
+	 * @param {number} quizId
+	 * @param {number} subjectId
+	 * @param {Function} callback
+	 */
+	IO.prototype.shiftSubjectDown = function(quizId, subjectId, callback) {
+		var self = this;
+		var subject = {
+			'quizId': quizId,
+			'subjectId': subjectId,
+		};
+		this.beforeRequest_();
+		$.ajax({
+			url: './shiftSubjectDown.action',
+			type: 'post',
+			data: subject,
+			success:function () {
+				if ($.isFunction(callback)) {
+					callback();
 				}
 				self.onSuccess_();
 			},
