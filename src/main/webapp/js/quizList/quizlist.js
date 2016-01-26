@@ -28,4 +28,37 @@ var checkQuizOwner = function(quizId, userName) {
 	}
 };
 
+var buyQuiz = function(quizId, userName) {
+	if(userName == -1) {
+		$("#needLoginModal").modal('show');
+	} else {
+    	var self = this;
+    	$.ajax({
+    		type: 'post',
+    		url: 'buyQuiz.action',
+    		data: {
+    			'userName': userName,
+    			'quizId': quizId
+    		},
+    		dataType: 'text',
+    		success: function(json) {
+    			var obj = $.parseJSON(json);
+    			if(obj.quizValid) {
+    				$("#buySuccessModal").modal('show');
+    			} else {
+    				$("#buyFailureModal").modal('show');
+    			}
+    		},
+    		error: function(json) {
+    			alert('error2')
+    			return false;
+    		}
+    	})
+	}
+};
+
+var refresh = function() {
+	location.reload();
+};
+
 

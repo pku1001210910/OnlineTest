@@ -13,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fivestars.websites.onlinetest.constant.QuizConst;
 import com.fivestars.websites.onlinetest.entity.SingleChoiceAnswerEntity;
+import com.fivestars.websites.onlinetest.model.QuizOwnership;
 import com.fivestars.websites.onlinetest.model.SubjectItem;
 import com.fivestars.websites.onlinetest.model.User;
 import com.fivestars.websites.onlinetest.model.UserAnswer;
@@ -49,7 +51,22 @@ public class QuizAjaxAction {
 	@Action(value = "checkUserQuizOwner", results = { @Result(name = "success", type = "json") })
 	public String checkUserNameUnique() {
 		quizValid = userQuizService.isUserOwnQuiz(quizId, userName);
-		return "success";
+		return ActionSupport.SUCCESS;
+	}
+	
+	@Action(value = "buyQuiz", results = { @Result(name = "success", type = "json") })
+	public String buyQuiz() {
+		//TODO check already bought
+		QuizOwnership ownership = new QuizOwnership();
+		ownership.setUserName(userName);
+		ownership.setQuizId(quizId);
+		ownership.setBuyDate(new Date());
+		ownership.setExpired(QuizConst.EXPIRED_FALSE);
+		Integer ownershipId = userQuizService.addUserQuizOwnership(ownership);
+		if(ownershipId != null) {
+			quizValid = true;
+		}
+		return ActionSupport.SUCCESS;
 	}
 
 	@Action(value = "finishQuiz", results = { @Result(name = "success", type = "json") })
