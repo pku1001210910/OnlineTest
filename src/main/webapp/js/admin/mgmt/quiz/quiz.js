@@ -178,8 +178,15 @@ onlineTest.management.Quiz.Status = {
 		$scrollContainer.scrollTop(
 			$newSubject.offset().top - $scrollContainer.offset().top + $scrollContainer.scrollTop()
 		);
-		
-		// TODO add subject in server side
+		// add subject in server side
+		var quizId = $('#quiz-dialog').data('quizId');
+		if (!!quizId) {
+			var subject = subjectComponent.getData();
+			subject.quizId = quizId;
+			this.io_.addSubject(subject.quizId, subject.type, subject.question, subject.items, function(result) {
+				subjectComponent.applyData(result);
+			});
+		}
 	};
 	
 	/**
@@ -536,6 +543,39 @@ onlineTest.management.Quiz.IO = function() {
 			success:function () {
 				if ($.isFunction(callback)) {
 					callback();
+				}
+				self.onSuccess_();
+			},
+			error: function(xhr) {
+				self.onError_();
+			}
+		});
+	};
+	
+	/**
+	 * @param {number} quizId
+	 * @param {number} type
+	 * @param {string} question
+	 * @param {Array.<{choice: string, score: number}>} items
+	 * @param {Function} callback
+	 */
+	IO.prototype.addSubject = function(quizId, type, question, items, callback) {
+		var self = this;
+		var subject = {
+			'quizId': quizId,
+			'type': type,
+			'question': question,
+			'items': JSON.stringify(items)
+		};
+		this.beforeRequest_();
+		$.ajax({
+			url: './addSubject.action',
+			type: 'post',
+			data: subject,
+			success:function (data) {
+				var result = JSON.parse(data['result']);
+				if ($.isFunction(callback)) {
+					callback(result);
 				}
 				self.onSuccess_();
 			},

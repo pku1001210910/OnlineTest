@@ -51,10 +51,45 @@ onlineTest.management.SingleChoiceSubject.EventType = {
 	
 	/**
 	 * @override
-	 * @param model
+	 * @param {Object} data
 	 */
-	SingleChoiceSubject.prototype.applyData = function(model) {
-		
+	SingleChoiceSubject.prototype.applyData = function(data) {
+		if (data['subjectId']) {
+			this.getDom().data('subjectId', data['subjectId']);
+		}
+		if (data['itemIds']) {
+			$.each(this.getDom().find('.subject-item'), function(i) {
+				if (data['itemIds'][i]) {
+					$(this).data('itemId', data['itemIds'][i]);
+				}
+			});
+		}
+		// TODO apply other data
+	};
+	
+	/**
+	 * @return {{subjectId: number, type: number, question: string, items: Array.<Object>}}
+	 */
+	SingleChoiceSubject.prototype.getData = function() {
+		var subject = {};
+		subject.subjectId = this.getDom().data('subjectId');
+		subject.question = this.getDom().find('.subject-question').text();
+		subject.type = onlineTest.management.SubjectManager.SubjectType.SINGLE_CHOICE;
+		var items = [];
+		$.each(this.getDom().find('.subject-item'), function() {
+			var $item = $(this);
+			var score = 0;
+			if ($item.find('.item-score-value').val() !== "" && !isNaN($item.find('.item-score-value').val())) {
+				score = parseFloat($item.find('.item-score-value').val());
+			}
+			var item = {
+				choice: $item.find('label').text(),
+				score: score
+			};
+			items.push(item);
+		});
+		subject.items = items;
+		return subject;
 	};
 	
 	/**
