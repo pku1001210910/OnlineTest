@@ -16,16 +16,19 @@ import com.fivestars.websites.onlinetest.model.Article;
 import com.fivestars.websites.onlinetest.service.ArticleService;
 import com.opensymphony.xwork2.ActionSupport;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @ParentPackage("adminAjax")
 @Namespace("/admin/articles")
-@Data
 public class ArticlesAction{
+	@Getter @Setter
 	private Integer id;
+	@Getter @Setter
 	private String title;
+	@Getter @Setter
 	private String content;
-	
+	@Getter @Setter
 	private String json;
 	
 	@Autowired

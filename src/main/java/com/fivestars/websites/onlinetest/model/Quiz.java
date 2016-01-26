@@ -41,6 +41,18 @@ public class Quiz implements java.io.Serializable {
 
 	public Quiz() {
 	}
+	
+	public Quiz(Quiz quiz) {
+		this.quizId = quiz.getQuizId();
+		this.title = quiz.getTitle();
+		this.description = quiz.getDescription();
+		this.category = quiz.getCategory();
+		this.needCharge = quiz.getNeedCharge();
+		this.price = quiz.getPrice();
+		this.submitDate = quiz.getSubmitDate();
+		this.repeatable = quiz.getRepeatable();
+		this.status = quiz.getStatus();
+	}
 
 	public Quiz(String title, String description, Integer category, Byte needCharge, Double price, Date submitDate,
 			Byte repeatable, Integer status, Set<QuizSubject> quizSubjects) {

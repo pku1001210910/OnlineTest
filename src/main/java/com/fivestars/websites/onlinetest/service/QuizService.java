@@ -36,6 +36,12 @@ public interface QuizService {
 	public List<Quiz> loadAllQuiz();
 	
 	/**
+	 * Load all available quiz
+	 * @return the list of quiz
+	 */
+	public List<Quiz> loadAllQuizTitles();
+	
+	/**
 	 * Delete quiz by quizId
 	 * @param quizId
 	 */

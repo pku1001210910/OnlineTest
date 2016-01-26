@@ -16,6 +16,10 @@ public interface UserService {
     
     public void saveOrUpdate(User user);
     
+    public List<User> loadAllUsers();
+    
+    public List<User> loadAllAdmins();
+    
     /**
      * load all
      * @return
@@ -27,4 +31,6 @@ public interface UserService {
 	public boolean isExist(String userName);
 	
 	public User loadByNameAndPwd(String userName, String pwd);
+
+	public void delete(String userName);
 }

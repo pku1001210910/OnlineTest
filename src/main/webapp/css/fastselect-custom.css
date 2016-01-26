@@ -1,0 +1,29 @@
+@CHARSET "UTF-8";
+
+.fstElement {
+	width: 100%;
+	font-size: 12px;
+}
+
+.fstToggleBtn {
+	min-width: 16.5em;
+}
+
+.fstMultipleMode {
+	display: block;
+	font-size: 12px;
+}
+
+.fstChoiceItem {
+	font-size: 12px;
+}
+
+.fstMultipleMode .fstControls {
+	width: 100%;
+}
+
+.fstResultItem {
+	font-family: "Microsoft YaHei UI", "Microsoft YaHei", "Arial", "Verdana", "Tahoma";
+    font-weight: 500;
+	font-size: 12px;
+}
