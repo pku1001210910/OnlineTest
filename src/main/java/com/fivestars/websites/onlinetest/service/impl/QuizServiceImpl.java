@@ -103,8 +103,9 @@ public class QuizServiceImpl implements QuizService {
 	}
 
 	@Override
-	public void addSubjectToQuiz(Integer quizId, QuizSubject subject) {
+	public Integer addSubjectToQuiz(Integer quizId, QuizSubject subject) {
 		Quiz quiz = quizDao.get(quizId);
+		subject.setQuiz(quiz);
 		Set<QuizSubject> subjectSet = quiz.getQuizSubjects();
 		// maintain the subject order
 		int maxOrder = -1;
@@ -116,6 +117,7 @@ public class QuizServiceImpl implements QuizService {
 		subject.setSubjectOrder(maxOrder + 1);
 		subjectSet.add(subject);
 		quizDao.saveOrUpdate(quiz);
+		return subjectDao.getSubjectByQuizIdAndOrder(quizId, subject.getSubjectOrder());
 	}
 
 	@Override
@@ -229,8 +231,9 @@ public class QuizServiceImpl implements QuizService {
 	}
 
 	@Override
-	public void addItemToSubject(Integer subjectId, SubjectItem item) {
+	public Integer addItemToSubject(Integer subjectId, SubjectItem item) {
 		QuizSubject subject = subjectDao.get(subjectId);
+		item.setQuizSubject(subject);
 		Set<SubjectItem> itemSet = subject.getSubjectItems();
 		// maintain the item order
 		int maxOrder = -1;
@@ -242,6 +245,7 @@ public class QuizServiceImpl implements QuizService {
 		item.setItemOrder(maxOrder + 1);
 		itemSet.add(item);
 		subjectDao.saveOrUpdate(subject);
+		return itemDao.getItemBySubjectIdAndOrder(subjectId, item.getItemOrder());
 	}
 
 	@Override

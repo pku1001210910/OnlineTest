@@ -85,7 +85,7 @@
 								</h4>
 							</div>
 							<div class="subject-type-body" id="subject-type-body-panel">
-								<div id="single-choice-subject-selector" data-type="singleChoice" class="subject-type">
+								<div id="single-choice-subject-selector" data-type="0" class="subject-type">
 									<i class="glyphicon glyphicon-ok-circle quiz-icon"></i>  单选题
 								</div>
 								<div class="add-subject-hint">请点击题型添加题目到编辑区域</div>

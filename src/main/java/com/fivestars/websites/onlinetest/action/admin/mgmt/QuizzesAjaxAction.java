@@ -1,5 +1,6 @@
 package com.fivestars.websites.onlinetest.action.admin.mgmt;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -18,10 +19,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.fivestars.websites.onlinetest.constant.QuizConst;
 import com.fivestars.websites.onlinetest.model.Quiz;
 import com.fivestars.websites.onlinetest.model.QuizCategory;
+import com.fivestars.websites.onlinetest.model.QuizSubject;
+import com.fivestars.websites.onlinetest.model.SubjectItem;
 import com.fivestars.websites.onlinetest.service.QuizService;
 import com.opensymphony.xwork2.ActionSupport;
 
 import lombok.Data;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 @ParentPackage("json-default")
@@ -102,6 +106,44 @@ public class QuizzesAjaxAction implements ServletRequestAware {
 		Quiz quiz = quizService.loadQuizById(quizId);
 		quiz.setCategory(category);
 		quizService.updateQuiz(quiz);
+		return ActionSupport.SUCCESS;
+	}
+	
+	@Action(value = "addSubject", results = { @Result(name="success", type="json")})
+	public String addSubject() {
+		Integer quizId = Integer.parseInt(request.getParameter("quizId"));
+		Integer type = Integer.parseInt(request.getParameter("type"));
+		String question = request.getParameter("question");
+		QuizSubject subject = new QuizSubject();
+		subject.setType(type);
+		subject.setQuestion(question);
+		Integer subjectId = quizService.addSubjectToQuiz(quizId, subject);
+		List<Integer> itemIds = new ArrayList<>();
+		
+		String itemJson = request.getParameter("items");
+		JSONArray itemJsonArray = JSONArray.fromObject(itemJson);
+		for (int i = 0; i < itemJsonArray.size(); i++) {  
+            JSONObject itemJsonObject = itemJsonArray.getJSONObject(i);
+            boolean isValidItem = false;
+            SubjectItem item = new SubjectItem();
+            if (itemJsonObject.get("choice") != null) {
+            	item.setChoice((String) itemJsonObject.get("choice"));
+            	isValidItem = true;
+            }
+            if (itemJsonObject.get("score") != null) {
+            	item.setScore(Double.parseDouble(itemJsonObject.get("score").toString()));
+            	isValidItem = true;
+            }
+            if (isValidItem) {
+            	Integer itemId = quizService.addItemToSubject(subjectId, item);
+            	itemIds.add(itemId);
+            }
+        }
+		
+		Map<String, Object> resultMap = new HashMap<>();
+		resultMap.put("subjectId", subjectId);
+		resultMap.put("itemIds", itemIds);
+		result = JSONObject.fromObject(resultMap).toString();
 		return ActionSupport.SUCCESS;
 	}
 }

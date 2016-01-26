@@ -31,8 +31,6 @@ onlineTest.management.Subject.EventType = {
 	SUBJECT_DELETE: 'subjectDelete'
 };
 
-
-
 /**
  * @param {HTMLDocument} parent
  * @param {number} subjectNumber
@@ -208,9 +206,14 @@ onlineTest.management.Subject.prototype.createSubjectDom = function() {};
 onlineTest.management.Subject.prototype.createItemDom = function() {};
 
 /**
- * @param {Object} model
+ * @param {Object} data
  */
-onlineTest.management.Subject.prototype.applyData = function(model) {};
+onlineTest.management.Subject.prototype.applyData = function(data) {};
+
+/**
+ * @return {Object}
+ */
+onlineTest.management.Subject.prototype.getData = function() {};
 
 /**
  * do necessary initialization after dom is created

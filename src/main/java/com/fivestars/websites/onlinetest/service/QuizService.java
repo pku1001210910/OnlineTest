@@ -51,8 +51,9 @@ public interface QuizService {
 	 * Add one new subject to a quiz, the order is appended to last
 	 * @param quizId
 	 * @param subject
+	 * @return subjectId
 	 */
-	public void addSubjectToQuiz(Integer quizId, QuizSubject subject);
+	public Integer addSubjectToQuiz(Integer quizId, QuizSubject subject);
 	
 	/**
 	 * Add several subjects to a quiz in bulk, the positions are appended to last.
@@ -113,8 +114,9 @@ public interface QuizService {
 	 * Add one new item to a subject, the order is appended to last
 	 * @param subjectId
 	 * @param item
+	 * @return itemId
 	 */
-	public void addItemToSubject(Integer subjectId, SubjectItem item);
+	public Integer addItemToSubject(Integer subjectId, SubjectItem item);
 	
 	/**
 	 * Add several items to a subject in bulk, the positions are appended to last.

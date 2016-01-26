@@ -11,10 +11,10 @@ onlineTest.management.SubjectManager = function() {
  * @enum
  */
 onlineTest.management.SubjectManager.SubjectType = {
-	SINGLE_CHOICE: 'singleChoice',
-	MULTIPLE_CHOICE: 'multipeChoice',
-	COMPLETION: 'completion',
-	ANSWER: 'answer'
+	SINGLE_CHOICE: 0,
+	MULTIPLE_CHOICE: 1,
+	COMPLETION: 2,
+	ANSWER: 3
 };
 
 /**
