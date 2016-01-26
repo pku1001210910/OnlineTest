@@ -101,8 +101,13 @@
 	                                    			<a href="#" onclick="checkQuizOwner(${quiz.quizId}, '${session.user == null ? -1 :  session.user.userName}')">
 	                                                    <p>${quiz.title}</p>
 	                                                </a>
-	                                                <i class="fa fa-lock"></i>
-	                                                <span>共1页14个问题</span>
+	                                                <s:if test="#quiz.price != 0">
+	                                                 	<i class="fa fa-lock"></i>
+	                                                	<span class="label label-info">${quiz.price}元</span>
+	                                                	<button class="btn btn-warning" onclick="buyQuiz(${quiz.quizId}, '${session.user == null ? -1 : session.user.userName}')">支付</button>
+	                                                </s:if>
+	                                               
+	                                                <%-- <span>共1页14个问题</span> --%>
 	                                    		</div>
 	                                    		<div class="temcon">
 	                                                <span>分类：<a href="/classify/other_f_1" style="display:inline;">其他</a></span> |
@@ -225,6 +230,42 @@
 		      </div>  
 		      <div class="modal-body">  
 		        <p>请首先登陆或注册</p>  
+		      </div>  
+		      <div class="modal-footer">  
+		         <input type="hidden" id="url"/>  
+		         <a onclick="urlSubmit()" class="btn btn-success" data-dismiss="modal">确定</a>  
+		      </div>  
+		    </div><!-- /.modal-content -->  
+		  </div><!-- /.modal-dialog -->  
+		</div><!-- /.modal -->  
+		
+		<div class="modal fade" id="buySuccessModal">  
+		  <div class="modal-dialog">  
+		    <div class="modal-content message_align">  
+		      <div class="modal-header">  
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>  
+		        <h4 class="modal-title">提示信息</h4>  
+		      </div>  
+		      <div class="modal-body">  
+		        <p>您已付费成功</p>  
+		      </div>  
+		      <div class="modal-footer">  
+		         <input type="hidden" id="url"/>  
+		         <a onclick="refresh()" class="btn btn-success" data-dismiss="modal">确定</a>  
+		      </div>  
+		    </div><!-- /.modal-content -->  
+		  </div><!-- /.modal-dialog -->  
+		</div><!-- /.modal -->  
+		
+		<div class="modal fade" id="buyFailureModal">  
+		  <div class="modal-dialog">  
+		    <div class="modal-content message_align">  
+		      <div class="modal-header">  
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>  
+		        <h4 class="modal-title">提示信息</h4>  
+		      </div>  
+		      <div class="modal-body">  
+		        <p>您付费失败</p>  
 		      </div>  
 		      <div class="modal-footer">  
 		         <input type="hidden" id="url"/>  
