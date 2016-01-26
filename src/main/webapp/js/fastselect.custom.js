@@ -1,0 +1,41 @@
+$.Fastselect.defaults = {
+	elementClass : 'fstElement',
+	singleModeClass : 'fstSingleMode',
+	noneSelectedClass : 'fstNoneSelected',
+	multipleModeClass : 'fstMultipleMode',
+	queryInputClass : 'fstQueryInput',
+	queryInputExpandedClass : 'fstQueryInputExpanded',
+	fakeInputClass : 'fstFakeInput',
+	controlsClass : 'fstControls',
+	toggleButtonClass : 'fstToggleBtn',
+	activeClass : 'fstActive',
+	itemSelectedClass : 'fstSelected',
+	choiceItemClass : 'fstChoiceItem',
+	choiceRemoveClass : 'fstChoiceRemove',
+
+	resultsContClass : 'fstResults',
+	resultsOpenedClass : 'fstResultsOpened',
+	groupClass : 'fstGroup',
+	itemClass : 'fstResultItem',
+	groupTitleClass : 'fstGroupTitle',
+	loadingClass : 'fstLoading',
+	noResultsClass : 'fstNoResults',
+	focusedItemClass : 'fstFocused',
+
+	matcher : null,
+
+	url : null,
+	loadOnce : false,
+	apiParam : 'query',
+	initialValue : null,
+	clearQueryOnSelect : true,
+	minQueryLength : 1,
+	typeTimeout : 150,
+
+	parseData : null,
+	onItemSelect : null,
+	onItemCreate : null,
+	placeholder : '请选择',
+	searchPlaceholder : '搜索选项',
+	noResultsText : '找不到结果'
+}

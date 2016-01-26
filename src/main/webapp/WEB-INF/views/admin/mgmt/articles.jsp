@@ -87,6 +87,8 @@
 <script src='<%=path%>/js/prettify.js'></script>
 <script src='<%=path%>/js/bootstrap-wysiwyg.js'></script>
 <script>
+console.log('article list');
+
 function loadAll(articleList) {
 	$('#articles').jsGrid({
 		data: articleList,
@@ -107,7 +109,7 @@ function loadAll(articleList) {
 	    pageNavigatorNextText: '...',
 	    pageNavigatorPrevText: '...',
 	    
-	    rowDoubleClick: editArticle,
+	    rowClick: editArticle,
 	    confirmDeleting: true,
 	    deleteConfirm: '确定要删除?',
 	    controller: {
@@ -118,18 +120,23 @@ function loadAll(articleList) {
 	    
 	   	fields:[
 	   		{name:'articleId', title:'编号', width:'10%', align:'center'},
-	   		{name:'title', title:'标题',  width:'65%', align:'left'},
+	   		{name:'title', title:'文章标题',  width:'50%', align:'left'},
 	   		{name:'createDate', title:'修改日期', width:'20%', align:'left', type:'date'},
+	   		{name:'articleId', title:'文章内容', width:'15%', align:'center', itemTemplate:articleItemTmpl},
 	   		{type: 'control', width:'5%', editButton: false}
 	   	],
 	});
 }
 loadAll(<%=articles%>);
 
+//create article editting button
+function articleItemTmpl(username) {
+	return $("<div class='btn btn-primary btn-xs detail-btn'>").append('查看详情');
+};
+
 // delete article
 function deleteArticle(item) {
 	var articleId = item.articleId;
-	console.log(event);
 	$.ajax({
       type: "POST",
       url: '<%=path%>/admin/articles/remove.action',
@@ -140,6 +147,11 @@ function deleteArticle(item) {
 // edit article
 var articleItem = {};
 function editArticle(event) {
+	var target = event.event.target;
+	if(!$(target).hasClass('detail-btn')) {
+		return;
+	}
+	
 	articleItem = event.item;
 	var articleId = articleItem.articleId;
 	console.log('edit article: ' + articleId);

@@ -3,10 +3,15 @@ package com.fivestars.websites.onlinetest.service.impl;
 import java.io.Serializable;
 import java.util.List;
 
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fivestars.websites.onlinetest.constant.UserConst;
 import com.fivestars.websites.onlinetest.dao.UserDAO;
 import com.fivestars.websites.onlinetest.model.User;
 import com.fivestars.websites.onlinetest.service.UserService;
@@ -47,11 +52,33 @@ public class UserServiceImpl implements UserService {
 			return null;
 		}
 		User existUser = userDao.load(userName);
-		// TODO ����/���� ����
 		if(existUser.getPassword().equals(pwd)) {
 			return existUser;
 		} else {
 			return null;
 		}
+	}
+
+	@Override
+	public List<User> loadAllUsers() {
+		DetachedCriteria criteria = DetachedCriteria.forClass(User.class);
+		Criterion isAdminEq = Restrictions.eqOrIsNull("isAdmin", UserConst.IS_NOT_ADMIN);
+		criteria.add(isAdminEq);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		return userDao.listSome(criteria);
+	}
+
+	@Override
+	public List<User> loadAllAdmins() {
+		DetachedCriteria criteria = DetachedCriteria.forClass(User.class);
+		Criterion isAdminEq = Restrictions.eq("isAdmin", UserConst.IS_ADMIN);
+		criteria.add(isAdminEq);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		return userDao.listSome(criteria);
+	}
+
+	@Override
+	public void delete(String userName) {
+		userDao.delete(userName);
 	}
 }

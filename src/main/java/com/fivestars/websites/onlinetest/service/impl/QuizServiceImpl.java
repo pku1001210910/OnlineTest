@@ -1,5 +1,6 @@
 package com.fivestars.websites.onlinetest.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -7,7 +8,6 @@ import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +23,6 @@ import com.fivestars.websites.onlinetest.dao.QuizSubjectDAO;
 import com.fivestars.websites.onlinetest.dao.SubjectItemDAO;
 import com.fivestars.websites.onlinetest.model.Quiz;
 import com.fivestars.websites.onlinetest.model.QuizCategory;
-import com.fivestars.websites.onlinetest.model.QuizOwnership;
 import com.fivestars.websites.onlinetest.model.QuizSubject;
 import com.fivestars.websites.onlinetest.model.SubjectItem;
 import com.fivestars.websites.onlinetest.service.QuizService;
@@ -53,6 +52,17 @@ public class QuizServiceImpl implements QuizService {
 	@Override
 	public List<Quiz> loadAllQuiz() {
 		return quizDao.listAll();
+	}
+	
+
+	@Override
+	public List<Quiz> loadAllQuizTitles() {
+		List<Quiz> all = quizDao.listAll();
+		List<Quiz> ret = new ArrayList<>();
+		for(Quiz each : all) {
+			ret.add(new Quiz(each));
+		}
+		return ret;
 	}
 	
 	@Override
@@ -423,5 +433,4 @@ public class QuizServiceImpl implements QuizService {
 		Integer allQuizSize = quizDao.countSome(resultCriteria);
 		return allQuizSize;
 	}
-	
 }

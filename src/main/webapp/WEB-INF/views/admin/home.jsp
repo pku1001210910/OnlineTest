@@ -58,10 +58,7 @@
 		<div class="row admin-menu">
 			<div class="col-sm-3 col-md-2 sidebar">
 				<ul class="nav nav-sidebar">
-					<li class="active admin-menu-item" data-target="welcome"><a>欢迎界面</a></li>
-				</ul>
-				<ul class="nav nav-sidebar">
-					<li class="admin-menu-item" data-target="users"><a>用户管理</a></li>
+					<li class="active admin-menu-item" data-target="users"><a>用户管理</a></li>
 				</ul>
 				<ul class="nav nav-sidebar">
 					<li class="admin-menu-item" data-target="articles"><a>文章管理</a></li>

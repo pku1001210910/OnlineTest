@@ -13,8 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fivestars.websites.onlinetest.model.Article;
+import com.fivestars.websites.onlinetest.model.Quiz;
 import com.fivestars.websites.onlinetest.model.User;
 import com.fivestars.websites.onlinetest.service.ArticleService;
+import com.fivestars.websites.onlinetest.service.QuizService;
 import com.fivestars.websites.onlinetest.service.UserService;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -26,6 +28,9 @@ public class HomeAction{
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private QuizService quizService;
 	
 	@Action(value = "home", results = { @Result(name = "success", location = "/WEB-INF/views/admin/home.jsp") })
 	public String home() {
@@ -42,13 +47,15 @@ public class HomeAction{
 	
 	@Action(value = "users", results = { @Result(name = "success", location = "/WEB-INF/views/admin/mgmt/users.jsp") })
 	public String users() throws JsonProcessingException {
-		List<User> users = userService.findAll();
+		List<User> users = userService.loadAllUsers();
+		List<Quiz> quizzes = quizService.loadAllQuizTitles();
 		ObjectMapper json = new ObjectMapper();
 		ServletActionContext.getRequest().setAttribute("users", json.writeValueAsString(users));
+		ServletActionContext.getRequest().setAttribute("quizzes", json.writeValueAsString(quizzes));
 		return ActionSupport.SUCCESS;
 	}
 
-	@Action(value = "welcome", results = { @Result(name = "success", location = "/WEB-INF/views/admin/mgmt/welcome.jsp") })
+	@Action(value = "welcome", results = { @Result(name = "success", type = "redirectAction", location = "users")})
 	public String welcome() {
 		return ActionSupport.SUCCESS;
 	}
