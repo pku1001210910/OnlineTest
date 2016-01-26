@@ -61,6 +61,8 @@ function init(userlist) {
 		height: 'auto',
 	    width: '95%',
 	    
+	    sorting: true,
+	    
 	    paging: true,
 	    pageIndex: 1,
 	    pageSize: 13,
