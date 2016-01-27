@@ -284,6 +284,10 @@ onlineTest.management.Quiz.Status = {
 					$('#add-quiz-step-3').css('display', 'block');
 					self.step_ = 3;
 				} else {
+					var quizId = $('#quiz-dialog').data('quizId');
+					if (!!quizId) {
+						self.io_.publishQuiz(quizId);
+					}
 					$('#close-btn').click();
 				}
 				self.resetHeaderStatus_(self.status_, self.step_);
@@ -350,13 +354,31 @@ onlineTest.management.Quiz.Status = {
 		});
 		
 		// bind feedback event
-		$('#quiz-feedback-container').on('blur', 'input, textarea', function(event) {
+		$('#quiz-feedback-container').on('change', 'input, textarea', function(event) {
 			var $feedback = $(event.target).parents('.feedback-item');
 			var content = $feedback.find('.feedback-content').val();
-			var scoreFrom = $feedback.find('.score-from').val();
-			var scoreTo = $feedback.find('.score-to').val();
-
-			// TODO update feedback in server side
+			var scoreFrom = 0;
+			if ($feedback.find('.score-from').val() !== "" && !isNaN($feedback.find('.score-from').val())) {
+				scoreFrom = parseFloat($feedback.find('.score-from').val());
+			}
+			var scoreTo = 0;
+			if ($feedback.find('.score-to').val() !== "" && !isNaN($feedback.find('.score-to').val())) {
+				scoreTo = parseFloat($feedback.find('.score-to').val());
+			}
+			
+			var quizId = $('#quiz-dialog').data('quizId');
+			if (!quizId) {
+				return;
+			}
+			var feedbackId = $feedback.data('feedbackId');
+			if (!feedbackId) {
+				// add feedback
+				self.io_.addFeedback(quizId, content, scoreFrom, scoreTo, function(feedbackId) {
+					$feedback.data('feedbackId', feedbackId);
+				});
+			} else {
+				self.io_.updateFeedback(feedbackId, content, scoreFrom, scoreTo);
+			}
 		});
 		
 		$('#quiz-feedback-container').on('click', '.add-feedback', function(event) {
@@ -372,15 +394,33 @@ onlineTest.management.Quiz.Status = {
 				$feedback.offset().top - $scrollContainer.offset().top + $scrollContainer.scrollTop()
 			);
 			
-			// TODO insert feedback in server side
+			var quizId = $('#quiz-dialog').data('quizId');
+			if (!quizId) {
+				return;
+			}
+			var content = $feedback.find('.feedback-content').val();
+			var scoreFrom = 0;
+			if ($feedback.find('.score-from').val() !== "" && !isNaN($feedback.find('.score-from').val())) {
+				scoreFrom = parseFloat($feedback.find('.score-from').val());
+			}
+			var scoreTo = 0;
+			if ($feedback.find('.score-to').val() !== "" && !isNaN($feedback.find('.score-to').val())) {
+				scoreTo = parseFloat($feedback.find('.score-to').val());
+			}
+			self.io_.addFeedback(quizId, content, scoreFrom, scoreTo, function(feedbackId) {
+				$feedback.data('feedbackId', feedbackId);
+			});
 		});
 		
 		$('#quiz-feedback-container').on('click', '.remove-feedback', function(event) {
 			var $feedback = $(event.target).parents('.feedback-item');
+			var feedbackId = $feedback.data('feedbackId');
+			if (!!feedbackId) {
+				self.io_.deleteFeedback(feedbackId);
+			}
+			
 			$feedback.remove();
 			self.rearrangeFeedbackTitle_();
-			
-			// TODO delete feedback in server side
 		});
 		
 		$('#quiz-title, #quiz-description, #need-charge-toggle, #quiz-price').change(function(event) {
@@ -490,6 +530,28 @@ onlineTest.management.Quiz.IO = function() {
 				if ($.isFunction(callback)) {
 					callback(result['quizId']);
 				}
+				self.onSuccess_();
+			},
+			error: function(xhr) {
+				self.onError_();
+			}
+		});
+	};
+	
+	/**
+	 * @param {number} quizId
+	 */
+	IO.prototype.publishQuiz = function(quizId) {
+		var self = this;
+		var quizMeta = {
+			'quizId': quizId
+		};
+		this.beforeRequest_();
+		$.ajax({
+			url: './publishQuiz.action',
+			type: 'post',
+			data: quizMeta,
+			success:function () {
 				self.onSuccess_();
 			},
 			error: function(xhr) {
@@ -878,6 +940,97 @@ onlineTest.management.Quiz.IO = function() {
 	};
 	
 	/**
+	 * @param {number} quizId
+	 * @param {string} content
+	 * @param {number} scoreFrom
+	 * @param {number} scoreTo
+	 * @param {Function} callback
+	 */
+	IO.prototype.addFeedback = function(quizId, content, scoreFrom, scoreTo, callback) {
+		var self = this;
+		var feedback = {
+			'quizId': quizId,
+			'content': content,
+			'scoreFrom': scoreFrom,
+			'scoreTo': scoreTo
+		};
+		this.beforeRequest_();
+		$.ajax({
+			url: './addFeedback.action',
+			type: 'post',
+			data: feedback,
+			success:function (data) {
+				var result = JSON.parse(data['result']);
+				if ($.isFunction(callback)) {
+					callback(result['feedbackId']);
+				}
+				self.onSuccess_();
+			},
+			error: function(xhr) {
+				self.onError_();
+			}
+		});
+	};
+	
+	/**
+	 * @param {number} fedbackId
+	 * @param {string} content
+	 * @param {number} scoreFrom
+	 * @param {number} scoreTo
+	 * @param {Function} callback
+	 */
+	IO.prototype.updateFeedback = function(feedbackId, content, scoreFrom, scoreTo, callback) {
+		var self = this;
+		var feedback = {
+			'feedbackId': feedbackId,
+			'content': content,
+			'scoreFrom': scoreFrom,
+			'scoreTo': scoreTo
+		};
+		this.beforeRequest_();
+		$.ajax({
+			url: './updateFeedback.action',
+			type: 'post',
+			data: feedback,
+			success:function () {
+				if ($.isFunction(callback)) {
+					callback();
+				}
+				self.onSuccess_();
+			},
+			error: function(xhr) {
+				self.onError_();
+			}
+		});
+	};
+	
+	/**
+	 * @param {number} feedbackId
+	 * @param {Function} callback
+	 */
+	IO.prototype.deleteFeedback = function(feedbackId, callback) {
+		var self = this;
+		var feedback = {
+			'feedbackId': feedbackId
+		};
+		this.beforeRequest_();
+		$.ajax({
+			url: './deleteFeedback.action',
+			type: 'post',
+			data: feedback,
+			success:function () {
+				if ($.isFunction(callback)) {
+					callback();
+				}
+				self.onSuccess_();
+			},
+			error: function(xhr) {
+				self.onError_();
+			}
+		});
+	};
+	
+	/**
 	 * @private
 	 */
 	IO.prototype.beforeRequest_ = function() {
@@ -913,7 +1066,9 @@ onlineTest.management.Quiz.IO = function() {
 	 * @private
 	 */
 	IO.prototype.updateSaveDateTime_ = function() {
-		var date = new Date();
-		$('#quiz-save-label').text('系统已为您自动保存所有的更改 ' + date.toLocaleString());
+		if ($('#quiz-save-label')) {
+			var date = new Date();
+			$('#quiz-save-label').text('系统已为您自动保存所有的更改 ' + date.toLocaleString());
+		}
 	};
 })(onlineTest.management.Quiz.IO);

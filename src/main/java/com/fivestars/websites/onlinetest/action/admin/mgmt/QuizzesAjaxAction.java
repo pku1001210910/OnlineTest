@@ -17,10 +17,12 @@ import org.apache.struts2.json.annotations.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fivestars.websites.onlinetest.constant.QuizConst;
+import com.fivestars.websites.onlinetest.model.Feedback;
 import com.fivestars.websites.onlinetest.model.Quiz;
 import com.fivestars.websites.onlinetest.model.QuizCategory;
 import com.fivestars.websites.onlinetest.model.QuizSubject;
 import com.fivestars.websites.onlinetest.model.SubjectItem;
+import com.fivestars.websites.onlinetest.service.FeedbackService;
 import com.fivestars.websites.onlinetest.service.QuizService;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -35,6 +37,8 @@ public class QuizzesAjaxAction implements ServletRequestAware {
 	
 	@Autowired
 	private QuizService quizService;
+	@Autowired
+	private FeedbackService feedbackService;
 	
 	private HttpServletRequest request;
 		
@@ -80,6 +84,15 @@ public class QuizzesAjaxAction implements ServletRequestAware {
 		Map<String, Integer> resultMap = new HashMap<>();
 		resultMap.put("quizId", quizId);
 		result = JSONObject.fromObject(resultMap).toString();
+		return ActionSupport.SUCCESS;
+	}
+	
+	@Action(value = "publishQuiz", results = { @Result(name="success", type="json")})
+	public String publishQuiz() {
+		Integer quizId = Integer.parseInt(request.getParameter("quizId"));
+		Quiz quiz = quizService.loadQuizById(quizId);
+		quiz.setStatus(QuizConst.STATUS_SUBMITTED);
+		quizService.updateQuiz(quiz);
 		return ActionSupport.SUCCESS;
 	}
 	
@@ -237,6 +250,41 @@ public class QuizzesAjaxAction implements ServletRequestAware {
 		Integer subjectId = Integer.parseInt(request.getParameter("subjectId"));
 		Integer itemId = Integer.parseInt(request.getParameter("itemId"));
 		quizService.shiftItemUp(subjectId, itemId);
+		return ActionSupport.SUCCESS;
+	}
+	
+	@Action(value = "addFeedback", results = { @Result(name="success", type="json")})
+	public String addFeedback() {
+		Integer quizId = Integer.parseInt(request.getParameter("quizId"));
+		String content = request.getParameter("content");
+		Double scoreFrom = Double.parseDouble(request.getParameter("scoreFrom").toString());
+		Double scoreTo = Double.parseDouble(request.getParameter("scoreTo").toString());
+		Feedback feedback = new Feedback(quizId, content, scoreFrom, scoreTo);
+		Integer feedbackId = feedbackService.createFeedback(feedback);
+		Map<String, Object> resultMap = new HashMap<>();
+		resultMap.put("feedbackId", feedbackId);
+		result = JSONObject.fromObject(resultMap).toString();
+		return ActionSupport.SUCCESS;
+	}
+	
+	@Action(value = "updateFeedback", results = { @Result(name="success", type="json")})
+	public String updateFeedback() {
+		Integer feedbackId = Integer.parseInt(request.getParameter("feedbackId"));
+		Feedback feedback = feedbackService.getFeedbackById(feedbackId);
+		String content = request.getParameter("content");
+		Double scoreFrom = Double.parseDouble(request.getParameter("scoreFrom").toString());
+		Double scoreTo = Double.parseDouble(request.getParameter("scoreTo").toString());
+		feedback.setContent(content);
+		feedback.setScoreFrom(scoreFrom);
+		feedback.setScoreTo(scoreTo);
+		feedbackService.updateFeedback(feedback);
+		return ActionSupport.SUCCESS;
+	}
+	
+	@Action(value = "deleteFeedback", results = { @Result(name="success", type="json")})
+	public String deleteFeedback() {
+		Integer feedbackId = Integer.parseInt(request.getParameter("feedbackId"));
+		feedbackService.deleteFeedback(feedbackId);
 		return ActionSupport.SUCCESS;
 	}
 }
