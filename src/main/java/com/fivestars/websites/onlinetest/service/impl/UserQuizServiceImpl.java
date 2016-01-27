@@ -3,6 +3,7 @@ package com.fivestars.websites.onlinetest.service.impl;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
@@ -12,10 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fivestars.websites.onlinetest.constant.CategoryConst;
 import com.fivestars.websites.onlinetest.constant.QuizConst;
 import com.fivestars.websites.onlinetest.dao.QuizOwnershipDAO;
 import com.fivestars.websites.onlinetest.dao.UserAnswerDAO;
 import com.fivestars.websites.onlinetest.dao.UserQuizDAO;
+import com.fivestars.websites.onlinetest.model.Quiz;
 import com.fivestars.websites.onlinetest.model.QuizOwnership;
 import com.fivestars.websites.onlinetest.model.UserAnswer;
 import com.fivestars.websites.onlinetest.model.UserQuiz;
@@ -41,6 +44,28 @@ public class UserQuizServiceImpl implements UserQuizService {
 		userCriteria.add(userNameEq);
 		userCriteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		return userQuizDao.listSome(userCriteria);
+	}
+	
+	@Override
+	public List<UserQuiz> getUserParticipatedQuiz(String userName, int curPageNum, int pageSize) {
+		DetachedCriteria resultCriteria = DetachedCriteria.forClass(UserQuiz.class);
+		Criterion userEq = Restrictions.eq("userName", userName);
+		resultCriteria.add(userEq);
+		resultCriteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		resultCriteria.setFetchMode("userAnswers", FetchMode.SELECT);
+		List<UserQuiz> userQuizList = userQuizDao.pagedQuery(resultCriteria, curPageNum, pageSize);
+		LOGGER.info("[UserQuizService]Successfully load all userQuiz, useName = {}, curPageNum = {}, pageSize = {}", userName, curPageNum, pageSize);
+		return userQuizList;
+	}
+	
+	@Override
+	public Integer getUserParticipatedQuizSize(String userName) {
+		DetachedCriteria resultCriteria = DetachedCriteria.forClass(UserQuiz.class);
+		Criterion userNameEq = Restrictions.eq("userName", userName);
+		resultCriteria.add(userNameEq);
+		resultCriteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		Integer allQuizSize = userQuizDao.countSome(resultCriteria);
+		return allQuizSize;
 	}
 
 	@Override

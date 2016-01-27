@@ -1494,3 +1494,11 @@ a{color:#717171;}
 .temtitle button.btn-warning {
 	padding:0px;
 }
+
+.tem-container {
+	margin-bottom: 20px;
+}
+
+.pagenum.item {
+	margin-left: -18px;
+}

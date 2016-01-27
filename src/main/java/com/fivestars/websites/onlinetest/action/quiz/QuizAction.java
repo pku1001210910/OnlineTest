@@ -35,7 +35,7 @@ public class QuizAction {
 	private List<Quiz> quizList;
 	private String userName;
 	private int curPageNum;
-	private int pageSize = 3;
+	private int pageSize = 10;
 	private int totalPage;
 	
 	private int firstPageNum = 1;
