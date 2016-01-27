@@ -244,4 +244,11 @@ public interface QuizService {
 	 * @return list of submitted quiz for specific category
 	 */
 	List<Quiz> getSubmittedQuizByCategory(Integer categoryId, Integer curPageNum, Integer pageSize);
+
+	/**
+	 * 
+	 * @param quizIdList
+	 * @return
+	 */
+	List<Quiz> loadQuizzesByIds(List<Integer> quizIdList);
 }

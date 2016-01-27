@@ -122,8 +122,6 @@
                                   	</div>
                                 </div>
                                 <div class="pagenum" id="pagenum">
-                                	<s:debug>
-                                	</s:debug>
                                 	<s:if test="firstPageNum==curPageNum">
                                 		<span class="active">
                                 			<a href="<%=basePath %>quiz/startQuiz.action?curPageNum=${firstPageNum}&categoryId=${categoryId}">${firstPageNum}</a>

@@ -101,6 +101,19 @@ public class QuizServiceImpl implements QuizService {
 	public Quiz loadQuizById(Integer quizId) {
 		return quizDao.get(quizId);
 	}
+	
+	@Override
+	public List<Quiz> loadQuizzesByIds(List<Integer> quizIdList) {
+		DetachedCriteria resultCriteria = DetachedCriteria.forClass(Quiz.class);
+		Criterion quizIdIn = Restrictions.in("quizId", quizIdList);
+		resultCriteria.add(quizIdIn);
+		resultCriteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		resultCriteria.setFetchMode("subjectItems", FetchMode.SELECT);
+		resultCriteria.setFetchMode("quizSubjects", FetchMode.SELECT);
+		List<Quiz> quizList = quizDao.listSome(resultCriteria);
+		LOGGER.info("[QuizService]Successfully load quiz in idlist, quizIdList = {}", quizIdList);
+		return quizList;
+	}
 
 	@Override
 	public Integer addSubjectToQuiz(Integer quizId, QuizSubject subject) {
