@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Action;
+import org.apache.struts2.convention.annotation.InterceptorRef;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
@@ -70,7 +71,7 @@ public class QuizAction {
 		return ActionSupport.SUCCESS;
 	}
 	
-	@Action(value = "quizDetail", results = { @Result(name = "success", location = "/WEB-INF/views/quiz/quizdetail.jsp"), @Result(name = "input", type="redirectAction", location = "startQuiz.action") })
+	@Action(value = "quizDetail", interceptorRefs = {@InterceptorRef(value="global")}, results = { @Result(name = "success", location = "/WEB-INF/views/quiz/quizdetail.jsp"), @Result(name = "input", type="redirectAction", location = "startQuiz.action") })
 	public String quizDetail() {
 		Map<String, Object> session = ServletActionContext.getContext().getSession();
 		User user = (User) session.get("user");

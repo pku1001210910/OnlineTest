@@ -3,10 +3,10 @@ package com.fivestars.websites.onlinetest.action;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Action;
+import org.apache.struts2.convention.annotation.InterceptorRef;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
@@ -16,6 +16,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fivestars.websites.onlinetest.model.Quiz;
 import com.fivestars.websites.onlinetest.model.QuizCategory;
+import com.fivestars.websites.onlinetest.constant.SessionConst;
 import com.fivestars.websites.onlinetest.model.User;
 import com.fivestars.websites.onlinetest.model.UserQuiz;
 import com.fivestars.websites.onlinetest.service.QuizService;
@@ -65,8 +66,7 @@ public class UserAction {
 	@Autowired
 	private QuizService quizService;
 
-	@Action(value = "userReg", results = {
-			@Result(name = "success", type = "redirectAction", params = { "namespace", "/user" }, location = "home") })
+	@Action(value = "userReg", results = { @Result(name = "success", type = "redirectAction", params = { "namespace", "/user" }, location = "home") })
 	public String userReg() {
 		message = "";
 		boolean existUser = userService.isExist(userName);
@@ -84,14 +84,13 @@ public class UserAction {
 			user.setMajor(major);
 
 			userService.save(user);
-			session.put("user", user);
+			session.put(SessionConst.USER, user);
 		}
 		return ActionSupport.SUCCESS;
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@Action(value = "userLogin", results = {
-			@Result(name = "success", type = "redirectAction", params = { "namespace", "/" }, location = "home") })
+	@Action(value = "userLogin", results = { @Result(name = "success", type = "redirectAction", params = { "namespace", "/" }, location = "home") })
 	public String userLogin() {
 		User user = userService.loadByNameAndPwd(userName, userPw);
 		if (user == null) {
@@ -99,29 +98,25 @@ public class UserAction {
 			session.put("error", "用户名或密码错误");
 		} else {
 			Map session = ServletActionContext.getContext().getSession();
-			session.put("user", user);
+			session.put(SessionConst.USER, user);
 		}
 		return ActionSupport.SUCCESS;
 	}
 
 	@SuppressWarnings("rawtypes")
-	@Action(value = "userLogout", results = {
+	@Action(value = "userLogout", interceptorRefs = { @InterceptorRef(value = "global") }, results = {
 			@Result(name = "success", type = "redirectAction", params = { "namespace", "/" }, location = "home") })
 	public String userLogout() {
 		Map session = ServletActionContext.getContext().getSession();
-		session.remove("user");
+		session.remove(SessionConst.USER);
 		return ActionSupport.SUCCESS;
 	}
 
-	@Action(value = "home", results = { @Result(name = "success", location = "/WEB-INF/views/user/userInfo.jsp"),
+	@Action(value = "home", interceptorRefs = {@InterceptorRef(value="global")}, results = { @Result(name = "success", location = "/WEB-INF/views/user/userInfo.jsp"),
 			@Result(name = "login", type = "redirectAction", params = { "namespace", "/" }, location = "home") })
 	public String home() throws JsonProcessingException {
 		Map<String, Object> session = ServletActionContext.getContext().getSession();
-		User user = (User) session.get("user");
-		if (user == null) {
-			return ActionSupport.LOGIN;
-		}
-
+		User user = (User) session.get(SessionConst.USER);
 		user = userService.loadByName(user.getUserName());
 
 		ObjectMapper objectMapper = new ObjectMapper();
@@ -129,15 +124,11 @@ public class UserAction {
 		return ActionSupport.SUCCESS;
 	}
 
-	@Action(value = "password", results = { @Result(name = "success", location = "/WEB-INF/views/user/password.jsp"),
+	@Action(value = "password", interceptorRefs = { @InterceptorRef(value = "global") }, results = { @Result(name = "success", location = "/WEB-INF/views/user/password.jsp"),
 			@Result(name = "login", type = "redirectAction", params = { "namespace", "/" }, location = "home") })
 	public String password() throws JsonProcessingException {
 		Map<String, Object> session = ServletActionContext.getContext().getSession();
-		User user = (User) session.get("user");
-		if (user == null) {
-			return ActionSupport.LOGIN;
-		}
-
+		User user = (User) session.get(SessionConst.USER);
 		user = userService.loadByName(user.getUserName());
 
 		ObjectMapper objectMapper = new ObjectMapper();

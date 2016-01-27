@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts2.convention.annotation.Action;
+import org.apache.struts2.convention.annotation.InterceptorRef;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
@@ -30,8 +31,9 @@ import lombok.Data;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-@ParentPackage("json-default")
+@ParentPackage("admin")
 @Namespace("/admin")
+@InterceptorRef(value="global")
 @Data
 public class QuizzesAjaxAction implements ServletRequestAware {
 	

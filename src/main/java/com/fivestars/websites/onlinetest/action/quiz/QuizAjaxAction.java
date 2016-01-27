@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Action;
+import org.apache.struts2.convention.annotation.InterceptorRef;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ import com.opensymphony.xwork2.ActionSupport;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-@ParentPackage("quizAjax")
+@ParentPackage("quiz")
 public class QuizAjaxAction {
 	private String userName;
 	private int quizId;
@@ -69,7 +70,7 @@ public class QuizAjaxAction {
 		return ActionSupport.SUCCESS;
 	}
 
-	@Action(value = "finishQuiz", results = { @Result(name = "success", type = "json") })
+	@Action(value = "finishQuiz", interceptorRefs = {@InterceptorRef(value="global")}, results = { @Result(name = "success", type = "json") })
 	public String finishQuiz() {
         JSONArray array = JSONArray.fromObject(subjectItemList);  
         Object[] objs = new Object[array.size()];  

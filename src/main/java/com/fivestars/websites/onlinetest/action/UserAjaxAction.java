@@ -1,6 +1,7 @@
 package com.fivestars.websites.onlinetest.action;
 
 import org.apache.struts2.convention.annotation.Action;
+import org.apache.struts2.convention.annotation.InterceptorRef;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,8 @@ import com.fivestars.websites.onlinetest.model.User;
 import com.fivestars.websites.onlinetest.service.UserService;
 import com.opensymphony.xwork2.ActionSupport;
 
-@ParentPackage("userAjax")
+@ParentPackage("user")
+@InterceptorRef(value="global")
 public class UserAjaxAction {
 	private String userName;
 	private String userPw;
@@ -37,7 +39,7 @@ public class UserAjaxAction {
 		return "success";
 	}
 
-	@Action(value = "update", results = { @Result(name = "success", type = "json") })
+	@Action(value = "update", interceptorRefs = {@InterceptorRef(value="global")}, results = { @Result(name = "success", type = "json") })
 	public String update() throws JsonProcessingException {
 		User user = userService.loadByName(userName);
 		user.setEmail(email);
@@ -49,7 +51,7 @@ public class UserAjaxAction {
 		return ActionSupport.SUCCESS;
 	}
 
-	@Action(value = "updatePwd", results = { @Result(name = "success", type = "json") })
+	@Action(value = "updatePwd", interceptorRefs = {@InterceptorRef(value="global")}, results = { @Result(name = "success", type = "json") })
 	public String updatePwd() throws JsonProcessingException {
 		User user = userService.loadByName(userName);
 
