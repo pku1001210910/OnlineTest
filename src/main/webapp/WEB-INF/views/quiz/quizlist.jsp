@@ -98,13 +98,13 @@
                                     	<s:iterator id="quiz" value="quizList">
                                     		<div class="tem">
 	                                    		<div class="temtitle">
-	                                    			<a href="#" onclick="checkQuizOwner(${quiz.quizId}, '${session.user == null ? -1 :  session.user.userName}')">
+	                                    			<a href="#" onclick="checkQuizOwner(${quiz.quizId}, '${session.user_session == null ? -1 :  session.user_session.userName}')">
 	                                                    <p>${quiz.title}</p>
 	                                                </a>
 	                                                <s:if test="#quiz.price != 0">
 	                                                 	<i class="fa fa-lock"></i>
 	                                                	<span class="label label-info">${quiz.price}元</span>
-	                                                	<button class="btn btn-warning" onclick="buyQuiz(${quiz.quizId}, '${session.user == null ? -1 : session.user.userName}')">支付</button>
+	                                                	<button class="btn btn-warning" onclick="buyQuiz(${quiz.quizId}, '${session.user_session == null ? -1 : session.user_session.userName}')">支付</button>
 	                                                </s:if>
 	                                               
 	                                                <%-- <span>共1页14个问题</span> --%>
