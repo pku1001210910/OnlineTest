@@ -201,7 +201,7 @@ onlineTest.management.Quiz.Status = {
 		}
 		var SubjectEventType = onlineTest.management.Subject.EventType;
 		var ItemEventType = onlineTest.management.SingleChoiceSubject.EventType;
-		// TODO operation in server side
+		// operation in server side
 		var $dom = subjectComponent.getDom();
 		$dom.bind(SubjectEventType.SUBJECT_SHIFT_UP, function(event, subjectId) {
 			self.io_.shiftSubjectUp(quizId, subjectId);
@@ -213,25 +213,27 @@ onlineTest.management.Quiz.Status = {
 			self.io_.deleteSubject(quizId, subjectId);
 		});
 		$dom.bind(ItemEventType.SUBJECT_QUESTION_UPDATE, function(event, subjectId, question) {
-			console.log('update subject question');
+			self.io_.updateSubjectQuestion(subjectId, question);
 		});
 		$dom.bind(ItemEventType.ITEM_CHOICE_UPDATE, function(event, itemId, choice) {
-			console.log('update item choice');
+			self.io_.updateItemChoice(itemId, choice);
 		});
 		$dom.bind(ItemEventType.ITEM_SCORE_UPDATE, function(event, itemId, score) {
-			console.log('update item score');
+			self.io_.updateItemScore(itemId, score);
 		});
-		$dom.bind(ItemEventType.ITEM_SHIFT_UP, function(event, itemId) {
-			console.log('shift item up');
+		$dom.bind(ItemEventType.ITEM_SHIFT_UP, function(event, subjectId, itemId) {
+			self.io_.shiftItemUp(subjectId, itemId);
 		});
-		$dom.bind(ItemEventType.ITEM_SHIFT_DOWN, function(event, itemId) {
-			console.log('shift item down');
+		$dom.bind(ItemEventType.ITEM_SHIFT_DOWN, function(event, subjectId, itemId) {
+			self.io_.shiftItemDown(subjectId, itemId);
 		});
-		$dom.bind(ItemEventType.ITEM_DELETE, function(event, itemId) {
-			console.log('delete item');
+		$dom.bind(ItemEventType.ITEM_DELETE, function(event, subjectId, itemId) {
+			self.io_.deleteItem(subjectId, itemId);
 		});
-		$dom.bind(ItemEventType.ITEM_ADD, function(event, subjectId) {
-			console.log('add item');
+		$dom.bind(ItemEventType.ITEM_ADD, function(event, subjectId, choice, score, $item) {
+			self.io_.addItem(subjectId, choice, score, function(itemId){
+				$item.data('itemId', itemId);
+			});
 		});
 	};
 	
@@ -264,6 +266,7 @@ onlineTest.management.Quiz.Status = {
 					$('#add-quiz-step-1').css('display', 'none');
 					$('#add-quiz-step-2').css('display', 'block');
 					$('#add-quiz-step-3').css('display', 'none');
+					$('#quiz-caption').text($('#quiz-title').val());
 					self.step_ = 2;
 					self.resetHeaderStatus_(self.status_, self.step_);
 					self.resetFooterStatus_(self.status_, self.step_);
@@ -273,6 +276,7 @@ onlineTest.management.Quiz.Status = {
 					$('#add-quiz-step-1').css('display', 'none');
 					$('#add-quiz-step-2').css('display', 'block');
 					$('#add-quiz-step-3').css('display', 'none');
+					$('#quiz-caption').text($('#quiz-title').val());
 					self.step_ = 2;
 				} else if (self.step_ === 2) {
 					$('#add-quiz-step-1').css('display', 'none');
@@ -280,6 +284,10 @@ onlineTest.management.Quiz.Status = {
 					$('#add-quiz-step-3').css('display', 'block');
 					self.step_ = 3;
 				} else {
+					var quizId = $('#quiz-dialog').data('quizId');
+					if (!!quizId) {
+						self.io_.publishQuiz(quizId);
+					}
 					$('#close-btn').click();
 				}
 				self.resetHeaderStatus_(self.status_, self.step_);
@@ -346,13 +354,31 @@ onlineTest.management.Quiz.Status = {
 		});
 		
 		// bind feedback event
-		$('#quiz-feedback-container').on('blur', 'input, textarea', function(event) {
+		$('#quiz-feedback-container').on('change', 'input, textarea', function(event) {
 			var $feedback = $(event.target).parents('.feedback-item');
 			var content = $feedback.find('.feedback-content').val();
-			var scoreFrom = $feedback.find('.score-from').val();
-			var scoreTo = $feedback.find('.score-to').val();
-
-			// TODO update feedback in server side
+			var scoreFrom = 0;
+			if ($feedback.find('.score-from').val() !== "" && !isNaN($feedback.find('.score-from').val())) {
+				scoreFrom = parseFloat($feedback.find('.score-from').val());
+			}
+			var scoreTo = 0;
+			if ($feedback.find('.score-to').val() !== "" && !isNaN($feedback.find('.score-to').val())) {
+				scoreTo = parseFloat($feedback.find('.score-to').val());
+			}
+			
+			var quizId = $('#quiz-dialog').data('quizId');
+			if (!quizId) {
+				return;
+			}
+			var feedbackId = $feedback.data('feedbackId');
+			if (!feedbackId) {
+				// add feedback
+				self.io_.addFeedback(quizId, content, scoreFrom, scoreTo, function(feedbackId) {
+					$feedback.data('feedbackId', feedbackId);
+				});
+			} else {
+				self.io_.updateFeedback(feedbackId, content, scoreFrom, scoreTo);
+			}
 		});
 		
 		$('#quiz-feedback-container').on('click', '.add-feedback', function(event) {
@@ -368,15 +394,33 @@ onlineTest.management.Quiz.Status = {
 				$feedback.offset().top - $scrollContainer.offset().top + $scrollContainer.scrollTop()
 			);
 			
-			// TODO insert feedback in server side
+			var quizId = $('#quiz-dialog').data('quizId');
+			if (!quizId) {
+				return;
+			}
+			var content = $feedback.find('.feedback-content').val();
+			var scoreFrom = 0;
+			if ($feedback.find('.score-from').val() !== "" && !isNaN($feedback.find('.score-from').val())) {
+				scoreFrom = parseFloat($feedback.find('.score-from').val());
+			}
+			var scoreTo = 0;
+			if ($feedback.find('.score-to').val() !== "" && !isNaN($feedback.find('.score-to').val())) {
+				scoreTo = parseFloat($feedback.find('.score-to').val());
+			}
+			self.io_.addFeedback(quizId, content, scoreFrom, scoreTo, function(feedbackId) {
+				$feedback.data('feedbackId', feedbackId);
+			});
 		});
 		
 		$('#quiz-feedback-container').on('click', '.remove-feedback', function(event) {
 			var $feedback = $(event.target).parents('.feedback-item');
+			var feedbackId = $feedback.data('feedbackId');
+			if (!!feedbackId) {
+				self.io_.deleteFeedback(feedbackId);
+			}
+			
 			$feedback.remove();
 			self.rearrangeFeedbackTitle_();
-			
-			// TODO delete feedback in server side
 		});
 		
 		$('#quiz-title, #quiz-description, #need-charge-toggle, #quiz-price').change(function(event) {
@@ -486,6 +530,28 @@ onlineTest.management.Quiz.IO = function() {
 				if ($.isFunction(callback)) {
 					callback(result['quizId']);
 				}
+				self.onSuccess_();
+			},
+			error: function(xhr) {
+				self.onError_();
+			}
+		});
+	};
+	
+	/**
+	 * @param {number} quizId
+	 */
+	IO.prototype.publishQuiz = function(quizId) {
+		var self = this;
+		var quizMeta = {
+			'quizId': quizId
+		};
+		this.beforeRequest_();
+		$.ajax({
+			url: './publishQuiz.action',
+			type: 'post',
+			data: quizMeta,
+			success:function () {
 				self.onSuccess_();
 			},
 			error: function(xhr) {
@@ -675,6 +741,296 @@ onlineTest.management.Quiz.IO = function() {
 	};
 	
 	/**
+	 * @param {number} subjectId
+	 * @param {string} question
+	 * @param {Function} callback
+	 */
+	IO.prototype.updateSubjectQuestion = function(subjectId, question, callback) {
+		var self = this;
+		var subject = {
+			'subjectId': subjectId,
+			'question': question
+		};
+		this.beforeRequest_();
+		$.ajax({
+			url: './updateSubjectQuestion.action',
+			type: 'post',
+			data: subject,
+			success:function () {
+				if ($.isFunction(callback)) {
+					callback();
+				}
+				self.onSuccess_();
+			},
+			error: function(xhr) {
+				self.onError_();
+			}
+		});
+	};
+	
+	/**
+	 * @param {number} subjectId
+	 * @param {string} choice
+	 * @param {number} score
+	 * @param {Function} callback
+	 */
+	IO.prototype.addItem = function(subjectId, choice, score, callback) {
+		var self = this;
+		var item = {
+			'subjectId': subjectId,
+			'choice': choice,
+			'score': score,
+		};
+		this.beforeRequest_();
+		$.ajax({
+			url: './addItem.action',
+			type: 'post',
+			data: item,
+			success:function (data) {
+				var result = JSON.parse(data['result']);
+				if ($.isFunction(callback)) {
+					callback(result['itemId']);
+				}
+				self.onSuccess_();
+			},
+			error: function(xhr) {
+				self.onError_();
+			}
+		});
+	};
+	
+	/**
+	 * @param {number} itemId
+	 * @param {string} choice
+	 * @param {Function} callback
+	 */
+	IO.prototype.updateItemChoice = function(itemId, choice, callback) {
+		var self = this;
+		var item = {
+			'itemId': itemId,
+			'choice': choice
+		};
+		this.beforeRequest_();
+		$.ajax({
+			url: './updateItemChoice.action',
+			type: 'post',
+			data: item,
+			success:function () {
+				if ($.isFunction(callback)) {
+					callback();
+				}
+				self.onSuccess_();
+			},
+			error: function(xhr) {
+				self.onError_();
+			}
+		});
+	};
+	
+	/**
+	 * @param {number} itemId
+	 * @param {number} score
+	 * @param {Function} callback
+	 */
+	IO.prototype.updateItemScore = function(itemId, score, callback) {
+		var self = this;
+		var item = {
+			'itemId': itemId,
+			'score': score
+		};
+		this.beforeRequest_();
+		$.ajax({
+			url: './updateItemScore.action',
+			type: 'post',
+			data: item,
+			success:function () {
+				if ($.isFunction(callback)) {
+					callback();
+				}
+				self.onSuccess_();
+			},
+			error: function(xhr) {
+				self.onError_();
+			}
+		});
+	};
+	
+	/**
+	 * @param {number} subjectId
+	 * @param {number} itemId
+	 * @param {Function} callback
+	 */
+	IO.prototype.deleteItem = function(subjectId, itemId, callback) {
+		var self = this;
+		var item = {
+			'subjectId': subjectId,
+			'itemId': itemId
+		};
+		this.beforeRequest_();
+		$.ajax({
+			url: './deleteItem.action',
+			type: 'post',
+			data: item,
+			success:function () {
+				if ($.isFunction(callback)) {
+					callback();
+				}
+				self.onSuccess_();
+			},
+			error: function(xhr) {
+				self.onError_();
+			}
+		});
+	};
+	
+	/**
+	 * @param {number} subjectId
+	 * @param {number} itemId
+	 * @param {Function} callback
+	 */
+	IO.prototype.shiftItemUp = function(subjectId, itemId, callback) {
+		var self = this;
+		var item = {
+			'subjectId': subjectId,
+			'itemId': itemId
+		};
+		this.beforeRequest_();
+		$.ajax({
+			url: './shiftItemUp.action',
+			type: 'post',
+			data: item,
+			success:function () {
+				if ($.isFunction(callback)) {
+					callback();
+				}
+				self.onSuccess_();
+			},
+			error: function(xhr) {
+				self.onError_();
+			}
+		});
+	};
+	
+	/**
+	 * @param {number} subjectId
+	 * @param {number} itemId
+	 * @param {Function} callback
+	 */
+	IO.prototype.shiftItemDown = function(subjectId, itemId, callback) {
+		var self = this;
+		var item = {
+			'subjectId': subjectId,
+			'itemId': itemId
+		};
+		this.beforeRequest_();
+		$.ajax({
+			url: './shiftItemDown.action',
+			type: 'post',
+			data: item,
+			success:function () {
+				if ($.isFunction(callback)) {
+					callback();
+				}
+				self.onSuccess_();
+			},
+			error: function(xhr) {
+				self.onError_();
+			}
+		});
+	};
+	
+	/**
+	 * @param {number} quizId
+	 * @param {string} content
+	 * @param {number} scoreFrom
+	 * @param {number} scoreTo
+	 * @param {Function} callback
+	 */
+	IO.prototype.addFeedback = function(quizId, content, scoreFrom, scoreTo, callback) {
+		var self = this;
+		var feedback = {
+			'quizId': quizId,
+			'content': content,
+			'scoreFrom': scoreFrom,
+			'scoreTo': scoreTo
+		};
+		this.beforeRequest_();
+		$.ajax({
+			url: './addFeedback.action',
+			type: 'post',
+			data: feedback,
+			success:function (data) {
+				var result = JSON.parse(data['result']);
+				if ($.isFunction(callback)) {
+					callback(result['feedbackId']);
+				}
+				self.onSuccess_();
+			},
+			error: function(xhr) {
+				self.onError_();
+			}
+		});
+	};
+	
+	/**
+	 * @param {number} fedbackId
+	 * @param {string} content
+	 * @param {number} scoreFrom
+	 * @param {number} scoreTo
+	 * @param {Function} callback
+	 */
+	IO.prototype.updateFeedback = function(feedbackId, content, scoreFrom, scoreTo, callback) {
+		var self = this;
+		var feedback = {
+			'feedbackId': feedbackId,
+			'content': content,
+			'scoreFrom': scoreFrom,
+			'scoreTo': scoreTo
+		};
+		this.beforeRequest_();
+		$.ajax({
+			url: './updateFeedback.action',
+			type: 'post',
+			data: feedback,
+			success:function () {
+				if ($.isFunction(callback)) {
+					callback();
+				}
+				self.onSuccess_();
+			},
+			error: function(xhr) {
+				self.onError_();
+			}
+		});
+	};
+	
+	/**
+	 * @param {number} feedbackId
+	 * @param {Function} callback
+	 */
+	IO.prototype.deleteFeedback = function(feedbackId, callback) {
+		var self = this;
+		var feedback = {
+			'feedbackId': feedbackId
+		};
+		this.beforeRequest_();
+		$.ajax({
+			url: './deleteFeedback.action',
+			type: 'post',
+			data: feedback,
+			success:function () {
+				if ($.isFunction(callback)) {
+					callback();
+				}
+				self.onSuccess_();
+			},
+			error: function(xhr) {
+				self.onError_();
+			}
+		});
+	};
+	
+	/**
 	 * @private
 	 */
 	IO.prototype.beforeRequest_ = function() {
@@ -710,7 +1066,9 @@ onlineTest.management.Quiz.IO = function() {
 	 * @private
 	 */
 	IO.prototype.updateSaveDateTime_ = function() {
-		var date = new Date();
-		$('#quiz-save-label').text('系统已为您自动保存所有的更改 ' + date.toLocaleString());
+		if ($('#quiz-save-label')) {
+			var date = new Date();
+			$('#quiz-save-label').text('系统已为您自动保存所有的更改 ' + date.toLocaleString());
+		}
 	};
 })(onlineTest.management.Quiz.IO);

@@ -68,6 +68,18 @@ onlineTest.management.SingleChoiceSubject.EventType = {
 	};
 	
 	/**
+	 * @param {number} order
+	 * @param {Object} data
+	 */
+	SingleChoiceSubject.prototype.applyItemData = function(order, data) {
+		var itemDom = this.getDom().find('.subject-item')[order];
+		if (data['itemId']) {
+			$(itemDom).data('itemId', data['itemId']);
+		}
+	};
+	
+	/**
+	 * @override
 	 * @return {{subjectId: number, type: number, question: string, items: Array.<Object>}}
 	 */
 	SingleChoiceSubject.prototype.getData = function() {
@@ -90,6 +102,23 @@ onlineTest.management.SingleChoiceSubject.EventType = {
 		});
 		subject.items = items;
 		return subject;
+	};
+	
+	/**
+	 * @param {number} order
+	 * @return {{choice: string, score: number}}
+	 */
+	SingleChoiceSubject.prototype.getItemData = function(order) {
+		var itemDom = this.getDom().find('.subject-item')[order];
+		var score = 0;
+		if ($(itemDom).find('.item-score-value').val() !== "" && !isNaN($(itemDom).find('.item-score-value').val())) {
+			score = parseFloat($(itemDom).find('.item-score-value').val());
+		}
+		var item = {
+			choice: $(itemDom).find('label').text(),
+			score: score
+		};
+		return item;
 	};
 	
 	/**
@@ -134,7 +163,7 @@ onlineTest.management.SingleChoiceSubject.EventType = {
 		$editor.one('blur', function() {
 			if ($question.text() !== $editor.text()) {
 				$question.text($editor.text());
-				self.getDom().trigger(SingleChoiceSubject.EventType.SUBJECT_QUESTION_UPDATE, self.getDom().data('subjectId'), $editor.text());
+				self.getDom().trigger(SingleChoiceSubject.EventType.SUBJECT_QUESTION_UPDATE, [self.getDom().data('subjectId'), $editor.text()]);
 			}
 			$editor.remove();
 		});
@@ -172,7 +201,7 @@ onlineTest.management.SingleChoiceSubject.EventType = {
 			if ($choice.text() != $editor.text()) {
 				$choice.text($editor.text());
 				$choice.prepend('<input type="radio" name="subject-items">');
-				self.getDom().trigger(SingleChoiceSubject.EventType.ITEM_CHOICE_UPDATE, $item.data('itemId'), $editor.text());
+				self.getDom().trigger(SingleChoiceSubject.EventType.ITEM_CHOICE_UPDATE, [$item.data('itemId'), $editor.text()]);
 			}
 			$editor.remove();
 			$editorHeader.fadeOut('fast', function() {
@@ -191,7 +220,15 @@ onlineTest.management.SingleChoiceSubject.EventType = {
 		$singleChoice.insertBefore($subjectOp);
 		$singleChoice.find('input[type="radio"]').click();
 		
-		this.getDom().trigger(SingleChoiceSubject.EventType.ITEM_ADD, this.getDom().data('subjectId'));
+		var subjectId = this.getDom().data('subjectId');
+		var choice = $singleChoice.find('label').text();
+		var score = 0;
+		var $score = $('.subject-item').find('.item-score-value')
+		if ($score.val() !== "" && !isNaN($score.val())) {
+			score = parseFloat($score.val());
+		}
+		
+		this.getDom().trigger(SingleChoiceSubject.EventType.ITEM_ADD, [subjectId, choice, score, $singleChoice]);
 	};
 	
 	/**
@@ -199,7 +236,8 @@ onlineTest.management.SingleChoiceSubject.EventType = {
 	 * @private
 	 */
 	SingleChoiceSubject.prototype.removeItem_ = function($item) {
-		this.getDom().trigger(SingleChoiceSubject.EventType.ITEM_DELETE, $item.data('itemId'));
+		var subjectId = this.getDom().data('subjectId');
+		this.getDom().trigger(SingleChoiceSubject.EventType.ITEM_DELETE, [subjectId, $item.data('itemId')]);
 		$item.remove();
 	};
 	
@@ -214,7 +252,8 @@ onlineTest.management.SingleChoiceSubject.EventType = {
 		}
 		$item.insertBefore($pre);
 		$item.find('input[type="radio"]').click();
-		this.getDom().trigger(SingleChoiceSubject.EventType.ITEM_SHIFT_UP, $item.data('itemId'));
+		var subjectId = this.getDom().data('subjectId');
+		this.getDom().trigger(SingleChoiceSubject.EventType.ITEM_SHIFT_UP, [subjectId, $item.data('itemId')]);
 	};
 	
 	/**
@@ -228,7 +267,8 @@ onlineTest.management.SingleChoiceSubject.EventType = {
 		}
 		$item.insertAfter($next);
 		$item.find('input[type="radio"]').click();
-		this.getDom().trigger(SingleChoiceSubject.EventType.ITEM_SHIFT_DOWN, $item.data('itemId'));
+		var subjectId = this.getDom().data('subjectId');
+		this.getDom().trigger(SingleChoiceSubject.EventType.ITEM_SHIFT_DOWN, [subjectId, $item.data('itemId')]);
 	};
 	
 	/**
@@ -239,7 +279,7 @@ onlineTest.management.SingleChoiceSubject.EventType = {
 		var $scoreInput = $(event.target);
 		var score = parseFloat($scoreInput.val());
 		var $item = $scoreInput.parents('.subject-item');
-		this.getDom().trigger(SingleChoiceSubject.EventType.ITEM_SCORE_UPDATE, $item.data('itemId'), score);
+		this.getDom().trigger(SingleChoiceSubject.EventType.ITEM_SCORE_UPDATE, [$item.data('itemId'), score]);
 	};
 	
 	/**
