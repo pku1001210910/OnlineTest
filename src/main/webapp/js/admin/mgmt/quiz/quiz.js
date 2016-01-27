@@ -201,7 +201,7 @@ onlineTest.management.Quiz.Status = {
 		}
 		var SubjectEventType = onlineTest.management.Subject.EventType;
 		var ItemEventType = onlineTest.management.SingleChoiceSubject.EventType;
-		// TODO operation in server side
+		// operation in server side
 		var $dom = subjectComponent.getDom();
 		$dom.bind(SubjectEventType.SUBJECT_SHIFT_UP, function(event, subjectId) {
 			self.io_.shiftSubjectUp(quizId, subjectId);
@@ -213,25 +213,27 @@ onlineTest.management.Quiz.Status = {
 			self.io_.deleteSubject(quizId, subjectId);
 		});
 		$dom.bind(ItemEventType.SUBJECT_QUESTION_UPDATE, function(event, subjectId, question) {
-			console.log('update subject question');
+			self.io_.updateSubjectQuestion(subjectId, question);
 		});
 		$dom.bind(ItemEventType.ITEM_CHOICE_UPDATE, function(event, itemId, choice) {
-			console.log('update item choice');
+			self.io_.updateItemChoice(itemId, choice);
 		});
 		$dom.bind(ItemEventType.ITEM_SCORE_UPDATE, function(event, itemId, score) {
-			console.log('update item score');
+			self.io_.updateItemScore(itemId, score);
 		});
-		$dom.bind(ItemEventType.ITEM_SHIFT_UP, function(event, itemId) {
-			console.log('shift item up');
+		$dom.bind(ItemEventType.ITEM_SHIFT_UP, function(event, subjectId, itemId) {
+			self.io_.shiftItemUp(subjectId, itemId);
 		});
-		$dom.bind(ItemEventType.ITEM_SHIFT_DOWN, function(event, itemId) {
-			console.log('shift item down');
+		$dom.bind(ItemEventType.ITEM_SHIFT_DOWN, function(event, subjectId, itemId) {
+			self.io_.shiftItemDown(subjectId, itemId);
 		});
-		$dom.bind(ItemEventType.ITEM_DELETE, function(event, itemId) {
-			console.log('delete item');
+		$dom.bind(ItemEventType.ITEM_DELETE, function(event, subjectId, itemId) {
+			self.io_.deleteItem(subjectId, itemId);
 		});
-		$dom.bind(ItemEventType.ITEM_ADD, function(event, subjectId) {
-			console.log('add item');
+		$dom.bind(ItemEventType.ITEM_ADD, function(event, subjectId, choice, score, $item) {
+			self.io_.addItem(subjectId, choice, score, function(itemId){
+				$item.data('itemId', itemId);
+			});
 		});
 	};
 	
@@ -264,6 +266,7 @@ onlineTest.management.Quiz.Status = {
 					$('#add-quiz-step-1').css('display', 'none');
 					$('#add-quiz-step-2').css('display', 'block');
 					$('#add-quiz-step-3').css('display', 'none');
+					$('#quiz-caption').text($('#quiz-title').val());
 					self.step_ = 2;
 					self.resetHeaderStatus_(self.status_, self.step_);
 					self.resetFooterStatus_(self.status_, self.step_);
@@ -273,6 +276,7 @@ onlineTest.management.Quiz.Status = {
 					$('#add-quiz-step-1').css('display', 'none');
 					$('#add-quiz-step-2').css('display', 'block');
 					$('#add-quiz-step-3').css('display', 'none');
+					$('#quiz-caption').text($('#quiz-title').val());
 					self.step_ = 2;
 				} else if (self.step_ === 2) {
 					$('#add-quiz-step-1').css('display', 'none');
@@ -662,6 +666,205 @@ onlineTest.management.Quiz.IO = function() {
 			url: './shiftSubjectDown.action',
 			type: 'post',
 			data: subject,
+			success:function () {
+				if ($.isFunction(callback)) {
+					callback();
+				}
+				self.onSuccess_();
+			},
+			error: function(xhr) {
+				self.onError_();
+			}
+		});
+	};
+	
+	/**
+	 * @param {number} subjectId
+	 * @param {string} question
+	 * @param {Function} callback
+	 */
+	IO.prototype.updateSubjectQuestion = function(subjectId, question, callback) {
+		var self = this;
+		var subject = {
+			'subjectId': subjectId,
+			'question': question
+		};
+		this.beforeRequest_();
+		$.ajax({
+			url: './updateSubjectQuestion.action',
+			type: 'post',
+			data: subject,
+			success:function () {
+				if ($.isFunction(callback)) {
+					callback();
+				}
+				self.onSuccess_();
+			},
+			error: function(xhr) {
+				self.onError_();
+			}
+		});
+	};
+	
+	/**
+	 * @param {number} subjectId
+	 * @param {string} choice
+	 * @param {number} score
+	 * @param {Function} callback
+	 */
+	IO.prototype.addItem = function(subjectId, choice, score, callback) {
+		var self = this;
+		var item = {
+			'subjectId': subjectId,
+			'choice': choice,
+			'score': score,
+		};
+		this.beforeRequest_();
+		$.ajax({
+			url: './addItem.action',
+			type: 'post',
+			data: item,
+			success:function (data) {
+				var result = JSON.parse(data['result']);
+				if ($.isFunction(callback)) {
+					callback(result['itemId']);
+				}
+				self.onSuccess_();
+			},
+			error: function(xhr) {
+				self.onError_();
+			}
+		});
+	};
+	
+	/**
+	 * @param {number} itemId
+	 * @param {string} choice
+	 * @param {Function} callback
+	 */
+	IO.prototype.updateItemChoice = function(itemId, choice, callback) {
+		var self = this;
+		var item = {
+			'itemId': itemId,
+			'choice': choice
+		};
+		this.beforeRequest_();
+		$.ajax({
+			url: './updateItemChoice.action',
+			type: 'post',
+			data: item,
+			success:function () {
+				if ($.isFunction(callback)) {
+					callback();
+				}
+				self.onSuccess_();
+			},
+			error: function(xhr) {
+				self.onError_();
+			}
+		});
+	};
+	
+	/**
+	 * @param {number} itemId
+	 * @param {number} score
+	 * @param {Function} callback
+	 */
+	IO.prototype.updateItemScore = function(itemId, score, callback) {
+		var self = this;
+		var item = {
+			'itemId': itemId,
+			'score': score
+		};
+		this.beforeRequest_();
+		$.ajax({
+			url: './updateItemScore.action',
+			type: 'post',
+			data: item,
+			success:function () {
+				if ($.isFunction(callback)) {
+					callback();
+				}
+				self.onSuccess_();
+			},
+			error: function(xhr) {
+				self.onError_();
+			}
+		});
+	};
+	
+	/**
+	 * @param {number} subjectId
+	 * @param {number} itemId
+	 * @param {Function} callback
+	 */
+	IO.prototype.deleteItem = function(subjectId, itemId, callback) {
+		var self = this;
+		var item = {
+			'subjectId': subjectId,
+			'itemId': itemId
+		};
+		this.beforeRequest_();
+		$.ajax({
+			url: './deleteItem.action',
+			type: 'post',
+			data: item,
+			success:function () {
+				if ($.isFunction(callback)) {
+					callback();
+				}
+				self.onSuccess_();
+			},
+			error: function(xhr) {
+				self.onError_();
+			}
+		});
+	};
+	
+	/**
+	 * @param {number} subjectId
+	 * @param {number} itemId
+	 * @param {Function} callback
+	 */
+	IO.prototype.shiftItemUp = function(subjectId, itemId, callback) {
+		var self = this;
+		var item = {
+			'subjectId': subjectId,
+			'itemId': itemId
+		};
+		this.beforeRequest_();
+		$.ajax({
+			url: './shiftItemUp.action',
+			type: 'post',
+			data: item,
+			success:function () {
+				if ($.isFunction(callback)) {
+					callback();
+				}
+				self.onSuccess_();
+			},
+			error: function(xhr) {
+				self.onError_();
+			}
+		});
+	};
+	
+	/**
+	 * @param {number} subjectId
+	 * @param {number} itemId
+	 * @param {Function} callback
+	 */
+	IO.prototype.shiftItemDown = function(subjectId, itemId, callback) {
+		var self = this;
+		var item = {
+			'subjectId': subjectId,
+			'itemId': itemId
+		};
+		this.beforeRequest_();
+		$.ajax({
+			url: './shiftItemDown.action',
+			type: 'post',
+			data: item,
 			success:function () {
 				if ($.isFunction(callback)) {
 					callback();

@@ -170,4 +170,73 @@ public class QuizzesAjaxAction implements ServletRequestAware {
 		quizService.shiftSubjectDown(quizId, subjectId);
 		return ActionSupport.SUCCESS;
 	}
+	
+	@Action(value = "updateSubjectQuestion", results = { @Result(name="success", type="json")})
+	public String updateSubjectQuestion() {
+		Integer subjectId = Integer.parseInt(request.getParameter("subjectId"));
+		String question = request.getParameter("question");
+		QuizSubject subject = quizService.loadQuizSubjectById(subjectId);
+		subject.setQuestion(question);
+		quizService.updateQuizSubject(subject);
+		return ActionSupport.SUCCESS;
+	}
+
+	@Action(value = "addItem", results = { @Result(name="success", type="json")})
+	public String addItem() {
+		Integer subjectId = Integer.parseInt(request.getParameter("subjectId"));
+		String choice = request.getParameter("choice");
+		Double score = Double.parseDouble(request.getParameter("score").toString());
+		SubjectItem item = new SubjectItem();
+		item.setChoice(choice);
+		item.setScore(score);
+		Integer itemId = quizService.addItemToSubject(subjectId, item);
+		Map<String, Object> resultMap = new HashMap<>();
+		resultMap.put("itemId", itemId);
+		result = JSONObject.fromObject(resultMap).toString();
+		return ActionSupport.SUCCESS;
+	}
+	
+	@Action(value = "deleteItem", results = { @Result(name="success", type="json")})
+	public String deleteItem() {
+		Integer subjectId = Integer.parseInt(request.getParameter("subjectId"));
+		Integer itemId = Integer.parseInt(request.getParameter("itemId"));
+		quizService.deleteItemFromSubject(subjectId, itemId);
+		return ActionSupport.SUCCESS;
+	}
+	
+	@Action(value = "updateItemChoice", results = { @Result(name="success", type="json")})
+	public String updateItemChoice() {
+		Integer itemId = Integer.parseInt(request.getParameter("itemId"));
+		String choice = request.getParameter("choice");
+		SubjectItem item = quizService.loadSubjectItemById(itemId);
+		item.setChoice(choice);
+		quizService.updateSubjectItem(item);
+		return ActionSupport.SUCCESS;
+	}
+	
+	@Action(value = "updateItemScore", results = { @Result(name="success", type="json")})
+	public String updateItemScore() {
+		Integer itemId = Integer.parseInt(request.getParameter("itemId"));
+		Double score =  Double.parseDouble(request.getParameter("score").toString());
+		SubjectItem item = quizService.loadSubjectItemById(itemId);
+		item.setScore(score);
+		quizService.updateSubjectItem(item);
+		return ActionSupport.SUCCESS;
+	}
+	
+	@Action(value = "shiftItemDown", results = { @Result(name="success", type="json")})
+	public String shiftItemDown() {
+		Integer subjectId = Integer.parseInt(request.getParameter("subjectId"));
+		Integer itemId = Integer.parseInt(request.getParameter("itemId"));
+		quizService.shiftItemDown(subjectId, itemId);
+		return ActionSupport.SUCCESS;
+	}
+	
+	@Action(value = "shiftItemUp", results = { @Result(name="success", type="json")})
+	public String shiftItemUp() {
+		Integer subjectId = Integer.parseInt(request.getParameter("subjectId"));
+		Integer itemId = Integer.parseInt(request.getParameter("itemId"));
+		quizService.shiftItemUp(subjectId, itemId);
+		return ActionSupport.SUCCESS;
+	}
 }
