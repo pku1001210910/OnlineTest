@@ -124,6 +124,13 @@ public class QuizzesAjaxAction implements ServletRequestAware {
 		return ActionSupport.SUCCESS;
 	}
 	
+	@Action(value = "deleteQuiz", results = { @Result(name="success", type="json")})
+	public String deleteQuiz() {
+		Integer quizId = Integer.parseInt(request.getParameter("quizId"));
+		quizService.deleteQuiz(quizId);
+		return ActionSupport.SUCCESS;
+	}
+	
 	@Action(value = "addSubject", results = { @Result(name="success", type="json")})
 	public String addSubject() {
 		Integer quizId = Integer.parseInt(request.getParameter("quizId"));

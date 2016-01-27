@@ -1,3 +1,27 @@
+var deleteQuiz = function(args) {
+	var quizId = args.item['quizId'];
+	var quiz = {
+		'quizId': quizId
+	};
+	$.ajax({
+		url: './deleteQuiz.action',
+		type: 'post',
+		data: quiz,
+		error: function() {
+			$('#request-error').dialog({
+				resizable: false,
+				height: 160,
+				modal: true,
+				buttons: {
+					"确定": function() {
+						$(this).dialog( "close" );
+					}
+				}
+			});
+		}
+	});
+};
+
 var initGrid = function(quizList) {
 	$('#quizzes').jsGrid({
 		data: quizList,
@@ -18,6 +42,7 @@ var initGrid = function(quizList) {
 	    
 	    confirmDeleting: true,
 	    deleteConfirm: '确定要删除?',
+	    onItemDeleting: deleteQuiz,
 	    		
 	    noDataContent: '目前没有试卷数据，你可以点击左上角按钮添加新试卷',
 	    
