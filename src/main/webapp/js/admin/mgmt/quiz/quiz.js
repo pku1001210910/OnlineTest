@@ -61,7 +61,6 @@ onlineTest.management.Quiz.Status = {
 	 * @param {Object} quizData
 	 */
 	Quiz.prototype.setup = function(quizData) {
-		debugger;
 		var self = this;
 		$('#quiz-dialog').data('quizId', quizData['quizId']);
 		$('#quiz-title').val(quizData['title']);
@@ -305,10 +304,10 @@ onlineTest.management.Quiz.Status = {
 	 */
 	Quiz.prototype.bindEvent_ = function() {
 		var self = this;
-		// bind close dialog event
-		$('#close-btn').click(function() {
+		// bind close dialog event		
+		$('#quiz-dialog').on('hide.bs.modal', function () {
 			self.destroy();
-		});
+		})
 		
 		$('#next-btn').click(function() {
 			if (self.status_ === onlineTest.management.Quiz.Status.CREATE) {
