@@ -6,6 +6,7 @@ import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,6 +45,19 @@ public class UserQuizServiceImpl implements UserQuizService {
 		userCriteria.add(userNameEq);
 		userCriteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		return userQuizDao.listSome(userCriteria);
+	}
+	
+	@Override
+	public List<UserQuiz> getUserParticipatedQuiz(String userName, int curPageNum, int pageSize, String orderProperty, boolean asc) {
+		DetachedCriteria resultCriteria = DetachedCriteria.forClass(UserQuiz.class);
+		Criterion userEq = Restrictions.eq("userName", userName);
+		resultCriteria.add(userEq);
+		resultCriteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		resultCriteria.setFetchMode("userAnswers", FetchMode.SELECT);
+		resultCriteria.addOrder(asc ? Order.asc(orderProperty) : Order.desc(orderProperty)); 
+		List<UserQuiz> userQuizList = userQuizDao.pagedQuery(resultCriteria, curPageNum, pageSize);
+		LOGGER.info("[UserQuizService]Successfully load all userQuiz, useName = {}, curPageNum = {}, pageSize = {}, orderProperty = {}, asc = {}", userName, curPageNum, pageSize, orderProperty, asc);
+		return userQuizList;
 	}
 	
 	@Override
@@ -142,5 +156,7 @@ public class UserQuizServiceImpl implements UserQuizService {
 			return own.getExpired() == QuizConst.EXPIRED_FALSE;
 		}
 	}
+
+	
 
 }

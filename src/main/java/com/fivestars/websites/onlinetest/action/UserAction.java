@@ -155,18 +155,18 @@ public class UserAction {
 		return ActionSupport.SUCCESS;
 	}
 	
-	@Action(value = "userquiz", results = { @Result(name = "success", location = "/WEB-INF/views/user/quizlist.jsp"),
+	@Action(value = "userquiz", interceptorRefs = { @InterceptorRef(value = "global") },  results = { @Result(name = "success", location = "/WEB-INF/views/user/quizlist.jsp"),
 			@Result(name = "login", type = "redirectAction", params = { "namespace", "/" }, location = "home") })
 	public String userquiz() throws JsonProcessingException {
 		Map<String, Object> session = ServletActionContext.getContext().getSession();
-		User user = (User) session.get("user");
+		User user = (User) session.get(SessionConst.USER);
 		if (user == null) {
 			return ActionSupport.LOGIN;
 		}
 		int totalNum = userQuizService.getUserParticipatedQuizSize(user.getUserName());
 		totalPage = totalNum / pageSize + (totalNum % pageSize > 0 ? 1 : 0);
 		preparePageNum(curPageNum, totalPage);
-		List<UserQuiz> userQuizList = userQuizService.getUserParticipatedQuiz(user.getUserName(), curPageNum, pageSize);
+		List<UserQuiz> userQuizList = userQuizService.getUserParticipatedQuiz(user.getUserName(), curPageNum, pageSize, "quizDate", false);
 		
 		List<Integer> quizIdList = new ArrayList<Integer>();
 		for(UserQuiz userQuiz: userQuizList) {

@@ -30,6 +30,13 @@ public interface UserQuizService {
 	public List<UserQuiz> getUserParticipatedQuiz(String userName, int curPageNum, int pageSize);
 	
 	/**
+	 * Get user participated quiz by user name, curPageNum, pageSize, orderProperty, asc
+	 * @param userName
+	 * @return
+	 */
+	public List<UserQuiz> getUserParticipatedQuiz(String userName, int curPageNum, int pageSize, String orderProperty, boolean asc);
+	
+	/**
 	 * Create a user quiz record
 	 * @param userQuiz
 	 * @return

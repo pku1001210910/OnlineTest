@@ -1,5 +1,6 @@
 package com.fivestars.websites.onlinetest.action.quiz;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +18,7 @@ import com.fivestars.websites.onlinetest.model.QuizCategory;
 import com.fivestars.websites.onlinetest.model.User;
 import com.fivestars.websites.onlinetest.service.QuizService;
 import com.fivestars.websites.onlinetest.service.UserQuizService;
+import com.fivestars.websites.onlinetest.vo.QuizVo;
 import com.opensymphony.xwork2.ActionSupport;
 
 import lombok.Data;
@@ -34,6 +36,7 @@ public class QuizAction {
 	
 	private List<QuizCategory> categoryList;
 	private List<Quiz> quizList;
+	private List<QuizVo> quizVoList;
 	private String userName;
 	private int curPageNum;
 	private int pageSize = 10;
@@ -68,6 +71,16 @@ public class QuizAction {
 			categoryName = CategoryConst.TYPE_ALL_LABEL;
 		}
 		quizList = quizService.loadAllSubmittedQuiz(categoryId, userName, curPageNum, pageSize);
+		quizVoList = new ArrayList<QuizVo>();
+		for(Quiz quiz : quizList) {
+			for(QuizCategory quizCategory : categoryList) {
+				if(quiz.getCategory().equals(0) || quiz.getCategory().equals(CategoryConst.TYPE_ALL)) {
+					quizVoList.add(new QuizVo(quiz, new QuizCategory(-2, CategoryConst.TYPE_ALL_LABEL, null, null)));
+				} else if(quiz.getCategory().equals(quizCategory.getCategoryId())){
+					quizVoList.add(new QuizVo(quiz, quizCategory));
+				}
+			}
+		}
 		return ActionSupport.SUCCESS;
 	}
 	
@@ -249,6 +262,14 @@ public class QuizAction {
 
 	public void setQuiz(Quiz quiz) {
 		this.quiz = quiz;
+	}
+
+	public List<QuizVo> getQuizVoList() {
+		return quizVoList;
+	}
+
+	public void setQuizVoList(List<QuizVo> quizVoList) {
+		this.quizVoList = quizVoList;
 	}
 
 }
