@@ -5,7 +5,7 @@ onlineTest.management = onlineTest.management || {};
  * @constructor
  * @param status 'create' or 'update'
  */
-onlineTest.management.Quiz = function(status) {
+onlineTest.management.Quiz = function(status, quizId) {
 	/**
 	 * @type {string}
 	 */
@@ -15,6 +15,11 @@ onlineTest.management.Quiz = function(status) {
 	 * @type {number}
 	 */
 	this.step_ = 1;
+	
+	/**
+	 * @type {number}
+	 */
+	this.quizId_ = quizId;
 	
 	/**
 	 * @type {onlineTest.management.Quiz.IO}
@@ -56,17 +61,38 @@ onlineTest.management.Quiz.Status = {
 	 * @param {Object} quizData
 	 */
 	Quiz.prototype.setup = function(quizData) {
+		debugger;
+		var self = this;
 		$('#quiz-dialog').data('quizId', quizData['quizId']);
 		$('#quiz-title').val(quizData['title']);
 		$('#quiz-description').val(quizData['description']);
 		$('#quiz-category-names').data('categoryId', quizData['category']);
 		$('.default-category').text(quizData['categoryName']);
 		$('#need-charge-toggle').prop('checked', quizData['needCharge'] === 1);
+		if ($('#need-charge-toggle').prop('checked')) {
+			$('#quiz-price-group').css('display', 'block');
+		} else {
+			$('#quiz-price-group').css('display', 'none');
+		}
+		
 		$('#quiz-price').val(quizData['price']);
 		$('#quiz-status').text(quizData['status'] === 1 ? '已发布' : '未发布');
+		
 		$.each(quizData['quizSubjects'], function(i, subjectData) {
-			
+			self.addSubjectWithData(subjectData);
 		});
+		
+		if (quizData['feedbacks'] && quizData['feedbacks'].length > 0) {
+			$('.feeedback-container').empty();
+			$.each(quizData['feedbacks'], function(i, feedbackData) {
+				var $feedback = self.createFeedbackDom_();
+				$('.feeedback-container').append($feedback);
+				$feedback.data('feedbackId', feedbackData['feedbackId']);
+				$feedback.find('.feedback-content').val(feedbackData['content']);
+				$feedback.find('.score-from').val(feedbackData['scoreFrom']);
+				$feedback.find('.score-to').val(feedbackData['scoreTo']);
+			});
+		}
 		// TODO
 	};
 	
@@ -122,18 +148,19 @@ onlineTest.management.Quiz.Status = {
 		});
 		
 		// initialize quiz category selection
-		this.io_.getAllQuizCategories(function(data) {
-			$.each(data['allCategories'], function(i, entry) {
+		var quizId = this.quizId_;
+		this.io_.getAllQuizCategories(quizId, function(data) {
+			var allCategories = data['allCategory'];
+			$.each(data['allCategory'], function(i, entry) {
 				var category = {};
 				category.categoryId = entry['categoryId'];
 				category.categoryName = entry['categoryName'];
-				if (i === 0) {
-					// first category will be the default one
-					$('#quiz-category-names').data('categoryId', category.categoryId);
-					$('#quiz-category-names').find('.default-category').text(category.categoryName);
-				}
 				self.createQuizCategoryOptionDom_(category, $('#quiz-category-options'));
 			});
+			
+			var currentCategory = data['currentCategory'];
+			$('#quiz-category-names').data('categoryId', currentCategory.categoryId);
+			$('#quiz-category-names').find('.default-category').text(currentCategory.categoryName);
 		}, this);
 	};
 	
@@ -181,7 +208,24 @@ onlineTest.management.Quiz.Status = {
 	};
 	
 	/**
-	 * @param {string} type
+	 * @param {number} type
+	 * @param {Object} subjectData
+	 */
+	Quiz.prototype.addSubjectWithData = function(subjectData) {
+		var subjectComponent = this.subjectManager_.getSubjectComponent(subjectData['type']);
+		if (!subjectComponent) {
+			return;
+		}
+		var count = $('#subject-item-body-panel').find('.subject-container').size();
+		var $subjectParent = $('#subject-item-body-panel');
+		subjectComponent.createDom($subjectParent, count + 1, subjectData['subjectItems'].length);
+		subjectComponent.initialize();
+		this.bindSubjectComponentEvent_(subjectComponent);
+		subjectComponent.applyData(subjectData);
+	};
+	
+	/**
+	 * @param {number} type
 	 */
 	Quiz.prototype.addSubject = function(type) {
 		var subjectComponent = this.subjectManager_.getSubjectComponent(type);
@@ -506,6 +550,12 @@ onlineTest.management.Quiz.Status = {
 		$('#subject-type-body-panel').css('display', 'block');
 		// empty subject container
 		$('#subject-item-body-panel').empty();
+		// empty quiz meta info
+		$('#quiz-title').val('');
+		$('#quiz-description').val('');
+		$('#need-charge-toggle').prop('checked', false);
+		$('#quiz-price').val('');
+		$('#quiz-price-group').css('display', 'none');
 	};
 	
 })(onlineTest.management.Quiz);
@@ -517,8 +567,25 @@ onlineTest.management.Quiz.IO = function() {
 	/**
 	 * @param {Function} callback
 	 */
-	IO.prototype.getAllQuizCategories = function(callback) {
-		$.getJSON('./getAllQuizCategories.action', null, callback);
+	IO.prototype.getAllQuizCategories = function(quizId, callback) {
+		var self = this;
+		var quizMeta = {
+			'quizId': quizId
+		};
+		$.ajax({
+			url: './getAllQuizCategories.action',
+			type: 'post',
+			data: quizMeta,
+			success:function (data) {
+				var result = JSON.parse(data['category']);
+				if ($.isFunction(callback)) {
+					callback(result);
+				}
+			},
+			error: function(xhr) {
+				self.onError_();
+			}
+		});
 	};
 	
 	/**

@@ -37,6 +37,7 @@ onlineTest.management.SingleChoiceSubject.EventType = {
 	
 	/**
 	 * @override
+	 * @param {number} itemCount
 	 */
 	SingleChoiceSubject.prototype.createItemDom = function(itemCount) {
 		var $itemContainer = $('<div class="subject-items"></div>');
@@ -54,17 +55,34 @@ onlineTest.management.SingleChoiceSubject.EventType = {
 	 * @param {Object} data
 	 */
 	SingleChoiceSubject.prototype.applyData = function(data) {
+		var $dom = this.getDom();
 		if (data['subjectId']) {
-			this.getDom().data('subjectId', data['subjectId']);
+			$dom.data('subjectId', data['subjectId']);
 		}
 		if (data['itemIds']) {
-			$.each(this.getDom().find('.subject-item'), function(i) {
+			$.each($dom.find('.subject-item'), function(i) {
 				if (data['itemIds'][i]) {
 					$(this).data('itemId', data['itemIds'][i]);
 				}
 			});
 		}
-		// TODO apply other data
+		if (data['question']) {
+			$dom.find('.subject-question').text(data['question']);
+		}
+		if (data['subjectItems']) {
+			var itemDom = $dom.find('.subject-item');
+			$.each(data['subjectItems'], function(i, itemData) {
+				if (itemData['itemId']) {
+					$(itemDom[i]).data('itemId', itemData['itemId']);
+				}
+				if (itemData['choice']) {
+					$(itemDom[i]).find('label').html('<input type="radio" name="subject-items">' + itemData['choice']);
+				}
+				if (itemData['score']) {
+					$(itemDom[i]).find('.item-score-value').val(itemData['score']);
+				}
+			});
+		}
 	};
 	
 	/**

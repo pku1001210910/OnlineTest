@@ -34,12 +34,12 @@ onlineTest.management.Subject.EventType = {
 /**
  * @param {HTMLDocument} parent
  * @param {number} subjectNumber
- * @param {number} subjectId
+ * @param {number} itemCount
  */
-onlineTest.management.Subject.prototype.createDom = function(parent, subjectNumber) {
+onlineTest.management.Subject.prototype.createDom = function(parent, subjectNumber, itemCount) {
 	var $container = $('<div class="subject-container clearfix"></div>');
 	var $leftPanel = this.createSubjectLeftPanel_(subjectNumber);
-	var $rightPanel = this.createSubjectRightPanel_();
+	var $rightPanel = this.createSubjectRightPanel_(itemCount);
 	$leftPanel.appendTo($container);
 	$rightPanel.appendTo($container);
 	$container.appendTo(parent);
@@ -86,15 +86,16 @@ onlineTest.management.Subject.prototype.createSubjectLeftPanel_ = function(subje
 
 /**
  * @private
+ * @param {number} itemCount
  * @return {HTMLDocument}
  */
-onlineTest.management.Subject.prototype.createSubjectRightPanel_ = function() {
+onlineTest.management.Subject.prototype.createSubjectRightPanel_ = function(itemCount) {
 	var $rightDom = $('<div class="subject-right col-md-11"></div>');
 	var $subjectDom = this.createSubjectDom();
 	if ($subjectDom) {
 		$rightDom.append($subjectDom);	
 	}
-	var $itemDom = this.createItemDom();
+	var $itemDom = this.createItemDom(itemCount);
 	if ($itemDom) {
 		$rightDom.append($itemDom);	
 	}
@@ -201,9 +202,10 @@ onlineTest.management.Subject.prototype.unbindGenericEvent_ = function() {
 onlineTest.management.Subject.prototype.createSubjectDom = function() {};
 
 /**
+ * @param {number} itemCount
  * @return {?HTMLDocument} null means this subject does not need items section
  */
-onlineTest.management.Subject.prototype.createItemDom = function() {};
+onlineTest.management.Subject.prototype.createItemDom = function(itemCount) {};
 
 /**
  * @param {Object} data

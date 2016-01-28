@@ -14,7 +14,6 @@ import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.interceptor.ServletRequestAware;
-import org.apache.struts2.json.annotations.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fivestars.websites.onlinetest.constant.QuizConst;
@@ -46,16 +45,8 @@ public class QuizzesAjaxAction implements ServletRequestAware {
 	private HttpServletRequest request;
 		
 	// return value
-	private List<QuizCategory> allCategories;
 	private String result;
-	
-	@JSON
-	public List<QuizCategory> getAllCategories() {
-		return allCategories;
-	}
-	public void setAllCategories(List<QuizCategory> allCategories) {
-		this.allCategories = allCategories;
-	}
+	private String category;
 	
 	public String getResult() {
 		return result;
@@ -70,7 +61,31 @@ public class QuizzesAjaxAction implements ServletRequestAware {
 	
 	@Action(value = "getAllQuizCategories", results = { @Result(name="success", type = "json")})
 	public String getAllQuizCategories() {
-		allCategories = quizService.getAllQuizCategories();
+		Map<String, Object> categoryMap = new HashMap<>();
+		List<QuizCategory> allCategories = quizService.getAllQuizCategories();
+		List<Map<String, Object>> categories = new ArrayList<>();
+		for (QuizCategory category : allCategories) {
+			Map<String, Object> item = new HashMap<>();
+			item.put("categoryId", category.getCategoryId());
+			item.put("categoryName", category.getCategoryName());
+			categories.add(item);
+		}
+		categoryMap.put("allCategory", categories);
+		
+		QuizCategory currentCategory = null;
+		if (request.getParameter("quizId") != null) {
+			Integer quizId = Integer.parseInt(request.getParameter("quizId"));
+			Quiz quiz = quizService.loadQuizById(quizId);
+			currentCategory = quizService.getQuizCategoryById(quiz.getCategory());
+		} else {
+			currentCategory = allCategories.get(0);
+		}
+		Map<String, Object> currentCategoryMap = new HashMap<>();
+		currentCategoryMap.put("categoryId", currentCategory.getCategoryId());
+		currentCategoryMap.put("categoryName", currentCategory.getCategoryName());
+		categoryMap.put("currentCategory", currentCategoryMap);
+		
+		category = JSONObject.fromObject(categoryMap).toString();
 		return ActionSupport.SUCCESS;
 	}
 	
@@ -348,5 +363,11 @@ public class QuizzesAjaxAction implements ServletRequestAware {
 		Integer feedbackId = Integer.parseInt(request.getParameter("feedbackId"));
 		feedbackService.deleteFeedback(feedbackId);
 		return ActionSupport.SUCCESS;
+	}
+	public String getCategory() {
+		return category;
+	}
+	public void setCategory(String category) {
+		this.category = category;
 	}
 }

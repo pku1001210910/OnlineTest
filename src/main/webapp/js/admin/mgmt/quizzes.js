@@ -35,7 +35,7 @@ var updateQuiz = function(event) {
 		data: {'quizId': quizId},
 		success:function (data) {
 			var quizData = JSON.parse(data['result']);
-			var quizDialog = new onlineTest.management.Quiz('update');
+			var quizDialog = new onlineTest.management.Quiz('update', quizId);
 			quizDialog.setup(quizData);
 		},
 		error: function() {
@@ -87,7 +87,7 @@ var initGrid = function(quizList) {
 	   		{name:'category', title:'类别', width:'10%', align:'left'},
 	   		{name:'description', title:'详细', width:'20%', align:'left'},
 	   		{name:'status', title:'发布状态', width:'10%', align:'left'},
-	   		{name:'submitDate', title:'修改日期', width:'17%', align:'left'},
+	   		{name:'submitDate', title:'创建日期', width:'17%', align:'left'},
 	   		{name:'price', title:'价格', width:'8%', align:'left'},
 	   		{name:'quizId', title:'测试内容', width:'10%', align:'center', itemTemplate: quizTmpl},
 	   		{type: "control", width:'5%', editButton: false}
