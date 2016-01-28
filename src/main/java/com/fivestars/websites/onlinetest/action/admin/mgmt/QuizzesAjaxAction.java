@@ -25,6 +25,7 @@ import com.fivestars.websites.onlinetest.model.QuizSubject;
 import com.fivestars.websites.onlinetest.model.SubjectItem;
 import com.fivestars.websites.onlinetest.service.FeedbackService;
 import com.fivestars.websites.onlinetest.service.QuizService;
+import com.fivestars.websites.onlinetest.util.QuizUtil;
 import com.opensymphony.xwork2.ActionSupport;
 
 import lombok.Data;
@@ -70,6 +71,58 @@ public class QuizzesAjaxAction implements ServletRequestAware {
 	@Action(value = "getAllQuizCategories", results = { @Result(name="success", type = "json")})
 	public String getAllQuizCategories() {
 		allCategories = quizService.getAllQuizCategories();
+		return ActionSupport.SUCCESS;
+	}
+	
+	@Action(value = "loadQuiz", results = { @Result(name="success", type="json")})
+	public String loadQuiz() {
+		Integer quizId = Integer.parseInt(request.getParameter("quizId"));
+		Quiz quiz = quizService.loadQuizById(quizId);
+		QuizCategory category = quizService.getQuizCategoryById(quiz.getCategory());
+		Map<String, Object> quizMap = new HashMap<>();
+		quizMap.put("quizId", quizId);
+		quizMap.put("title", quiz.getTitle());
+		quizMap.put("description", quiz.getDescription());
+		quizMap.put("category", quiz.getCategory());
+		quizMap.put("categoryName", category.getCategoryName());
+		quizMap.put("needCharge", quiz.getNeedCharge());
+		quizMap.put("price", quiz.getPrice());
+		quizMap.put("status", quiz.getStatus());
+		
+		List<Map<String, Object>> quizSubjects = new ArrayList<>();
+		List<QuizSubject> orderedSubjects = QuizUtil.sortByOrder(quiz.getQuizSubjects(), QuizSubject.class);
+		for (QuizSubject subject: orderedSubjects) {
+			Map<String, Object> subjectMap = new HashMap<>();
+			subjectMap.put("subjectId", subject.getSubjectId());
+			subjectMap.put("type", subject.getType());
+			subjectMap.put("question", subject.getQuestion());
+			
+			List<Map<String, Object>> subjectItems = new ArrayList<>();
+			List<SubjectItem> orderedItems = QuizUtil.sortByOrder(subject.getSubjectItems(), SubjectItem.class);
+			for (SubjectItem item : orderedItems) {
+				Map<String, Object> itemMap = new HashMap<>();
+				itemMap.put("itemId", item.getItemId());
+				itemMap.put("choice", item.getChoice());
+				itemMap.put("score", item.getScore());
+				subjectItems.add(itemMap);
+			}
+			subjectMap.put("subjectItems", subjectItems);
+			quizSubjects.add(subjectMap);
+		}
+		quizMap.put("quizSubjects", quizSubjects);
+		
+		List<Feedback> feedbackList = feedbackService.getFeedbackByQuiz(quizId);
+		List<Map<String, Object>> feedbacks = new ArrayList<>();
+		for (Feedback feedback : feedbackList) {
+			Map<String, Object> feedbackMap = new HashMap<>();
+			feedbackMap.put("feedbackId", feedback.getFeedbackId());
+			feedbackMap.put("content", feedback.getContent());
+			feedbackMap.put("scoreFrom", feedback.getScoreFrom());
+			feedbackMap.put("scoreTo", feedback.getScoreTo());
+			feedbacks.add(feedbackMap);
+		}
+		quizMap.put("feedbacks", feedbacks);
+		result = JSONObject.fromObject(quizMap).toString();
 		return ActionSupport.SUCCESS;
 	}
 	

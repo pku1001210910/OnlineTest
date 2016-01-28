@@ -52,6 +52,25 @@ onlineTest.management.Quiz.Status = {
 	};
 	
 	/**
+	 * Setup the component with data
+	 * @param {Object} quizData
+	 */
+	Quiz.prototype.setup = function(quizData) {
+		$('#quiz-dialog').data('quizId', quizData['quizId']);
+		$('#quiz-title').val(quizData['title']);
+		$('#quiz-description').val(quizData['description']);
+		$('#quiz-category-names').data('categoryId', quizData['category']);
+		$('.default-category').text(quizData['categoryName']);
+		$('#need-charge-toggle').prop('checked', quizData['needCharge'] === 1);
+		$('#quiz-price').val(quizData['price']);
+		$('#quiz-status').text(quizData['status'] === 1 ? '已发布' : '未发布');
+		$.each(quizData['quizSubjects'], function(i, subjectData) {
+			
+		});
+		// TODO
+	};
+	
+	/**
 	 * @param {onlineTest.management.Quiz.Status} status
 	 * @param {number} step
 	 * @private

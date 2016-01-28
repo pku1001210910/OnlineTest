@@ -1,5 +1,7 @@
 package com.fivestars.websites.onlinetest.service;
 
+import java.util.List;
+
 import com.fivestars.websites.onlinetest.model.Feedback;
 
 public interface FeedbackService {
@@ -36,4 +38,11 @@ public interface FeedbackService {
 	 * @param score
 	 */
 	public Integer getFeedbackByScore(Integer quizId, Double score);
+	
+	/**
+	 * Get feedback by quizId
+	 * @param quizId
+	 * @return
+	 */
+	public List<Feedback> getFeedbackByQuiz(Integer quizId);
 }

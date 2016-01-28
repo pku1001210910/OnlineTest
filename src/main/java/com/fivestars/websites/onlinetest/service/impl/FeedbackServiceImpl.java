@@ -63,4 +63,12 @@ public class FeedbackServiceImpl implements FeedbackService {
 		LOGGER.warn("[FeedbackService]Cannot find a proper feedback for the score " + score + " in quiz " + quizId);
 		return null;
 	}
+
+	@Override
+	public List<Feedback> getFeedbackByQuiz(Integer quizId) {
+		DetachedCriteria quizCriteria = DetachedCriteria.forClass(Feedback.class);
+		Criterion quizEq = Restrictions.eq("quizId", quizId);
+		quizCriteria.add(quizEq);
+		return feedbackDao.listSome(quizCriteria);
+	}
 }
