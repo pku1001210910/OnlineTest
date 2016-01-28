@@ -27,18 +27,28 @@
     <!-- 对于WebLogic,Orion,OC4J此属性应该设置成true -->
     <constant name="struts.dispatcher.parametersWorkaround" value="false" />
 
-    <package name="user" extends="struts-default">
+    <package name="default" namespace="/" extends="struts-default">
+        <interceptors>   
+        	<interceptor name="json" class="org.apache.struts2.json.JSONInterceptor"/>
+            <interceptor name="authInterceptor" class="com.fivestars.websites.onlinetest.interceptor.Authentication" />
+            <interceptor-stack name="global">
+                <interceptor-ref name="defaultStack" />
+                <interceptor-ref name="authInterceptor"/>
+            </interceptor-stack>
+        </interceptors>
+        
+        <global-results>
+		   <result name="admin_login" type="redirect">/admin/login.action</result>
+		   <result name="user_home" type="redirect">/home.action</result>
+		</global-results>    
+    </package>
+
+    <package name="user" extends="struts-default,json-default,default">
     </package>
     
-    <package name="userAjax" extends="json-default">
+    <package name="quiz" extends="struts-default,json-default,default">
     </package>
     
-    <package name="quiz" extends="struts-default">
-    </package>
-    
-    <package name="admin" extends="struts-default" namespace="/admin">
-    </package>
-    
-    <package name="adminAjax" extends="json-default" namespace="/admin">
+    <package name="admin" extends="struts-default,json-default,default" namespace="/admin">
     </package>
 </struts>

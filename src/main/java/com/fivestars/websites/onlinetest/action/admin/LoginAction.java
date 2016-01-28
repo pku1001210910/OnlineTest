@@ -4,12 +4,14 @@ import java.util.Map;
 
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Action;
+import org.apache.struts2.convention.annotation.InterceptorRef;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fivestars.websites.onlinetest.constant.Message;
+import com.fivestars.websites.onlinetest.constant.SessionConst;
 import com.fivestars.websites.onlinetest.constant.UserConst;
 import com.fivestars.websites.onlinetest.model.User;
 import com.fivestars.websites.onlinetest.service.UserService;
@@ -49,14 +51,14 @@ public class LoginAction extends ActionSupport {
 		}
 
 		Map<String, Object> session = ServletActionContext.getContext().getSession();
-		session.put("admin", admin);
+		session.put(SessionConst.ADMIN, admin);
 		return SUCCESS;
 	}
 
-	@Action(value = "logout", results = { @Result(name = "success", location = "/WEB-INF/views/admin/login.jsp") })
+	@Action(value = "logout", interceptorRefs = {@InterceptorRef(value="global")}, results = { @Result(name = "success", location = "/WEB-INF/views/admin/login.jsp") })
 	public String logout() {
 		Map<String, Object> session = ServletActionContext.getContext().getSession();
-		session.remove("admin");
+		session.remove(SessionConst.ADMIN);
 		return SUCCESS;
 	}
 }

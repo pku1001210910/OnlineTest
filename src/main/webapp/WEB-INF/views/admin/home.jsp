@@ -44,8 +44,8 @@
         	<form class="navbar-form navbar-right">
 				<div class="form-group">
 					欢迎您：
-					<s:if test="#session.admin!=null">
-						<s:property value="#session.admin.userName" />
+					<s:if test="#session.admin_session!=null">
+						<s:property value="#session.admin_session.userName" />
 					</s:if>
 					<a class="white underline left-15" href="<%=path %>/admin/logout.action">安全退出</a>
 				</div>

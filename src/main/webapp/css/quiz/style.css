@@ -1484,3 +1484,21 @@ a{color:#717171;}
 .related_info li .title h3 { font-size: 18px;}
 .related_info li .title a { position: absolute; right: 0; top: 0; font-size: 12px; color: #00d5ff;}
 .related_info li .list a { margin-top: 6px; display:block;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+
+
+.temtitle span.label {
+	position: relative;
+	margin-left: 10px;
+}
+
+.temtitle button.btn-warning {
+	padding:0px;
+}
+
+.tem-container {
+	margin-bottom: 20px;
+}
+
+.pagenum.item {
+	margin-left: -18px;
+}

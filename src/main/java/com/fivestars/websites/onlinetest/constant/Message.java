@@ -4,10 +4,10 @@ package com.fivestars.websites.onlinetest.constant;
  * Messages sent from server side to client side
  */
 public class Message {
-	public static final String USER_NOT_EXISTS = "ÓÃ»§²»´æÔÚ";
-	public static final String USER_OR_PASSWORD_WRONG = "ÓÃ»§Ãû»òÃÜÂë´íÎó";
-	public static final String OLD_PASSWORD_WRONG = "¾ÉÃÜÂë´íÎó";
-	public static final String MUST_FILL_ALL = "²»ÄÜÓĞ¿ÕÏî";
-	public static final String PASSWORD_NOT_MATCH = "Á½´ÎĞÂÃÜÂë²»Ò»ÖÂ";
-	public static final String UPDATE_SUCCEED = "¸üĞÂ³É¹¦";
+	public static final String USER_NOT_EXISTS = "ç”¨æˆ·ä¸å­˜åœ¨";
+	public static final String USER_OR_PASSWORD_WRONG = "ç”¨æˆ·åæˆ–å¯†ç é”™è¯¯";
+	public static final String OLD_PASSWORD_WRONG = "æ—§å¯†ç é”™è¯¯";
+	public static final String MUST_FILL_ALL = "ä¸èƒ½æœ‰ç©ºé¡¹";
+	public static final String PASSWORD_NOT_MATCH = "ä¸¤æ¬¡æ–°å¯†ç ä¸ä¸€è‡´";
+	public static final String UPDATE_SUCCEED = "æ›´æ–°æˆåŠŸ";
 }

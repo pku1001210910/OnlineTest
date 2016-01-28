@@ -43,7 +43,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 </head>
 
 <body>
-	<s:if test="#session.user==null">
+	<s:if test="#session.user_session==null">
 		<form action="<%=basePath%>user/userLogin.action"
 			class="navbar-form navbar-right" name="userLogin" method="post">
 			<div class="form-group">
@@ -69,8 +69,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<form class="navbar-form navbar-right user-info">
 			<div class="form-group">
 				欢迎您：
-				<s:if test="#session.user!=null">
-					<s:property value="#session.user.userName" />
+				<s:if test="#session.user_session!=null">
+					<s:property value="#session.user_session.userName" />
 				</s:if>
 			</div>
 			<div class="form-group">

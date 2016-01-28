@@ -23,6 +23,13 @@ public interface UserQuizService {
 	public List<UserQuiz> getUserParticipatedQuiz(String userName);
 	
 	/**
+	 * Get user participated quiz by user name, curPageNum, pageSize
+	 * @param userName
+	 * @return
+	 */
+	public List<UserQuiz> getUserParticipatedQuiz(String userName, int curPageNum, int pageSize);
+	
+	/**
 	 * Create a user quiz record
 	 * @param userQuiz
 	 * @return
@@ -81,4 +88,13 @@ public interface UserQuizService {
 	 * @param userName
 	 */
 	public boolean isUserOwnQuiz(Integer quizId, String userName);
+
+	/**
+	 * Get user participate quiz size
+	 * @param userName
+	 * @return
+	 */
+	public Integer getUserParticipatedQuizSize(String userName);
+
+	
 }
