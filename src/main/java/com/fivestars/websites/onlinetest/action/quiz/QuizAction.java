@@ -22,11 +22,8 @@ import com.fivestars.websites.onlinetest.service.UserQuizService;
 import com.fivestars.websites.onlinetest.vo.QuizVo;
 import com.opensymphony.xwork2.ActionSupport;
 
-import lombok.Data;
-
 @ParentPackage("quiz")
 @Namespace("/quiz")
-@Data
 public class QuizAction {
 
 	@Autowired

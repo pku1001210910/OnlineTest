@@ -17,8 +17,6 @@ import com.fivestars.websites.onlinetest.model.User;
 import com.fivestars.websites.onlinetest.service.UserService;
 import com.opensymphony.xwork2.ActionSupport;
 
-import lombok.Setter;
-
 @ParentPackage("admin")
 @Namespace("/admin")
 public class LoginAction extends ActionSupport {

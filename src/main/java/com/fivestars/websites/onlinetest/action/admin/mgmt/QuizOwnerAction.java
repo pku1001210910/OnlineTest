@@ -15,18 +15,12 @@ import com.fivestars.websites.onlinetest.model.QuizOwnership;
 import com.fivestars.websites.onlinetest.service.QuizOwnerService;
 import com.opensymphony.xwork2.ActionSupport;
 
-import lombok.Getter;
-import lombok.Setter;
-
 @ParentPackage("admin")
 @InterceptorRef(value="global")
 @Namespace("/admin/quizowner")
 public class QuizOwnerAction{
-	@Getter @Setter
 	private String userName;
-	@Getter @Setter
 	private List<Integer> quizIds;
-	@Getter @Setter
 	private String selectedIds;
 	
 	@Autowired
@@ -70,5 +64,29 @@ public class QuizOwnerAction{
 		}
 		
 		return ActionSupport.SUCCESS;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public List<Integer> getQuizIds() {
+		return quizIds;
+	}
+
+	public void setQuizIds(List<Integer> quizIds) {
+		this.quizIds = quizIds;
+	}
+
+	public String getSelectedIds() {
+		return selectedIds;
+	}
+
+	public void setSelectedIds(String selectedIds) {
+		this.selectedIds = selectedIds;
 	}
 }

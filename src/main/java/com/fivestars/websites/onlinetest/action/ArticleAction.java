@@ -17,11 +17,8 @@ import com.fivestars.websites.onlinetest.model.Article;
 import com.fivestars.websites.onlinetest.service.ArticleService;
 import com.opensymphony.xwork2.ActionSupport;
 
-import lombok.Data;
-
 @ParentPackage("user")
 @Namespace("/article")
-@Data
 public class ArticleAction {
 	private Integer id;
 	private String title;
@@ -93,5 +90,41 @@ public class ArticleAction {
 		request.put("recommends", objectMapper.writeValueAsString(recommends));
 		
 		return ActionSupport.SUCCESS;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public Integer getPageNo() {
+		return pageNo;
+	}
+
+	public void setPageNo(Integer pageNo) {
+		this.pageNo = pageNo;
+	}
+
+	public Integer getPageSize() {
+		return pageSize;
 	}
 }
