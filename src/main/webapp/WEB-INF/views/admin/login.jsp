@@ -18,7 +18,7 @@
 <link href="<%=path%>/css/main.css" rel="stylesheet">
 
 <!-- support ie8 & ie9 & ie10 -->
-<script src="<%=path%>/js/html5shiv.js" type="text/javascript"></script>
+<script src="<%=path%>/js/html5shiv.min.js" type="text/javascript"></script>
 <script src="<%=path%>/js/respond.min.js" type="text/javascript"></script>
 <script src="<%=path%>/js/ie10-viewport-bug-workaround.js" type="text/javascript"></script>
 <script src="<%=path%>/js/ie-elements.js" type="text/javascript"></script>
