@@ -3,6 +3,7 @@ package com.fivestars.websites.onlinetest.action;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Action;
@@ -14,16 +15,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fivestars.websites.onlinetest.constant.SessionConst;
+import com.fivestars.websites.onlinetest.model.Feedback;
 import com.fivestars.websites.onlinetest.model.Quiz;
 import com.fivestars.websites.onlinetest.model.QuizCategory;
-import com.fivestars.websites.onlinetest.constant.SessionConst;
+import com.fivestars.websites.onlinetest.model.QuizSubject;
+import com.fivestars.websites.onlinetest.model.SubjectItem;
 import com.fivestars.websites.onlinetest.model.User;
+import com.fivestars.websites.onlinetest.model.UserAnswer;
 import com.fivestars.websites.onlinetest.model.UserQuiz;
+import com.fivestars.websites.onlinetest.service.FeedbackService;
 import com.fivestars.websites.onlinetest.service.QuizService;
 import com.fivestars.websites.onlinetest.service.UserQuizService;
 import com.fivestars.websites.onlinetest.service.UserService;
+import com.fivestars.websites.onlinetest.vo.UserAnswerVo;
+import com.fivestars.websites.onlinetest.vo.UserQuizDetailVo;
+import com.fivestars.websites.onlinetest.vo.UserQuizSubjectVo;
 import com.fivestars.websites.onlinetest.vo.UserQuizVo;
 import com.opensymphony.xwork2.ActionSupport;
+
+import net.sf.json.JSONObject;
 
 @ParentPackage("user")
 @Namespace("/user")
@@ -55,7 +66,12 @@ public class UserAction {
 	private boolean lastMore;
 	private int lastPageNum;
 	
-	List<UserQuizVo> userQuizVoList;
+	private int quizId;
+	private int recordId;
+	
+	private List<UserQuizVo> userQuizVoList;
+	private UserQuizDetailVo userQuizDetailVo;
+	private Quiz quiz;
 
 	@Autowired
 	private UserService userService;
@@ -65,6 +81,9 @@ public class UserAction {
 	
 	@Autowired
 	private QuizService quizService;
+	
+	@Autowired
+	private FeedbackService feedbackService;
 
 	@Action(value = "userReg", results = { @Result(name = "success", type = "redirectAction", params = { "namespace", "/user" }, location = "home") })
 	public String userReg() {
@@ -136,18 +155,18 @@ public class UserAction {
 		return ActionSupport.SUCCESS;
 	}
 	
-	@Action(value = "userquiz", results = { @Result(name = "success", location = "/WEB-INF/views/user/quizlist.jsp"),
+	@Action(value = "userquiz", interceptorRefs = { @InterceptorRef(value = "global") },  results = { @Result(name = "success", location = "/WEB-INF/views/user/quizlist.jsp"),
 			@Result(name = "login", type = "redirectAction", params = { "namespace", "/" }, location = "home") })
 	public String userquiz() throws JsonProcessingException {
 		Map<String, Object> session = ServletActionContext.getContext().getSession();
-		User user = (User) session.get("user");
+		User user = (User) session.get(SessionConst.USER);
 		if (user == null) {
 			return ActionSupport.LOGIN;
 		}
 		int totalNum = userQuizService.getUserParticipatedQuizSize(user.getUserName());
 		totalPage = totalNum / pageSize + (totalNum % pageSize > 0 ? 1 : 0);
 		preparePageNum(curPageNum, totalPage);
-		List<UserQuiz> userQuizList = userQuizService.getUserParticipatedQuiz(user.getUserName(), curPageNum, pageSize);
+		List<UserQuiz> userQuizList = userQuizService.getUserParticipatedQuiz(user.getUserName(), curPageNum, pageSize, "quizDate", false);
 		
 		List<Integer> quizIdList = new ArrayList<Integer>();
 		for(UserQuiz userQuiz: userQuizList) {
@@ -183,7 +202,8 @@ public class UserAction {
 	}
 	
 	@Action(value = "quizDetail", results = { @Result(name = "success", location = "/WEB-INF/views/user/quizdetail.jsp"),
-			@Result(name = "login", type = "redirectAction", params = { "namespace", "/" }, location = "home") })
+			@Result(name = "login", type = "redirectAction", params = { "namespace", "/" }, location = "home"),
+			@Result(name = "input", type = "redirectAction", location = "userquiz")})
 	public String quizDetail() throws JsonProcessingException {
 		Map<String, Object> session = ServletActionContext.getContext().getSession();
 		User user = (User) session.get("user");
@@ -195,7 +215,30 @@ public class UserAction {
 		ServletActionContext.getRequest().setAttribute("json", objectMapper.writeValueAsString(new User(user)));
 		
 		
-		// TODO quiz detail
+		boolean quizValid = userQuizService.isUserOwnQuiz(quizId, user.getUserName());
+		if(!quizValid) {
+			return ActionSupport.INPUT;
+		}
+		quiz = quizService.loadQuizById(quizId);
+		UserQuiz userQuiz = userQuizService.loadUserQuizById(recordId);
+		Set<UserAnswer> userAnswerSet = userQuiz.getUserAnswers();
+		Feedback feedback = feedbackService.getFeedbackById(userQuiz.getFeedbackId());
+		
+		userQuizDetailVo = new UserQuizDetailVo(userQuiz, feedback);
+		List<UserQuizSubjectVo> userQuizSubjectVoList = new ArrayList<UserQuizSubjectVo>();
+		for(QuizSubject quizSubject: quiz.getQuizSubjects()) {
+			Set<SubjectItem> quizSubjectItems = quizSubject.getSubjectItems();
+			for(UserAnswer userAnswer : userAnswerSet) {
+				if(userAnswer.getSubjectId().equals(quizSubject.getSubjectId())) {
+					JSONObject jb = JSONObject.fromObject(userAnswer.getAnswer());
+					UserQuizSubjectVo userQuizSubjectVo = new UserQuizSubjectVo(quizSubject, quizSubjectItems, new UserAnswerVo(userAnswer, jb.getString("itemId")));
+					userQuizSubjectVoList.add(userQuizSubjectVo);
+					break;
+				}
+			}
+			
+		}
+		userQuizDetailVo.setUserQuizSubjectVoList(userQuizSubjectVoList);
 		return ActionSupport.SUCCESS;
 	}
 	
@@ -388,6 +431,38 @@ public class UserAction {
 
 	public void setUserQuizVoList(List<UserQuizVo> userQuizVoList) {
 		this.userQuizVoList = userQuizVoList;
+	}
+
+	public int getQuizId() {
+		return quizId;
+	}
+
+	public void setQuizId(int quizId) {
+		this.quizId = quizId;
+	}
+
+	public int getRecordId() {
+		return recordId;
+	}
+
+	public void setRecordId(int recordId) {
+		this.recordId = recordId;
+	}
+
+	public UserQuizDetailVo getUserQuizDetailVo() {
+		return userQuizDetailVo;
+	}
+
+	public void setUserQuizDetailVo(UserQuizDetailVo userQuizDetailVo) {
+		this.userQuizDetailVo = userQuizDetailVo;
+	}
+
+	public Quiz getQuiz() {
+		return quiz;
+	}
+
+	public void setQuiz(Quiz quiz) {
+		this.quiz = quiz;
 	}
 
 }

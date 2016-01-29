@@ -65,7 +65,7 @@
                             <s:iterator id="userQuizVo" value="userQuizVoList">
                                 <div class="tem">
                                     <div class="temtitle">
-                                        <a href="<%=basePath %>user/quizDetail.action">
+                                        <a href="<%=basePath %>user/quizDetail.action?quizId=${userQuizVo.quiz.quizId}&recordId=${userQuizVo.userQuiz.recordId}" target="_blank">
                                             <p>${userQuizVo.quiz.title}</p>
                                         </a>
                                         <%-- <span>${userQuizVo.userQuiz.quizDate}</span> --%>

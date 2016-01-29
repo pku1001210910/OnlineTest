@@ -59,7 +59,7 @@
 					<li><a href="<%=basePath%>user/password.action">修改密码</a></li>
 				</ul>
 				<ul class="nav nav-sidebar">
-					<li><li><a href="<%=basePath%>user/userquiz.action">测试记录</a></li>
+					<li><a href="<%=basePath%>user/userquiz.action">测试记录</a></li>
 				</ul>
 			</div>
 			<div id="main-content" class="col-sm-9 col-md-10 main">

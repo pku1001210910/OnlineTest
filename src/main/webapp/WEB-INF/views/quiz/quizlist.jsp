@@ -58,12 +58,12 @@
                                     <div class="h1">课题分类</div>
                                     <ul class="ul-capability gn_list">
                                     	<s:iterator id="category" value="categoryList">
-                                    		<li title="${category.categoryName}"><a href="<%=basePath%>quiz/startQuiz.action?categoryId=${category.categoryId}">${category.categoryName}</a></li>
+                                    		<li title="${category.categoryName}" class="category-${category.categoryId}"><a href="<%=basePath%>quiz/startQuiz.action?categoryId=${category.categoryId}">${category.categoryName}</a></li>
                                     	</s:iterator>
-                                    	<li title="所有"><a href="<%=basePath%>quiz/startQuiz.action?categoryId=-2">所有</a></li>
+                                    	<li class="category--2" title="所有"><a href="<%=basePath%>quiz/startQuiz.action?categoryId=-2">所有</a></li>
                                     </ul>
                                 </div>
-                                <div class="mb_con_group">
+                                <!-- <div class="mb_con_group">
                                     <div class="h1">已付费试题</div>
                                     <ul class="ul-capability liorange">
                                         <li title="大学生消费"><a href="/topic_detail/54116fb1f7405b5b46d2f822">大学生消费</a></li>
@@ -73,7 +73,7 @@
                                         <li title="新员工调查"><a href="/topic_detail/54116cb2f7405b5a3497fe30">新员工调查</a></li>
                                         <a href="/topic_list" class="more">更多</a>
                                     </ul>
-                                </div>
+                                </div> -->
                             </div>
                             <div class="mb_con_z">
                                 <div class="Mbdiv">
@@ -95,27 +95,27 @@
                                 </div>
                                 <div class="Mbdiv">
                                     <div class="Mbdiv_list">
-                                    	<s:iterator id="quiz" value="quizList">
+                                    	<s:iterator id="quizVo" value="quizVoList">
                                     		<div class="tem">
 	                                    		<div class="temtitle">
-	                                    			<a href="#" onclick="checkQuizOwner(${quiz.quizId}, '${session.user_session == null ? -1 :  session.user_session.userName}')">
-	                                                    <p>${quiz.title}</p>
+	                                    			<a href="#" onclick="checkQuizOwner(${quizVo.quiz.quizId}, '${session.user_session == null ? -1 :  session.user_session.userName}')">
+	                                                    <p>${quizVo.quiz.title}</p>
 	                                                </a>
 	                                                <s:if test="#quiz.price != 0">
 	                                                 	<i class="fa fa-lock"></i>
-	                                                	<span class="label label-info">${quiz.price}元</span>
-	                                                	<button class="btn btn-warning" onclick="buyQuiz(${quiz.quizId}, '${session.user_session == null ? -1 : session.user_session.userName}')">支付</button>
+	                                                	<span class="label label-info">${quizVo.quiz.price}元</span>
+	                                                	<button class="btn btn-warning" onclick="buyQuiz(${quizVo.quiz.quizId}, '${session.user_session == null ? -1 : session.user_session.userName}')">支付</button>
 	                                                </s:if>
 	                                               
 	                                                <%-- <span>共1页14个问题</span> --%>
 	                                    		</div>
 	                                    		<div class="temcon">
-	                                                <span>分类：<a href="/classify/other_f_1" style="display:inline;">其他</a></span> |
+	                                                <span>分类：<a href="/classify/other_f_1" style="display:inline;">${quizVo.quizCategory.categoryName }</a></span> |
 	                                                <span>作者：ztx12315</span> |
 	                                                <span>被引用次数：0</span>
 	                                            </div>
 	                                            <div class="text">
-	                                          		${quiz.description}
+	                                          		${quizVo.quiz.description}
 	                                            </div>
                                             </div>
                                     	</s:iterator>
