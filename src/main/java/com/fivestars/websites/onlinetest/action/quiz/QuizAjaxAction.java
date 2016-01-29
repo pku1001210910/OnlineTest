@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fivestars.websites.onlinetest.constant.QuizConst;
 import com.fivestars.websites.onlinetest.constant.SessionConst;
 import com.fivestars.websites.onlinetest.entity.SingleChoiceAnswerEntity;
+import com.fivestars.websites.onlinetest.model.Quiz;
 import com.fivestars.websites.onlinetest.model.QuizOwnership;
 import com.fivestars.websites.onlinetest.model.SubjectItem;
 import com.fivestars.websites.onlinetest.model.User;
@@ -52,6 +53,11 @@ public class QuizAjaxAction {
 
 	@Action(value = "checkUserQuizOwner", results = { @Result(name = "success", type = "json") })
 	public String checkUserNameUnique() {
+		Quiz quiz = quizService.loadQuizById(quizId);
+		if (quiz.getNeedCharge().equals(QuizConst.NOT_NEED_CHARGE)) {
+			quizValid = true;
+			return ActionSupport.SUCCESS;
+		}
 		quizValid = userQuizService.isUserOwnQuiz(quizId, userName);
 		return ActionSupport.SUCCESS;
 	}

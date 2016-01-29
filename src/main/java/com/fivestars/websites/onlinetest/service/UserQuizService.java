@@ -103,5 +103,12 @@ public interface UserQuizService {
 	 */
 	public Integer getUserParticipatedQuizSize(String userName);
 
+	/**
+	 * Get list of quizOwnership for specific userName
+	 * @param userName
+	 * @return
+	 */
+	public List<QuizOwnership> loadQuizOwnershipList(String userName);
+
 	
 }

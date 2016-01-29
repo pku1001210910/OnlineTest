@@ -1,6 +1,7 @@
 package com.fivestars.websites.onlinetest.service.impl;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
@@ -155,6 +156,14 @@ public class UserQuizServiceImpl implements UserQuizService {
 			QuizOwnership own = ownership.get(0);
 			return own.getExpired() == QuizConst.EXPIRED_FALSE;
 		}
+	}
+	
+	@Override
+	public List<QuizOwnership> loadQuizOwnershipList(String userName) {
+		Criterion userNameEq = Restrictions.eq("userName", userName);
+		List<QuizOwnership> ownershipList = ownershipDao.listSome(new Criterion[] {userNameEq});
+		return ownershipList.stream().filter(ownership -> ownership.getExpired() == QuizConst.EXPIRED_FALSE).collect(Collectors.toList());
+		
 	}
 
 	
