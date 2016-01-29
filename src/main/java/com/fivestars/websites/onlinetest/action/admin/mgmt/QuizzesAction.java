@@ -32,7 +32,7 @@ public class QuizzesAction{
 	
 	@Action(value = "quizzes", results = { @Result(name = "success", location = "/WEB-INF/views/admin/mgmt/quizzes.jsp") })
 	public String quizzes() throws JsonProcessingException {
-		List<Quiz> quizzes = quizService.loadAllQuiz();
+		List<Quiz> quizzes = quizService.loadAllQuizLatestFirst();
 		JSONArray jsonArray = new JSONArray(); 
 		for (Quiz quiz : quizzes) {
 			Integer categoryId = quiz.getCategory();

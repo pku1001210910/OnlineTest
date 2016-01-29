@@ -307,7 +307,11 @@ onlineTest.management.Quiz.Status = {
 		// bind close dialog event		
 		$('#quiz-dialog').on('hide.bs.modal', function () {
 			self.destroy();
-		})
+		});
+		$('#quiz-dialog').on('hidden.bs.modal', function () {
+			$('#quiz-menu-item').click();
+		});
+		
 		
 		$('#next-btn').click(function() {
 			if (self.status_ === onlineTest.management.Quiz.Status.CREATE) {
@@ -555,6 +559,10 @@ onlineTest.management.Quiz.Status = {
 		$('#need-charge-toggle').prop('checked', false);
 		$('#quiz-price').val('');
 		$('#quiz-price-group').css('display', 'none');
+		// reset feedback
+		$('.feedback-item').find('.feedback-content').val('');
+		$('.feedback-item').find('score-from').val(0);
+		$('.feedback-item').find('score-to').val(0);
 	};
 	
 })(onlineTest.management.Quiz);

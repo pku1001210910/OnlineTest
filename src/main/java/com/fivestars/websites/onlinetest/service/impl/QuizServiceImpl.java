@@ -450,4 +450,9 @@ public class QuizServiceImpl implements QuizService {
 		Integer allQuizSize = quizDao.countSome(resultCriteria);
 		return allQuizSize;
 	}
+
+	@Override
+	public List<Quiz> loadAllQuizLatestFirst() {
+		return quizDao.listAllWithOrder("submitDate", false);
+	}
 }
