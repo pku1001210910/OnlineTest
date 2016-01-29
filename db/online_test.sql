@@ -1,8 +1,10 @@
--- MySQL dump 10.13  Distrib 5.7.9, for osx10.9 (x86_64)
+CREATE DATABASE  IF NOT EXISTS `online_test` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `online_test`;
+-- MySQL dump 10.13  Distrib 5.6.17, for Win64 (x86_64)
 --
 -- Host: localhost    Database: online_test
 -- ------------------------------------------------------
--- Server version	5.7.10
+-- Server version	5.6.21-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -24,15 +26,23 @@ DROP TABLE IF EXISTS `article`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `article` (
   `articleId` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(50) DEFAULT NULL,
-  `content` text,
-  `createDate` datetime DEFAULT NULL,
   `category` int(11) DEFAULT NULL,
-  `submitter` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`articleId`),
-  UNIQUE KEY `articleId_UNIQUE` (`articleId`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+  `content` longtext,
+  `createDate` datetime DEFAULT NULL,
+  `submitter` text,
+  `title` text,
+  PRIMARY KEY (`articleId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `article`
+--
+
+LOCK TABLES `article` WRITE;
+/*!40000 ALTER TABLE `article` DISABLE KEYS */;
+/*!40000 ALTER TABLE `article` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `feedback`
@@ -43,14 +53,22 @@ DROP TABLE IF EXISTS `feedback`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `feedback` (
   `feedbackId` int(11) NOT NULL AUTO_INCREMENT,
+  `content` longtext,
   `quizId` int(11) NOT NULL,
-  `content` text,
   `scoreFrom` double DEFAULT NULL,
   `scoreTo` double DEFAULT NULL,
-  PRIMARY KEY (`feedbackId`),
-  UNIQUE KEY `feedbackId_UNIQUE` (`feedbackId`)
+  PRIMARY KEY (`feedbackId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `feedback`
+--
+
+LOCK TABLES `feedback` WRITE;
+/*!40000 ALTER TABLE `feedback` DISABLE KEYS */;
+/*!40000 ALTER TABLE `feedback` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `quiz`
@@ -61,18 +79,26 @@ DROP TABLE IF EXISTS `quiz`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `quiz` (
   `quizId` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(50) DEFAULT NULL,
-  `description` text,
   `category` int(11) DEFAULT NULL,
+  `description` longtext,
   `needCharge` tinyint(4) DEFAULT NULL,
   `price` double DEFAULT NULL,
-  `submitDate` datetime DEFAULT NULL,
   `repeatable` tinyint(4) DEFAULT NULL,
   `status` int(11) DEFAULT NULL,
-  PRIMARY KEY (`quizId`),
-  UNIQUE KEY `quizId_UNIQUE` (`quizId`)
-) ENGINE=InnoDB AUTO_INCREMENT=126 DEFAULT CHARSET=utf8;
+  `submitDate` datetime DEFAULT NULL,
+  `title` text,
+  PRIMARY KEY (`quizId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `quiz`
+--
+
+LOCK TABLES `quiz` WRITE;
+/*!40000 ALTER TABLE `quiz` DISABLE KEYS */;
+/*!40000 ALTER TABLE `quiz` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `quiz_category`
@@ -83,13 +109,22 @@ DROP TABLE IF EXISTS `quiz_category`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `quiz_category` (
   `categoryId` int(11) NOT NULL AUTO_INCREMENT,
-  `categoryName` varchar(50) DEFAULT NULL,
-  `description` text,
+  `categoryName` text,
+  `description` longtext,
   `parentId` int(11) DEFAULT NULL,
-  PRIMARY KEY (`categoryId`),
-  UNIQUE KEY `categoryId_UNIQUE` (`categoryId`)
-) ENGINE=InnoDB AUTO_INCREMENT=190 DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`categoryId`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `quiz_category`
+--
+
+LOCK TABLES `quiz_category` WRITE;
+/*!40000 ALTER TABLE `quiz_category` DISABLE KEYS */;
+INSERT INTO `quiz_category` VALUES (0,'教育学','分类1',NULL),(1,'社会学','分类2',NULL),(2,'心理学','分类3',NULL);
+/*!40000 ALTER TABLE `quiz_category` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `quiz_ownership`
@@ -100,14 +135,22 @@ DROP TABLE IF EXISTS `quiz_ownership`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `quiz_ownership` (
   `ownershipId` int(11) NOT NULL AUTO_INCREMENT,
-  `username` varchar(50) NOT NULL,
-  `quizId` int(11) NOT NULL,
-  `expired` tinyint(4) DEFAULT NULL,
   `buyDate` datetime DEFAULT NULL,
-  PRIMARY KEY (`ownershipId`),
-  UNIQUE KEY `ownershipId_UNIQUE` (`ownershipId`)
+  `expired` tinyint(4) DEFAULT NULL,
+  `quizId` int(11) NOT NULL,
+  `username` text NOT NULL,
+  PRIMARY KEY (`ownershipId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `quiz_ownership`
+--
+
+LOCK TABLES `quiz_ownership` WRITE;
+/*!40000 ALTER TABLE `quiz_ownership` DISABLE KEYS */;
+/*!40000 ALTER TABLE `quiz_ownership` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `quiz_subject`
@@ -118,17 +161,25 @@ DROP TABLE IF EXISTS `quiz_subject`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `quiz_subject` (
   `subjectId` int(11) NOT NULL AUTO_INCREMENT,
-  `quizId` int(11) NOT NULL,
-  `type` int(11) NOT NULL,
+  `question` longtext,
   `resourceId` int(11) DEFAULT NULL,
   `subjectOrder` int(11) DEFAULT NULL,
-  `question` text,
+  `type` int(11) NOT NULL,
+  `quizId` int(11) NOT NULL,
   PRIMARY KEY (`subjectId`),
-  UNIQUE KEY `subjectId_UNIQUE` (`subjectId`),
-  KEY `subject_quizId` (`quizId`),
-  CONSTRAINT `subject_quizId` FOREIGN KEY (`quizId`) REFERENCES `quiz` (`quizId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=186 DEFAULT CHARSET=utf8;
+  KEY `FK_bg34srr1jub3upbbfkp4h1y3y` (`quizId`),
+  CONSTRAINT `FK_bg34srr1jub3upbbfkp4h1y3y` FOREIGN KEY (`quizId`) REFERENCES `quiz` (`quizId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `quiz_subject`
+--
+
+LOCK TABLES `quiz_subject` WRITE;
+/*!40000 ALTER TABLE `quiz_subject` DISABLE KEYS */;
+/*!40000 ALTER TABLE `quiz_subject` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `subject_item`
@@ -139,17 +190,25 @@ DROP TABLE IF EXISTS `subject_item`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `subject_item` (
   `itemId` int(11) NOT NULL AUTO_INCREMENT,
-  `subjectId` int(11) NOT NULL,
-  `choice` text,
-  `score` double DEFAULT NULL,
-  `nextSubjectId` int(11) DEFAULT NULL,
+  `choice` longtext,
   `itemOrder` int(11) DEFAULT NULL,
+  `nextSubjectId` int(11) DEFAULT NULL,
+  `score` double DEFAULT NULL,
+  `subjectId` int(11) NOT NULL,
   PRIMARY KEY (`itemId`),
-  UNIQUE KEY `itemId_UNIQUE` (`itemId`),
-  KEY `subjectId_idx` (`subjectId`),
-  CONSTRAINT `subjectId` FOREIGN KEY (`subjectId`) REFERENCES `quiz_subject` (`subjectId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8;
+  KEY `FK_7aesduebjgp6nfm044fk3yhbt` (`subjectId`),
+  CONSTRAINT `FK_7aesduebjgp6nfm044fk3yhbt` FOREIGN KEY (`subjectId`) REFERENCES `quiz_subject` (`subjectId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `subject_item`
+--
+
+LOCK TABLES `subject_item` WRITE;
+/*!40000 ALTER TABLE `subject_item` DISABLE KEYS */;
+/*!40000 ALTER TABLE `subject_item` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `user`
@@ -159,20 +218,28 @@ DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `user` (
-  `userName` varchar(50) NOT NULL,
-  `password` varchar(50) DEFAULT NULL,
-  `email` varchar(50) DEFAULT NULL,
-  `phone` varchar(50) DEFAULT NULL,
-  `graduate` varchar(50) DEFAULT NULL,
-  `major` varchar(50) DEFAULT NULL,
-  `background` text,
+  `userName` varchar(200) NOT NULL,
+  `background` longtext,
+  `email` text,
+  `graduate` text,
   `isAdmin` tinyint(4) DEFAULT NULL,
   `isTeacher` tinyint(4) DEFAULT NULL,
-  PRIMARY KEY (`userName`),
-  UNIQUE KEY `userName_UNIQUE` (`userName`)
+  `major` text,
+  `password` varchar(200) DEFAULT NULL,
+  `phone` text,
+  PRIMARY KEY (`userName`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-insert into user values('admin', 'test', 'admin@163.com', '13312312312', 'peking university', 'software engineering', '', 1, 0);
+
+--
+-- Dumping data for table `user`
+--
+
+LOCK TABLES `user` WRITE;
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` VALUES ('admin',NULL,NULL,NULL,1,1,NULL,'admin',NULL);
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `user_answer`
@@ -183,19 +250,27 @@ DROP TABLE IF EXISTS `user_answer`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `user_answer` (
   `answerId` int(11) NOT NULL AUTO_INCREMENT,
-  `userName` varchar(50) DEFAULT NULL,
-  `quizId` int(11) DEFAULT NULL,
-  `subjectId` int(11) NOT NULL,
   `answer` text,
   `answerDate` datetime DEFAULT NULL,
+  `quizId` int(11) DEFAULT NULL,
   `score` double DEFAULT NULL,
+  `subjectId` int(11) NOT NULL,
+  `userName` longtext,
   `recordId` int(11) NOT NULL,
   PRIMARY KEY (`answerId`),
-  UNIQUE KEY `answerId_UNIQUE` (`answerId`),
-  KEY `recordId_idx` (`recordId`),
-  CONSTRAINT `recordId` FOREIGN KEY (`recordId`) REFERENCES `user_quiz` (`recordId`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  KEY `FK_thhip5pu2br1fl3rf7gmjyhn8` (`recordId`),
+  CONSTRAINT `FK_thhip5pu2br1fl3rf7gmjyhn8` FOREIGN KEY (`recordId`) REFERENCES `user_quiz` (`recordId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user_answer`
+--
+
+LOCK TABLES `user_answer` WRITE;
+/*!40000 ALTER TABLE `user_answer` DISABLE KEYS */;
+/*!40000 ALTER TABLE `user_answer` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `user_quiz`
@@ -206,16 +281,28 @@ DROP TABLE IF EXISTS `user_quiz`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `user_quiz` (
   `recordId` int(11) NOT NULL AUTO_INCREMENT,
-  `userName` varchar(50) NOT NULL,
-  `quizId` int(11) NOT NULL,
-  `score` double DEFAULT NULL,
+  `evaluator` text,
   `feedbackId` int(11) DEFAULT NULL,
   `quizDate` datetime DEFAULT NULL,
-  `evaluator` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`recordId`),
-  UNIQUE KEY `recordId_UNIQUE` (`recordId`)
+  `quizId` int(11) NOT NULL,
+  `score` double DEFAULT NULL,
+  `userName` text NOT NULL,
+  PRIMARY KEY (`recordId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user_quiz`
+--
+
+LOCK TABLES `user_quiz` WRITE;
+/*!40000 ALTER TABLE `user_quiz` DISABLE KEYS */;
+/*!40000 ALTER TABLE `user_quiz` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping routines for database 'online_test'
+--
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -226,4 +313,4 @@ CREATE TABLE `user_quiz` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-01-19 21:41:44
+-- Dump completed on 2016-01-30  0:26:18
