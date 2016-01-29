@@ -65,7 +65,7 @@ public class UserQuiz implements java.io.Serializable {
 		this.recordId = recordId;
 	}
 
-	@Column(name = "userName", nullable = false, length = 50)
+	@Column(name = "userName", nullable = false, columnDefinition="text")
 	public String getUserName() {
 		return this.userName;
 	}
@@ -111,7 +111,7 @@ public class UserQuiz implements java.io.Serializable {
 		this.quizDate = quizDate;
 	}
 
-	@Column(name = "evaluator", length = 50)
+	@Column(name = "evaluator", columnDefinition="text")
 	public String getEvaluator() {
 		return this.evaluator;
 	}

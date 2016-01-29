@@ -58,7 +58,7 @@ public class Feedback implements java.io.Serializable {
 		this.quizId = quizId;
 	}
 
-	@Column(name = "content", length = 65535)
+	@Column(name = "content", columnDefinition="longtext")
 	public String getContent() {
 		return this.content;
 	}

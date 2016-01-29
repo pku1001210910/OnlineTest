@@ -27,14 +27,11 @@ import com.fivestars.websites.onlinetest.service.QuizService;
 import com.fivestars.websites.onlinetest.util.QuizUtil;
 import com.opensymphony.xwork2.ActionSupport;
 
-import lombok.Data;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 @ParentPackage("admin")
 @Namespace("/admin")
-@InterceptorRef(value="global")
-@Data
 public class QuizzesAjaxAction implements ServletRequestAware {
 	
 	@Autowired

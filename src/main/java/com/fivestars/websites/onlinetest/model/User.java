@@ -1,6 +1,7 @@
 package com.fivestars.websites.onlinetest.model;
 // Generated Jan 15, 2016 12:20:03 AM by Hibernate Tools 4.3.1.Final
 
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -61,8 +62,7 @@ public class User implements java.io.Serializable {
 	}
 
 	@Id
-
-	@Column(name = "userName", unique = true, nullable = false, length = 50)
+	@Column(name = "userName", unique = true, nullable = false, length = 200)
 	public String getUserName() {
 		return this.userName;
 	}
@@ -71,7 +71,7 @@ public class User implements java.io.Serializable {
 		this.userName = userName;
 	}
 
-	@Column(name = "password", length = 50)
+	@Column(name = "password", length = 200)
 	public String getPassword() {
 		return this.password;
 	}
@@ -80,7 +80,7 @@ public class User implements java.io.Serializable {
 		this.password = password;
 	}
 
-	@Column(name = "email", length = 50)
+	@Column(name = "email", columnDefinition="text")
 	public String getEmail() {
 		return this.email;
 	}
@@ -89,7 +89,7 @@ public class User implements java.io.Serializable {
 		this.email = email;
 	}
 
-	@Column(name = "phone", length = 50)
+	@Column(name = "phone", columnDefinition="text")
 	public String getPhone() {
 		return this.phone;
 	}
@@ -98,7 +98,7 @@ public class User implements java.io.Serializable {
 		this.phone = phone;
 	}
 
-	@Column(name = "graduate", length = 50)
+	@Column(name = "graduate", columnDefinition="text")
 	public String getGraduate() {
 		return this.graduate;
 	}
@@ -107,7 +107,7 @@ public class User implements java.io.Serializable {
 		this.graduate = graduate;
 	}
 
-	@Column(name = "major", length = 50)
+	@Column(name = "major", columnDefinition="text")
 	public String getMajor() {
 		return this.major;
 	}
@@ -116,7 +116,7 @@ public class User implements java.io.Serializable {
 		this.major = major;
 	}
 
-	@Column(name = "background", length = 65535)
+	@Column(name = "background", columnDefinition="longtext")
 	@Lob
 	@Basic(fetch = FetchType.LAZY)
 	public String getBackground() {

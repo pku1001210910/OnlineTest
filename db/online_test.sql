@@ -172,6 +172,7 @@ CREATE TABLE `user` (
   UNIQUE KEY `userName_UNIQUE` (`userName`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+insert into user values('admin', 'test', 'admin@163.com', '13312312312', 'peking university', 'software engineering', '', 1, 0);
 
 --
 -- Table structure for table `user_answer`
