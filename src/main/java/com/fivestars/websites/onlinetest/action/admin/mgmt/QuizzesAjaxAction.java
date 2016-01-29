@@ -14,7 +14,6 @@ import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.interceptor.ServletRequestAware;
-import org.apache.struts2.json.annotations.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fivestars.websites.onlinetest.constant.QuizConst;
@@ -25,6 +24,7 @@ import com.fivestars.websites.onlinetest.model.QuizSubject;
 import com.fivestars.websites.onlinetest.model.SubjectItem;
 import com.fivestars.websites.onlinetest.service.FeedbackService;
 import com.fivestars.websites.onlinetest.service.QuizService;
+import com.fivestars.websites.onlinetest.util.QuizUtil;
 import com.opensymphony.xwork2.ActionSupport;
 
 import lombok.Data;
@@ -45,16 +45,8 @@ public class QuizzesAjaxAction implements ServletRequestAware {
 	private HttpServletRequest request;
 		
 	// return value
-	private List<QuizCategory> allCategories;
 	private String result;
-	
-	@JSON
-	public List<QuizCategory> getAllCategories() {
-		return allCategories;
-	}
-	public void setAllCategories(List<QuizCategory> allCategories) {
-		this.allCategories = allCategories;
-	}
+	private String category;
 	
 	public String getResult() {
 		return result;
@@ -69,7 +61,83 @@ public class QuizzesAjaxAction implements ServletRequestAware {
 	
 	@Action(value = "getAllQuizCategories", results = { @Result(name="success", type = "json")})
 	public String getAllQuizCategories() {
-		allCategories = quizService.getAllQuizCategories();
+		Map<String, Object> categoryMap = new HashMap<>();
+		List<QuizCategory> allCategories = quizService.getAllQuizCategories();
+		List<Map<String, Object>> categories = new ArrayList<>();
+		for (QuizCategory category : allCategories) {
+			Map<String, Object> item = new HashMap<>();
+			item.put("categoryId", category.getCategoryId());
+			item.put("categoryName", category.getCategoryName());
+			categories.add(item);
+		}
+		categoryMap.put("allCategory", categories);
+		
+		QuizCategory currentCategory = null;
+		if (request.getParameter("quizId") != null) {
+			Integer quizId = Integer.parseInt(request.getParameter("quizId"));
+			Quiz quiz = quizService.loadQuizById(quizId);
+			currentCategory = quizService.getQuizCategoryById(quiz.getCategory());
+		} else {
+			currentCategory = allCategories.get(0);
+		}
+		Map<String, Object> currentCategoryMap = new HashMap<>();
+		currentCategoryMap.put("categoryId", currentCategory.getCategoryId());
+		currentCategoryMap.put("categoryName", currentCategory.getCategoryName());
+		categoryMap.put("currentCategory", currentCategoryMap);
+		
+		category = JSONObject.fromObject(categoryMap).toString();
+		return ActionSupport.SUCCESS;
+	}
+	
+	@Action(value = "loadQuiz", results = { @Result(name="success", type="json")})
+	public String loadQuiz() {
+		Integer quizId = Integer.parseInt(request.getParameter("quizId"));
+		Quiz quiz = quizService.loadQuizById(quizId);
+		QuizCategory category = quizService.getQuizCategoryById(quiz.getCategory());
+		Map<String, Object> quizMap = new HashMap<>();
+		quizMap.put("quizId", quizId);
+		quizMap.put("title", quiz.getTitle());
+		quizMap.put("description", quiz.getDescription());
+		quizMap.put("category", quiz.getCategory());
+		quizMap.put("categoryName", category.getCategoryName());
+		quizMap.put("needCharge", quiz.getNeedCharge());
+		quizMap.put("price", quiz.getPrice());
+		quizMap.put("status", quiz.getStatus());
+		
+		List<Map<String, Object>> quizSubjects = new ArrayList<>();
+		List<QuizSubject> orderedSubjects = QuizUtil.sortByOrder(quiz.getQuizSubjects(), QuizSubject.class);
+		for (QuizSubject subject: orderedSubjects) {
+			Map<String, Object> subjectMap = new HashMap<>();
+			subjectMap.put("subjectId", subject.getSubjectId());
+			subjectMap.put("type", subject.getType());
+			subjectMap.put("question", subject.getQuestion());
+			
+			List<Map<String, Object>> subjectItems = new ArrayList<>();
+			List<SubjectItem> orderedItems = QuizUtil.sortByOrder(subject.getSubjectItems(), SubjectItem.class);
+			for (SubjectItem item : orderedItems) {
+				Map<String, Object> itemMap = new HashMap<>();
+				itemMap.put("itemId", item.getItemId());
+				itemMap.put("choice", item.getChoice());
+				itemMap.put("score", item.getScore());
+				subjectItems.add(itemMap);
+			}
+			subjectMap.put("subjectItems", subjectItems);
+			quizSubjects.add(subjectMap);
+		}
+		quizMap.put("quizSubjects", quizSubjects);
+		
+		List<Feedback> feedbackList = feedbackService.getFeedbackByQuiz(quizId);
+		List<Map<String, Object>> feedbacks = new ArrayList<>();
+		for (Feedback feedback : feedbackList) {
+			Map<String, Object> feedbackMap = new HashMap<>();
+			feedbackMap.put("feedbackId", feedback.getFeedbackId());
+			feedbackMap.put("content", feedback.getContent());
+			feedbackMap.put("scoreFrom", feedback.getScoreFrom());
+			feedbackMap.put("scoreTo", feedback.getScoreTo());
+			feedbacks.add(feedbackMap);
+		}
+		quizMap.put("feedbacks", feedbacks);
+		result = JSONObject.fromObject(quizMap).toString();
 		return ActionSupport.SUCCESS;
 	}
 	
@@ -121,6 +189,13 @@ public class QuizzesAjaxAction implements ServletRequestAware {
 		Quiz quiz = quizService.loadQuizById(quizId);
 		quiz.setCategory(category);
 		quizService.updateQuiz(quiz);
+		return ActionSupport.SUCCESS;
+	}
+	
+	@Action(value = "deleteQuiz", results = { @Result(name="success", type="json")})
+	public String deleteQuiz() {
+		Integer quizId = Integer.parseInt(request.getParameter("quizId"));
+		quizService.deleteQuiz(quizId);
 		return ActionSupport.SUCCESS;
 	}
 	
@@ -288,5 +363,11 @@ public class QuizzesAjaxAction implements ServletRequestAware {
 		Integer feedbackId = Integer.parseInt(request.getParameter("feedbackId"));
 		feedbackService.deleteFeedback(feedbackId);
 		return ActionSupport.SUCCESS;
+	}
+	public String getCategory() {
+		return category;
+	}
+	public void setCategory(String category) {
+		this.category = category;
 	}
 }
