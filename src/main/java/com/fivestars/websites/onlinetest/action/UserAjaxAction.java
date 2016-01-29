@@ -13,7 +13,6 @@ import com.fivestars.websites.onlinetest.service.UserService;
 import com.opensymphony.xwork2.ActionSupport;
 
 @ParentPackage("user")
-@InterceptorRef(value="global")
 public class UserAjaxAction {
 	private String userName;
 	private String userPw;

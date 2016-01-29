@@ -172,7 +172,10 @@ public class UserAction {
 		for(UserQuiz userQuiz: userQuizList) {
 			quizIdList.add(userQuiz.getQuizId());
 		}
-		List<Quiz> quizList = quizService.loadQuizzesByIds(quizIdList);
+		List<Quiz> quizList = new ArrayList<Quiz>();
+		if(quizIdList.size() > 0) {
+			quizList = quizService.loadQuizzesByIds(quizIdList);
+		}
 		userQuizVoList = new ArrayList<UserQuizVo>();
 		
 		for(int index = 0; index < userQuizList.size(); index++){
@@ -206,7 +209,7 @@ public class UserAction {
 			@Result(name = "input", type = "redirectAction", location = "userquiz")})
 	public String quizDetail() throws JsonProcessingException {
 		Map<String, Object> session = ServletActionContext.getContext().getSession();
-		User user = (User) session.get("user");
+		User user = (User) session.get(SessionConst.USER);
 		if (user == null) {
 			return ActionSupport.LOGIN;
 		}

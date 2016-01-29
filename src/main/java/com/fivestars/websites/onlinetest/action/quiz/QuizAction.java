@@ -13,6 +13,7 @@ import org.apache.struts2.convention.annotation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fivestars.websites.onlinetest.constant.CategoryConst;
+import com.fivestars.websites.onlinetest.constant.SessionConst;
 import com.fivestars.websites.onlinetest.model.Quiz;
 import com.fivestars.websites.onlinetest.model.QuizCategory;
 import com.fivestars.websites.onlinetest.model.User;
@@ -87,7 +88,7 @@ public class QuizAction {
 	@Action(value = "quizDetail", interceptorRefs = {@InterceptorRef(value="global")}, results = { @Result(name = "success", location = "/WEB-INF/views/quiz/quizdetail.jsp"), @Result(name = "input", type="redirectAction", location = "startQuiz.action") })
 	public String quizDetail() {
 		Map<String, Object> session = ServletActionContext.getContext().getSession();
-		User user = (User) session.get("user");
+		User user = (User) session.get(SessionConst.USER);
 		boolean quizValid = userQuizService.isUserOwnQuiz(quizId, user.getUserName());
 		quiz = quizService.loadQuizById(quizId);
 		if(!quizValid) {
