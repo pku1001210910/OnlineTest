@@ -104,7 +104,12 @@
 	                                                <s:if test="#quizVo.quiz.price != 0">
 	                                                 	<i class="fa fa-lock"></i>
 	                                                	<span class="label label-info">${quizVo.quiz.price}元</span>
-	                                                	<button class="btn btn-warning" onclick="buyQuiz(${quizVo.quiz.quizId}, '${session.user_session == null ? -1 : session.user_session.userName}')">支付</button>
+	                                                	<s:if test="#quizVo.quizOwnership == null">
+	                                                		<button class="btn btn-warning" onclick="buyQuiz(${quizVo.quiz.quizId}, '${session.user_session == null ? -1 : session.user_session.userName}')">支付</button>
+	                                                	</s:if>
+	                                                	<s:else>
+	                                                		<div class="btn btn-primary">已付费</div>
+	                                                	</s:else>
 	                                                </s:if>
 	                                               
 	                                                <%-- <span>共1页14个问题</span> --%>
@@ -244,8 +249,10 @@
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>  
 		        <h4 class="modal-title">提示信息</h4>  
 		      </div>  
-		      <div class="modal-body">  
-		        <p>您已付费成功</p>  
+		      <div class="modal-body text-align-center">  
+		        <p>当前仅支持支付宝转账</p>  
+		        <img src="<%=path%>/images/alipay/aex02552o50ena4vmgwxdfc.png" />
+		        <div class="red buyInfoContainer">*请注明您的用户名为 <p class="buyUserName"></p> 和试卷编号 <p class="buyQuizId"></p></div>
 		      </div>  
 		      <div class="modal-footer">  
 		         <input type="hidden" id="url"/>  

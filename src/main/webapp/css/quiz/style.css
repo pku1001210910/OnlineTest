@@ -1495,10 +1495,22 @@ a{color:#717171;}
 	padding:0px;
 }
 
+.temtitle div.btn-primary {
+	padding:0px;
+}
+
 .tem-container {
 	margin-bottom: 20px;
 }
 
 .pagenum.item {
 	margin-left: -18px;
+}
+
+.buyInfoContainer {
+	display: -webkit-box;
+}
+
+.text-align-center {
+	text-align: center;
 }
