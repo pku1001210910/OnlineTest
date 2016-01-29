@@ -24,9 +24,7 @@ import lombok.Setter;
 public class LoginAction extends ActionSupport {
 	private static final long serialVersionUID = -1681627584146722465L;
 
-	@Setter
 	private String username;
-	@Setter
 	private String password;
 
 	@Autowired
@@ -61,4 +59,22 @@ public class LoginAction extends ActionSupport {
 		session.remove(SessionConst.ADMIN);
 		return SUCCESS;
 	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	
+	
 }

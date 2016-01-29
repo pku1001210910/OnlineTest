@@ -101,7 +101,7 @@
 	                                    			<a href="#" onclick="checkQuizOwner(${quizVo.quiz.quizId}, '${session.user_session == null ? -1 :  session.user_session.userName}')">
 	                                                    <p>${quizVo.quiz.title}</p>
 	                                                </a>
-	                                                <s:if test="#quiz.price != 0">
+	                                                <s:if test="#quizVo.quiz.price != 0">
 	                                                 	<i class="fa fa-lock"></i>
 	                                                	<span class="label label-info">${quizVo.quiz.price}元</span>
 	                                                	<button class="btn btn-warning" onclick="buyQuiz(${quizVo.quiz.quizId}, '${session.user_session == null ? -1 : session.user_session.userName}')">支付</button>
@@ -112,7 +112,7 @@
 	                                    		<div class="temcon">
 	                                                <span>分类：<a href="/classify/other_f_1" style="display:inline;">${quizVo.quizCategory.categoryName }</a></span> |
 	                                                <span>作者：ztx12315</span> |
-	                                                <span>被引用次数：0</span>
+	                                                <%-- <span>被引用次数：0</span> --%>
 	                                            </div>
 	                                            <div class="text">
 	                                          		${quizVo.quiz.description}

@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fivestars.websites.onlinetest.constant.QuizConst;
+import com.fivestars.websites.onlinetest.constant.SessionConst;
 import com.fivestars.websites.onlinetest.entity.SingleChoiceAnswerEntity;
 import com.fivestars.websites.onlinetest.model.QuizOwnership;
 import com.fivestars.websites.onlinetest.model.SubjectItem;
@@ -80,7 +81,7 @@ public class QuizAjaxAction {
         }           
         
         Map<String, Object> session = ServletActionContext.getContext().getSession();
-		User user = (User) session.get("user");
+		User user = (User) session.get(SessionConst.USER);
 		UserQuiz userQuiz = new UserQuiz();
 		userQuiz.setUserName(user.getUserName());
 		userQuiz.setQuizId(quizId);
