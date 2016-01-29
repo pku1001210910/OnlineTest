@@ -61,7 +61,7 @@ var initGrid = function(quizList) {
 	    
 	    paging: true,
 	    pageIndex: 1,
-	    pageSize: 13,
+	    pageSize: 11,
 	    pageButtonCount: 15,
 	    pagerFormat: '页码: {first} {prev} {pages} {next} {last} 共 {pageCount} 页',
 	    pagePrevText: '<<',

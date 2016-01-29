@@ -178,6 +178,7 @@ onlineTest.management.SingleChoiceSubject.EventType = {
 		$editor.text($question.text());
 		this.getRightPanel().append($editor);
 		$editor.focus();
+		$editor.select();
 		$editor.one('blur', function() {
 			if ($question.text() !== $editor.text()) {
 				$question.text($editor.text());
@@ -198,6 +199,7 @@ onlineTest.management.SingleChoiceSubject.EventType = {
 		$editor.text($choice.text());
 		$item.append($editor);
 		$editor.focus();
+		$editor.select();
 		// choice editor header
 		var $editorHeader = $('<div class="choice-editor-header"></div>')
 			.append('<i class="shift-item-up glyphicon glyphicon-arrow-up quiz-icon-gray"></i>')

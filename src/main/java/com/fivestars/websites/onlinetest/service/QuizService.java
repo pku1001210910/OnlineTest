@@ -29,6 +29,8 @@ public interface QuizService {
 	 */
 	public Quiz loadQuizById(Integer quizId);
 	
+	public List<Quiz> loadAllQuizLatestFirst();
+	
 	/**
 	 * Load all available quiz
 	 * @return the list of quiz

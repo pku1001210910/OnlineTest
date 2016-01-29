@@ -64,7 +64,7 @@
 					<li class="admin-menu-item" data-target="articles"><a>文章管理</a></li>
 				</ul>
 				<ul class="nav nav-sidebar">
-					<li class="admin-menu-item" data-target="quizzes"><a>测试管理</a></li>
+					<li id="quiz-menu-item" class="admin-menu-item" data-target="quizzes"><a>测试管理</a></li>
 				</ul>
 				<ul class="nav nav-sidebar">
 					<li class="admin-menu-item" data-target="payment"><a>支付设置</a></li>
