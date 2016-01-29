@@ -237,7 +237,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES ('admin',NULL,NULL,NULL,1,1,NULL,'admin',NULL);
+INSERT INTO `user` VALUES ('admin', '北京大学毕业', 'admin@163.com', '北京大学',1,1, '心理系','admin', '13301312123');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
