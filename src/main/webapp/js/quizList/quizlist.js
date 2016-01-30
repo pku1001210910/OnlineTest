@@ -40,12 +40,16 @@ var checkQuizOwner = function(quizId, userName) {
     			    // alert('已付费');
     				window.location.href = "../quiz/quizDetail.action?quizId=" + quizId;
     			} else {
-    				alert('请支付');
-    				window.location.href = "../quiz/quizDetail.action?quizId=" + quizId;
+    				$('.buyQuizId').text(quizId);
+    				$('.buyUserName').text(userName);
+    				$("#buyQuizModal").modal('show');
+    				// window.location.href = "../quiz/quizDetail.action?quizId=" + quizId;
     			}
     		},
     		error: function(json) {
-    			alert('error2')
+    			$('.buyQuizId').text(quizId);
+    			$('.buyUserName').text(userName);
+    			$("#buyQuizModal").modal('show');
     			return false;
     		}
     	})
@@ -59,6 +63,8 @@ var buyQuiz = function(quizId, userName) {
 		$('.buyQuizId').text(quizId);
 		$('.buyUserName').text(userName);
     	var self = this;
+    	// TODO comment out below logic to avoid buy quiz logic
+    	// $("#buySuccessModal").modal('show');
     	$.ajax({
     		type: 'post',
     		url: 'buyQuiz.action',
@@ -77,7 +83,7 @@ var buyQuiz = function(quizId, userName) {
     			}
     		},
     		error: function(json) {
-    			alert('error2')
+    			$("#buyFailureModal").modal('show');
     			return false;
     		}
     	})

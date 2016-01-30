@@ -70,6 +70,7 @@ jQuery(document).ready(function() {
 				// btn.button('disabled');
 				$("#btn_finish_quiz").attr("disabled", true);
 				btn.button('reset');
+				btn.hide();
 				setTimeout(function() {
 					$("#btn_finish_quiz").attr("disabled", true);
 				}, 100);

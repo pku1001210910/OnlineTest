@@ -106,7 +106,7 @@ public class QuizAction {
 		User user = (User) session.get(SessionConst.USER);
 		boolean quizValid = userQuizService.isUserOwnQuiz(quizId, user.getUserName());
 		quiz = quizService.loadQuizById(quizId);
-		if(quiz.getNeedCharge().equals(QuizConst.NOT_NEED_CHARGE)) {
+		if(quiz.getNeedCharge() == null || quiz.getNeedCharge().equals(QuizConst.NOT_NEED_CHARGE)) {
 			quizValid = true;
 		}
 		if(!quizValid) {

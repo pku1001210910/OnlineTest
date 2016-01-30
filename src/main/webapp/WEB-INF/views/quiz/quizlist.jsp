@@ -80,11 +80,11 @@
                                     <div class="Mbgen_title">
                                         <ul>
                                             <li>
-                                                <a href="/lib">课题分类</a>
+                                                <a href="#">课题分类</a>
                                                 <s class="arrowr"></s>
                                             </li>
                                             <li>
-                                                <a href="/share/more_share_1">${categoryName}</a>
+                                                <a href="#">${categoryName}</a>
                                                 <%-- <s class="arrowr"></s> --%>
                                             </li>
                                             <!-- <li>
@@ -226,7 +226,7 @@
 		</div>
 		<div class="modal fade" id="needLoginModal">  
 		  <div class="modal-dialog">  
-		    <div class="modal-content message_align">  
+		    <div class="modal-content message_align quiz_list">  
 		      <div class="modal-header">  
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>  
 		        <h4 class="modal-title">提示信息</h4>  
@@ -236,15 +236,15 @@
 		      </div>  
 		      <div class="modal-footer">  
 		         <input type="hidden" id="url"/>  
-		         <a onclick="urlSubmit()" class="btn btn-success" data-dismiss="modal">确定</a>  
+		         <a onclick="urlSubmit()" class="btn btn-primary" data-dismiss="modal">确定</a>  
 		      </div>  
 		    </div><!-- /.modal-content -->  
 		  </div><!-- /.modal-dialog -->  
 		</div><!-- /.modal -->  
 		
-		<div class="modal fade" id="buySuccessModal">  
+		<div class="modal fade" id="buyQuizModal">  
 		  <div class="modal-dialog">  
-		    <div class="modal-content message_align">  
+		    <div class="modal-content message_align quiz_list">  
 		      <div class="modal-header">  
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>  
 		        <h4 class="modal-title">提示信息</h4>  
@@ -256,15 +256,15 @@
 		      </div>  
 		      <div class="modal-footer">  
 		         <input type="hidden" id="url"/>  
-		         <a onclick="refresh()" class="btn btn-success" data-dismiss="modal">确定</a>  
+		         <a onclick="refresh()" class="btn btn-primary" data-dismiss="modal">确定</a>
 		      </div>  
 		    </div><!-- /.modal-content -->  
 		  </div><!-- /.modal-dialog -->  
 		</div><!-- /.modal -->  
 		
-		<div class="modal fade" id="buyFailureModal">  
+		<div class="modal fade" id="buySuccessModal">  
 		  <div class="modal-dialog">  
-		    <div class="modal-content message_align">  
+		    <div class="modal-content message_align quiz_list">  
 		      <div class="modal-header">  
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>  
 		        <h4 class="modal-title">提示信息</h4>  
@@ -274,7 +274,25 @@
 		      </div>  
 		      <div class="modal-footer">  
 		         <input type="hidden" id="url"/>  
-		         <a onclick="urlSubmit()" class="btn btn-success" data-dismiss="modal">确定</a>  
+		         <a onclick="urlSubmit()" class="btn btn-primary" data-dismiss="modal">确定</a>  
+		      </div>  
+		    </div><!-- /.modal-content -->  
+		  </div><!-- /.modal-dialog -->  
+		</div><!-- /.modal -->
+		
+		<div class="modal fade" id="buyFailureModal">  
+		  <div class="modal-dialog">  
+		    <div class="modal-content message_align quiz_list">  
+		      <div class="modal-header">  
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>  
+		        <h4 class="modal-title">提示信息</h4>  
+		      </div>  
+		      <div class="modal-body">  
+		        <p>您付费失败</p>  
+		      </div>  
+		      <div class="modal-footer">  
+		         <input type="hidden" id="url"/>  
+		         <a onclick="urlSubmit()" class="btn btn-primary" data-dismiss="modal">确定</a>  
 		      </div>  
 		    </div><!-- /.modal-content -->  
 		  </div><!-- /.modal-dialog -->  
