@@ -79,7 +79,7 @@ public class Quiz implements java.io.Serializable {
 		this.quizId = quizId;
 	}
 
-	@Column(name = "title", length = 50)
+	@Column(name = "title", columnDefinition="text")
 	public String getTitle() {
 		return this.title;
 	}
@@ -88,7 +88,7 @@ public class Quiz implements java.io.Serializable {
 		this.title = title;
 	}
 
-	@Column(name = "description", length = 65535)
+	@Column(name = "description", columnDefinition="longtext")
 	public String getDescription() {
 		return this.description;
 	}

@@ -60,7 +60,7 @@ public class UserAnswer implements java.io.Serializable {
 		this.answerId = answerId;
 	}
 
-	@Column(name = "userName", length = 50)
+	@Column(name = "userName", columnDefinition="longtext")
 	public String getUserName() {
 		return this.userName;
 	}
@@ -87,7 +87,7 @@ public class UserAnswer implements java.io.Serializable {
 		this.subjectId = subjectId;
 	}
 
-	@Column(name = "answer", length = 65535)
+	@Column(name = "answer", columnDefinition="text")
 	public String getAnswer() {
 		return this.answer;
 	}

@@ -10,10 +10,20 @@
 	<url>http://maven.apache.org</url>
 
 	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<org.springframework.version>4.0.0.RELEASE</org.springframework.version>
 	</properties>
 
 	<dependencies>
+		<!-- javax.servlet libraries -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.0.1</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- end add javax.servlet libraries -->
+		
 		<!-- add spring libraries -->
 		<dependency>
 			<groupId>org.springframework</groupId>

@@ -49,7 +49,7 @@ public class HomeAction{
 	
 	@Action(value = "users", results = { @Result(name = "success", location = "/WEB-INF/views/admin/mgmt/users.jsp") })
 	public String users() throws JsonProcessingException {
-		List<User> users = userService.loadAllUsers();
+		List<User> users = userService.findAll();
 		List<Quiz> quizzes = quizService.loadAllQuizTitles();
 		ObjectMapper json = new ObjectMapper();
 		ServletActionContext.getRequest().setAttribute("users", json.writeValueAsString(users));

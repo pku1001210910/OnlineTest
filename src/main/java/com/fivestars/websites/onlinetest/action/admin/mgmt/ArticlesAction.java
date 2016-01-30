@@ -17,20 +17,13 @@ import com.fivestars.websites.onlinetest.model.Article;
 import com.fivestars.websites.onlinetest.service.ArticleService;
 import com.opensymphony.xwork2.ActionSupport;
 
-import lombok.Getter;
-import lombok.Setter;
-
 @ParentPackage("admin")
 @InterceptorRef(value="global")
 @Namespace("/admin/articles")
 public class ArticlesAction{
-	@Getter @Setter
 	private Integer id;
-	@Getter @Setter
 	private String title;
-	@Getter @Setter
 	private String content;
-	@Getter @Setter
 	private String json;
 	
 	@Autowired
@@ -61,5 +54,37 @@ public class ArticlesAction{
 	public String removeArticle() throws JsonProcessingException {
 		articleService.delete(id);
 		return ActionSupport.SUCCESS;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public String getJson() {
+		return json;
+	}
+
+	public void setJson(String json) {
+		this.json = json;
 	}
 }

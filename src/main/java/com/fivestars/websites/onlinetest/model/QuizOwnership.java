@@ -53,7 +53,7 @@ public class QuizOwnership implements java.io.Serializable {
 		this.ownershipId = ownershipId;
 	}
 
-	@Column(name = "username", nullable = false, length = 50)
+	@Column(name = "username", nullable = false, columnDefinition="text")
 	public String getUserName() {
 		return this.userName;
 	}

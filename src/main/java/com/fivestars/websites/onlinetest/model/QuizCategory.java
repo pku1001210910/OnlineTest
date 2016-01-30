@@ -49,7 +49,7 @@ public class QuizCategory implements java.io.Serializable {
 		this.categoryId = categoryId;
 	}
 
-	@Column(name = "categoryName", length = 50)
+	@Column(name = "categoryName", columnDefinition="text")
 	public String getCategoryName() {
 		return this.categoryName;
 	}
@@ -58,7 +58,7 @@ public class QuizCategory implements java.io.Serializable {
 		this.categoryName = categoryName;
 	}
 
-	@Column(name = "description", length = 65535)
+	@Column(name = "description", columnDefinition="longtext")
 	public String getDescription() {
 		return this.description;
 	}

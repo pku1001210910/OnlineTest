@@ -67,7 +67,7 @@ public class SubjectItem implements Serializable, Comparable<SubjectItem> {
 		this.quizSubject = quizSubject;
 	}
 
-	@Column(name = "choice", length = 65535)
+	@Column(name = "choice", columnDefinition="longtext")
 	public String getChoice() {
 		return this.choice;
 	}

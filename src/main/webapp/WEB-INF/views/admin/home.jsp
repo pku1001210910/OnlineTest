@@ -66,9 +66,9 @@
 				<ul class="nav nav-sidebar">
 					<li id="quiz-menu-item" class="admin-menu-item" data-target="quizzes"><a>测试管理</a></li>
 				</ul>
-				<ul class="nav nav-sidebar">
+				<!--  ul class="nav nav-sidebar">
 					<li class="admin-menu-item" data-target="payment"><a>支付设置</a></li>
-				</ul>
+				</ul-->
 			</div>
 			<div id="main-content" class="col-sm-9 col-sm-offset-2 col-md-10 col-md-offset-2 main">
 			</div>

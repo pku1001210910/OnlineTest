@@ -62,8 +62,9 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<User> loadAllUsers() {
 		DetachedCriteria criteria = DetachedCriteria.forClass(User.class);
-		Criterion isAdminEq = Restrictions.eqOrIsNull("isAdmin", UserConst.IS_NOT_ADMIN);
-		criteria.add(isAdminEq);
+		Criterion isNull = Restrictions.isNull("isAdmin");
+		Criterion isUser = Restrictions.eq("isAdmin", UserConst.IS_NOT_ADMIN);
+		criteria.add(Restrictions.or(isNull, isUser));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		return userDao.listSome(criteria);
 	}

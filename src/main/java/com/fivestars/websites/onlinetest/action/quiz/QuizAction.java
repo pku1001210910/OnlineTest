@@ -13,19 +13,19 @@ import org.apache.struts2.convention.annotation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fivestars.websites.onlinetest.constant.CategoryConst;
+import com.fivestars.websites.onlinetest.constant.QuizConst;
+import com.fivestars.websites.onlinetest.constant.SessionConst;
 import com.fivestars.websites.onlinetest.model.Quiz;
 import com.fivestars.websites.onlinetest.model.QuizCategory;
+import com.fivestars.websites.onlinetest.model.QuizOwnership;
 import com.fivestars.websites.onlinetest.model.User;
 import com.fivestars.websites.onlinetest.service.QuizService;
 import com.fivestars.websites.onlinetest.service.UserQuizService;
 import com.fivestars.websites.onlinetest.vo.QuizVo;
 import com.opensymphony.xwork2.ActionSupport;
 
-import lombok.Data;
-
 @ParentPackage("quiz")
 @Namespace("/quiz")
-@Data
 public class QuizAction {
 
 	@Autowired
@@ -61,8 +61,10 @@ public class QuizAction {
 
 	@Action(value = "startQuiz", results = { @Result(name = "success", location = "/WEB-INF/views/quiz/quizlist.jsp") })
 	public String startQuiz() {
+		Map<String, Object> session = ServletActionContext.getContext().getSession();
+		User user = (User) session.get(SessionConst.USER);
 		categoryList = quizService.getAllQuizCategories();
-		int totalNum = quizService.getAllSubmittedQuizSize(categoryId, userName);
+		int totalNum = quizService.getAllSubmittedQuizSize(categoryId, user.getUserName());
 		totalPage = totalNum / pageSize + (totalNum % pageSize > 0 ? 1 : 0);
 		preparePageNum(curPageNum, totalPage);
 		if(categoryId != CategoryConst.TYPE_ALL) {
@@ -70,7 +72,7 @@ public class QuizAction {
 		} else {
 			categoryName = CategoryConst.TYPE_ALL_LABEL;
 		}
-		quizList = quizService.loadAllSubmittedQuiz(categoryId, userName, curPageNum, pageSize);
+		quizList = quizService.loadAllSubmittedQuiz(categoryId, user.getUserName(), curPageNum, pageSize);
 		quizVoList = new ArrayList<QuizVo>();
 		for(Quiz quiz : quizList) {
 			for(QuizCategory quizCategory : categoryList) {
@@ -81,15 +83,27 @@ public class QuizAction {
 				}
 			}
 		}
+		List<QuizOwnership> quizOwnerShipList = userQuizService.loadQuizOwnershipList(user.getUserName());
+		for(QuizOwnership quizOwnership: quizOwnerShipList) {
+			for(QuizVo quizVo : quizVoList) {
+				if(quizOwnership.getQuizId().equals(quizVo.getQuiz().getQuizId())) {
+					quizVo.setQuizOwnership(quizOwnership);
+					break;
+				}
+			}
+		}
 		return ActionSupport.SUCCESS;
 	}
 	
 	@Action(value = "quizDetail", interceptorRefs = {@InterceptorRef(value="global")}, results = { @Result(name = "success", location = "/WEB-INF/views/quiz/quizdetail.jsp"), @Result(name = "input", type="redirectAction", location = "startQuiz.action") })
 	public String quizDetail() {
 		Map<String, Object> session = ServletActionContext.getContext().getSession();
-		User user = (User) session.get("user");
+		User user = (User) session.get(SessionConst.USER);
 		boolean quizValid = userQuizService.isUserOwnQuiz(quizId, user.getUserName());
 		quiz = quizService.loadQuizById(quizId);
+		if(quiz.getNeedCharge().equals(QuizConst.NOT_NEED_CHARGE)) {
+			quizValid = true;
+		}
 		if(!quizValid) {
 			return ActionSupport.INPUT;
 		} else {

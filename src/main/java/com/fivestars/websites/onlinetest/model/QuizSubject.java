@@ -103,7 +103,7 @@ public class QuizSubject implements Serializable, Comparable<QuizSubject> {
 		this.subjectOrder = subjectOrder;
 	}
 
-	@Column(name = "question", length = 65535)
+	@Column(name = "question", columnDefinition="longtext")
 	public String getQuestion() {
 		return this.question;
 	}
