@@ -140,7 +140,7 @@ function deleteArticle(item) {
 	$.ajax({
       type: "POST",
       url: '<%=path%>/admin/articles/remove.action',
-      data: 'id=' + articleId,
+      data: 'id=' + articleId
     });
 }
 

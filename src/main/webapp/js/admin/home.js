@@ -1,5 +1,8 @@
 // load page based on selected menu
 $('.admin-menu .admin-menu-item').on('click', function(e) {
+	// clear current page
+	$('#main-content').empty();
+	
 	// load selected page
 	var $li = $(e.currentTarget); 
 	loadPage($li.data('target'));
@@ -11,9 +14,9 @@ $('.admin-menu .admin-menu-item').on('click', function(e) {
 	e.preventDefault();
 });
 
+var times = 1;
 function loadPage(target) {
-	var targetAction = './' + target + '.action';
-	$('#main-content').val('');
+	var targetAction = './' + target + '.action' + '?times=' + (times++);
 	$('#main-content').load(targetAction);
 }
 
