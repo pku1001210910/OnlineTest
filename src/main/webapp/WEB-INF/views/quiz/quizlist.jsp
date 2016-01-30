@@ -116,8 +116,8 @@
 	                                    		</div>
 	                                    		<div class="temcon">
 	                                                <span>分类：<a href="/classify/other_f_1" style="display:inline;">${quizVo.quizCategory.categoryName }</a></span> |
-	                                                <span>作者：ztx12315</span> |
-	                                                <%-- <span>被引用次数：0</span> --%>
+	                                               <%--  <span>作者：ztx12315</span> | --%>
+	                                                <span>创建时间： ${quizVo.quiz.submitDate }</span>
 	                                            </div>
 	                                            <div class="text">
 	                                          		${quizVo.quiz.description}
