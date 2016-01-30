@@ -270,11 +270,11 @@
 		        <h4 class="modal-title">提示信息</h4>  
 		      </div>  
 		      <div class="modal-body">  
-		        <p>您付费失败</p>  
+		        <p>您付费成功</p>  
 		      </div>  
 		      <div class="modal-footer">  
 		         <input type="hidden" id="url"/>  
-		         <a onclick="urlSubmit()" class="btn btn-primary" data-dismiss="modal">确定</a>  
+		         <a onclick="refresh()" class="btn btn-primary" data-dismiss="modal">确定</a>  
 		      </div>  
 		    </div><!-- /.modal-content -->  
 		  </div><!-- /.modal-dialog -->  
