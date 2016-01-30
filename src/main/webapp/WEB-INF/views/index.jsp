@@ -61,14 +61,14 @@
 		<!-- Example row of columns -->
 		<div class="row">
 			<div class="col-md-6">
-				<h2>文章模块</h2>
+				<h2>文章</h2>
 				<p>请在这里填写文章模块的背景、作用</p>
 				<p>
 					<a class="btn btn-default" href="<%=basePath %>article/all.action?pageNo=1" role="button">查看文章 &raquo;</a>
 				</p>
 			</div>
 			<div class="col-md-6">
-				<h2>测试模块</h2>
+				<h2>测试</h2>
 				<p>请在这里填写测试模块的背景、作用</p>
 				<p>
 					<a class="btn btn-default" href="<%=basePath %>quiz/startQuiz.action" role="button">参加测试 &raquo;</a>
