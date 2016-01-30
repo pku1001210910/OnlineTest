@@ -72,7 +72,11 @@ public class QuizzesAjaxAction implements ServletRequestAware {
 		if (request.getParameter("quizId") != null) {
 			Integer quizId = Integer.parseInt(request.getParameter("quizId"));
 			Quiz quiz = quizService.loadQuizById(quizId);
-			currentCategory = quizService.getQuizCategoryById(quiz.getCategory());
+			if (quiz != null) {
+				currentCategory = quizService.getQuizCategoryById(quiz.getCategory());
+			} else {
+				currentCategory = allCategories.get(0);
+			}
 		} else {
 			currentCategory = allCategories.get(0);
 		}
@@ -191,6 +195,7 @@ public class QuizzesAjaxAction implements ServletRequestAware {
 	@Action(value = "deleteQuiz", results = { @Result(name="success", type="json")})
 	public String deleteQuiz() {
 		Integer quizId = Integer.parseInt(request.getParameter("quizId"));
+		feedbackService.deleteFeedbackByQuizId(quizId);
 		quizService.deleteQuiz(quizId);
 		return ActionSupport.SUCCESS;
 	}
