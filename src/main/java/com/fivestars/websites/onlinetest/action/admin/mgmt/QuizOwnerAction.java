@@ -1,6 +1,7 @@
 package com.fivestars.websites.onlinetest.action.admin.mgmt;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.struts2.convention.annotation.Action;
@@ -11,6 +12,7 @@ import org.apache.struts2.convention.annotation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fivestars.websites.onlinetest.constant.QuizConst;
 import com.fivestars.websites.onlinetest.model.QuizOwnership;
 import com.fivestars.websites.onlinetest.service.QuizOwnerService;
 import com.opensymphony.xwork2.ActionSupport;
@@ -60,6 +62,8 @@ public class QuizOwnerAction{
 			QuizOwnership ownership = new QuizOwnership();
 			ownership.setUserName(userName);
 			ownership.setQuizId(id);
+			ownership.setBuyDate(new Date());
+			ownership.setExpired(QuizConst.EXPIRED_FALSE);
 			quizOwnerService.save(ownership);
 		}
 		
