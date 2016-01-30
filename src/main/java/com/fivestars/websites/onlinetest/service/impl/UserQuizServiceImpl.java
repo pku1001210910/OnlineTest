@@ -154,15 +154,17 @@ public class UserQuizServiceImpl implements UserQuizService {
 			return false;
 		} else {
 			QuizOwnership own = ownership.get(0);
-			return own.getExpired() == QuizConst.EXPIRED_FALSE;
+			return own.getExpired() == null || own.getExpired() == QuizConst.EXPIRED_FALSE; 
 		}
 	}
 	
 	@Override
 	public List<QuizOwnership> loadQuizOwnershipList(String userName) {
 		Criterion userNameEq = Restrictions.eq("userName", userName);
-		List<QuizOwnership> ownershipList = ownershipDao.listSome(new Criterion[] {userNameEq});
-		return ownershipList.stream().filter(ownership -> ownership.getExpired() == QuizConst.EXPIRED_FALSE).collect(Collectors.toList());
+		Criterion expiredEq = Restrictions.eq("expired", QuizConst.EXPIRED_FALSE );
+		List<QuizOwnership> ownershipList = ownershipDao.listSome(new Criterion[] {userNameEq, expiredEq});
+		// return ownershipList.stream().filter(ownership -> ownership.getExpired() == QuizConst.EXPIRED_FALSE || ownership.getExpired() == null).collect(Collectors.toList());
+		return ownershipList;
 		
 	}
 
