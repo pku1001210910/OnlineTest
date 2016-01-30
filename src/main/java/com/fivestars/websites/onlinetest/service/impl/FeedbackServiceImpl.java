@@ -71,4 +71,12 @@ public class FeedbackServiceImpl implements FeedbackService {
 		quizCriteria.add(quizEq);
 		return feedbackDao.listSome(quizCriteria);
 	}
+
+	@Override
+	public void deleteFeedbackByQuizId(Integer quizId) {
+		List<Feedback> feedbacks = getFeedbackByQuiz(quizId);
+		for (Feedback feedback : feedbacks) {
+			feedbackDao.delete(feedback);
+		}
+	}
 }

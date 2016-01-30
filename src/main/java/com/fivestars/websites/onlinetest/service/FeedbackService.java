@@ -45,4 +45,10 @@ public interface FeedbackService {
 	 * @return
 	 */
 	public List<Feedback> getFeedbackByQuiz(Integer quizId);
+	
+	/**
+	 * Delete feedback by quizId
+	 * @param quizId
+	 */
+	public void deleteFeedbackByQuizId(Integer quizId);
 }
