@@ -270,7 +270,7 @@
 		        <h4 class="modal-title">提示信息</h4>  
 		      </div>  
 		      <div class="modal-body">  
-		        <p>您付费失败</p>  
+		        <p>您付费成功</p>  
 		      </div>  
 		      <div class="modal-footer">  
 		         <input type="hidden" id="url"/>  
