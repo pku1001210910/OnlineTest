@@ -67,7 +67,7 @@ public class QuizAction {
 		Map<String, Object> session = ServletActionContext.getContext().getSession();
 		User user = (User) session.get(SessionConst.USER);
 		categoryList = quizService.getAllQuizCategories();
-		int totalNum = quizService.getAllSubmittedQuizSize(categoryId, user.getUserName());
+		int totalNum = quizService.getAllSubmittedQuizSize(categoryId, null);
 		totalPage = totalNum / pageSize + (totalNum % pageSize > 0 ? 1 : 0);
 		preparePageNum(curPageNum, totalPage);
 		if(categoryId != CategoryConst.TYPE_ALL) {
@@ -75,23 +75,28 @@ public class QuizAction {
 		} else {
 			categoryName = CategoryConst.TYPE_ALL_LABEL;
 		}
-		quizList = quizService.loadAllSubmittedQuiz(categoryId, user.getUserName(), curPageNum, pageSize);
+		quizList = quizService.loadAllSubmittedQuiz(categoryId, null, curPageNum, pageSize);
 		quizVoList = new ArrayList<QuizVo>();
 		for(Quiz quiz : quizList) {
 			for(QuizCategory quizCategory : categoryList) {
-				if(quiz.getCategory().equals(0) || quiz.getCategory().equals(CategoryConst.TYPE_ALL)) {
+				if(quiz.getCategory().equals(CategoryConst.TYPE_ALL)) {
 					quizVoList.add(new QuizVo(quiz, new QuizCategory(-2, CategoryConst.TYPE_ALL_LABEL, null, null)));
+					break;
 				} else if(quiz.getCategory().equals(quizCategory.getCategoryId())){
 					quizVoList.add(new QuizVo(quiz, quizCategory));
+					break;
 				}
+				
 			}
 		}
-		List<QuizOwnership> quizOwnerShipList = userQuizService.loadQuizOwnershipList(user.getUserName());
-		for(QuizOwnership quizOwnership: quizOwnerShipList) {
-			for(QuizVo quizVo : quizVoList) {
-				if(quizOwnership.getQuizId().equals(quizVo.getQuiz().getQuizId())) {
-					quizVo.setQuizOwnership(quizOwnership);
-					break;
+		if(user != null) {
+			List<QuizOwnership> quizOwnerShipList = userQuizService.loadQuizOwnershipList(user.getUserName());
+			for(QuizOwnership quizOwnership: quizOwnerShipList) {
+				for(QuizVo quizVo : quizVoList) {
+					if(quizOwnership.getQuizId().equals(quizVo.getQuiz().getQuizId())) {
+						quizVo.setQuizOwnership(quizOwnership);
+						break;
+					}
 				}
 			}
 		}
