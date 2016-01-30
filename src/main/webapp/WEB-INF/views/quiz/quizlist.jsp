@@ -274,7 +274,7 @@
 		      </div>  
 		      <div class="modal-footer">  
 		         <input type="hidden" id="url"/>  
-		         <a onclick="urlSubmit()" class="btn btn-primary" data-dismiss="modal">确定</a>  
+		         <a onclick="refresh()" class="btn btn-primary" data-dismiss="modal">确定</a>  
 		      </div>  
 		    </div><!-- /.modal-content -->  
 		  </div><!-- /.modal-dialog -->  
