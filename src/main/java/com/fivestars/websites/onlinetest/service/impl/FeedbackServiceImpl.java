@@ -61,7 +61,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 			}
 		}
 		LOGGER.warn("[FeedbackService]Cannot find a proper feedback for the score " + score + " in quiz " + quizId);
-		return null;
+		return feedbacks.get(0).getFeedbackId();
 	}
 
 	@Override
