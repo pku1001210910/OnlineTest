@@ -39,7 +39,7 @@
 					<span class="icon-bar"></span> 
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand white" href="<%=basePath%>"> 北京大学心理系 </a>
+				<a class="navbar-brand white" href="<%=basePath%>">北京科力民享科技有限公司 </a>
 				<a class="navbar-brand white font-12" href="<%=basePath%>article/all.action?pageNo=1"> 文章列表 </a>
                 <a class="navbar-brand white font-12" href="<%=basePath%>quiz/startQuiz.action"> 测试列表 </a>
 			</div>

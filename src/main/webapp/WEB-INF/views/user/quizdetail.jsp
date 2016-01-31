@@ -34,7 +34,7 @@
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                     <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand white" href="<%=basePath%>"> 北京大学心理系 </a> <a class="navbar-brand white font-12" href="<%=basePath%>article/all.action?pageNo=1"> 文章列表 </a> <a class="navbar-brand white font-12" href="<%=basePath%>quiz/startQuiz.action"> 测试列表 </a>
+                    <a class="navbar-brand white" href="<%=basePath%>">北京科力民享科技有限公司  </a> <a class="navbar-brand white font-12" href="<%=basePath%>article/all.action?pageNo=1"> 文章列表 </a> <a class="navbar-brand white font-12" href="<%=basePath%>quiz/startQuiz.action"> 测试列表 </a>
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <jsp:include flush="true" page="../user/userlogin.jsp"></jsp:include>

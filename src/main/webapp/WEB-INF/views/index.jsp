@@ -41,7 +41,7 @@
 					<span class="icon-bar"></span> 
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand white" href="<%=basePath%>"> 北京大学心理系 </a>
+				<a class="navbar-brand white" href="<%=basePath%>">北京科力民享科技有限公司</a>
 			</div>
 			<div id="navbar" class="navbar-collapse collapse">
 				<jsp:include flush="true" page="user/userlogin.jsp"></jsp:include>

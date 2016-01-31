@@ -69,7 +69,7 @@ h1, h2, h3, h4, h5, h6 {
     visibility: hidden;
 }
 .container, .navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container {
-    width: 983px;
+    width: 980px;
 }
 .container {margin:0 auto;overflow: hidden;}
 .ma_auto{
@@ -93,7 +93,7 @@ border-radius: 4px;
 }
 .color1 { color: #0099ff;}
 
-/*é®ç½©å±‚*/
+/*茅聛庐莽陆漏氓卤鈥�*/
 
 .modal-backdrop {
     background-color: #000000;
@@ -176,7 +176,7 @@ select{
     background-position: -408px -96px;
     margin-top: 3px;
 }
-/*-------------æŒ‰é’®----------------------*/
+/*-------------忙艗鈥懊┾�櫬�----------------------*/
 .WJButton {
 	font-weight:bold;
 	display: inline-block;
@@ -272,7 +272,7 @@ select{
 .wj_gray:active {
 	color: #858585;
 }
-/*----------------å…¬å…±å¤´å°¾---------------------*/
+/*----------------氓鈥βモ�β泵ヂぢ疵ヂ奥�---------------------*/
 .wjContent{
 	width:100%;
 	min-height:300px;
@@ -656,7 +656,7 @@ background-color: #154C69;
 /*footer end*/	
 
 
-/*********åˆ†é¡µé¡µç **********/
+/*********氓藛鈥犆┞÷得┞÷得犅�**********/
 .pagination { color:#9e9e9e;margin-top: 5px; margin-bottom:5px;}
 
 .pagination .prev {background: url(/static/images/wjsj_toolico.png) no-repeat; background-position:-78px -240px;width: 19px;height: 20px;display: inline-block;vertical-align: middle; }
@@ -674,9 +674,9 @@ background-color: #154C69;
 .paginationa a { display:inline-block; font-size: 12px; color:#c1c1c1; padding:0 2px;}
 
 .paginationa a:hover { background-color:#2a95cc; color:#fff; opacity:0.5; filter:alpha(opacity=50);}
-/*********åˆ†é¡µé¡µç **********/
+/*********氓藛鈥犆┞÷得┞÷得犅�**********/
 
-/*------------ç¡®è®¤æ¡†---------------*/	
+/*------------莽隆庐猫庐陇忙隆鈥�---------------*/	
 .tccCon p{}
 .tccCon_t{margin:10px 0;padding:10px 20px;font-size: 16px;}
 .tccCon_a{ text-align:right; padding:0 20px 10px 10px}	
@@ -695,7 +695,7 @@ background-color: #154C69;
     text-decoration: none;
     vertical-align: baseline;
 }
-/*------------ç¡®è®¤æ¡†-End--------------*/	
+/*------------莽隆庐猫庐陇忙隆鈥�-End--------------*/	
 
 
 /*-------------------------*/	
@@ -812,7 +812,7 @@ background-color: #154C69;
 .getevent{ display: inline; color: #ff9971!important; font-weight: normal;}
 .btn_member .getevent{border:none;width: 100px;}
 .btn_member .getevent:hover{border:none;background: none; color: #fff;}
-/*-------ç»Ÿä¸€åˆ—è¡¨æ ·å¼---------*/
+/*-------莽禄鸥盲赂鈧ニ嗏�斆÷β犅访ヂ悸�---------*/
 .WJtable{
 	margin-top: 20px;
 }
@@ -1007,7 +1007,7 @@ div.cDrag .DragBar{
 }
 .ie6fixedBR{ display:flex;}
 
-/*åŽå°ç™»é™†åŠŸèƒ½æ›´æ–°æç¤º*/
+/*氓聬沤氓聫掳莽鈩⒙幻┾劉鈥犆ヅ犈该ㄆ捖矫︹�郝疵︹�撀懊β徛惷ぢ�*/
 .mask{    
 position:absolute; 
 top:0px;
@@ -1047,7 +1047,7 @@ padding:2px 19px 0px 43px;
 .pop_up p span{display:block;font-weight: bold; font-size: 13px;}
 .pop_up i{cursor:pointer;position:absolute;right:10px;top:2px;background:url(/static/images/update_close.jpg) center no-repeat;width:24px;}
 
-/*åŽå°ç™»é™†åŠŸèƒ½æ›´æ–°æç¤º*/
+/*氓聬沤氓聫掳莽鈩⒙幻┾劉鈥犆ヅ犈该ㄆ捖矫︹�郝疵︹�撀懊β徛惷ぢ�*/
 
 .bate_z{position:relative;}.bate_z span{ position: absolute; font-size: 12px;color: #f97c7c;top:15px;left:52px;white-space: nowrap;}
 .wjactions .bate_z span{top:-12px;left:72px;}
